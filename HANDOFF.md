@@ -9,6 +9,62 @@ For things that didn't work, see FAILURES.md.
 
 ---
 
+## 2026-05-31 — U1 complete: DB connected, EDA run, schema mapped
+
+**Started from:** U1 infrastructure spike. DB helper, EDA script, tests committed.
+
+**Did:** Connected to Cinderhaven via flyctl proxy; ran full EDA against `raw.*` schema.
+
+**EDA findings (canonical source of truth for all downstream units):**
+
+- Actual schema: tables live in `raw.*` (not public). Marts in `public_marts.*` (fct_ prefix).
+- Tables confirmed: `raw.retailer_chargebacks`, `raw.retailer_shipments`, `raw.retailer_orders`,
+  `raw.retailer_order_lines`, `raw.product_master`, `raw.distribution_log`,
+  `raw.retailer_deduction_codes`.
+
+**Row counts (actual vs. plan estimate):**
+- `retailer_chargebacks`: 690 (plan: ~450 -- higher, fine)
+- `retailer_shipments`: 46,414 (plan: ~7,200 -- much higher, 3 years of data)
+- `retailer_deductions`: 13,804 (plan: ~2,000 -- larger dataset)
+- `product_master`: 50 SKUs (plan: 30 -- close)
+- `distribution_log`: 10,638 rows
+
+**Chargeback amounts:** $691,338 total -- matches the $680K in the brief.
+**Date range:** shipments 2024-01-02 to 2027-01-07 (3 years); chargebacks 2024-01-01 to 2027-01-01.
+
+**Join strategy (blocks U4):** Multi-hop join required -- chargebacks have no direct `order_id`.
+Join chain: `retailer_chargebacks (retailer_id, sku, month)` -> `retailer_order_lines (sku)` ->
+`retailer_orders (order_id, retailer_id)` -> `retailer_shipments (order_id, ship_date)`.
+Match rate via this chain + 90-day window: **96.5% (666/690)**. Gate passed. Proceed with this join.
+
+**Chargeback reasons (both fields are structured codes, not free text):**
+- `reason` field values: `label_fine`, `damaged`, `pricing_error`, `late_delivery`, `short_ship`
+- `deduction_type` values: `label_fine`, `short_ship`, `slotting`, `pricing_error`, `damaged`,
+  `spoilage`, `late_delivery`, `pallet_fine`, `promo_billback`
+- NOTE for U3: "free text" harmonization pathway is simpler than planned -- both fields use
+  clean enum-style codes, not narrative text. Harmonization is a lookup dict, no regex needed.
+
+**Product master:** 50 SKUs, 0% null on all key fields (gtin14, upc, case_dims, case_weight)
+in current state. Confirms point-in-time join is needed -- today's clean state hides historical gaps.
+Columns: `sku, product_name, gtin14, upc, case_pack_qty, unit_weight_lbs, case_weight_lbs,
+case_length_in, case_width_in, case_height_in, last_updated`.
+
+**Distribution log:** `(sku, store_id, authorized_date, deauthorized_date)` per-SKU-store auth events.
+Spans the full shipment date range. Available for historical reconstruction narrative in methodology doc.
+
+**ASN features:** `raw.retailer_shipments` has `asn_sent_late` boolean directly. ASN late rate: 8.6%.
+No `days_late` column -- may need to compute from `ship_date` vs. `delivery_date` or `requested_ship_date`.
+
+**State:** U1 fully complete. EDA script committed at `src/pipeline/eda.py`.
+All code for U1 committed (`src/pipeline/db.py`, `requirements.txt`, `.env.example`, tests).
+
+**Next:** U2 -- add `product_master_history` table to cinderhaven-data-platform.
+Table must cover 2024-01-01 to 2027-01-07. Synthetic history only (current product_master
+is 100% clean; historical gaps must be fabricated to demonstrate the methodology).
+Check whether `days_late` needs to be derived or if it exists on another table before U4.
+
+---
+
 ## 2026-05-31 — Full workflow gates complete; implementation plan ready
 
 **Started from:** Empty project directory with one file (project brief). No git, no scaffolding.
