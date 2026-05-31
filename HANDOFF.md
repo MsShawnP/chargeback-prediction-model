@@ -48,6 +48,18 @@ Still need to map these codes to the five canonical archetypes.
 
 ---
 
+## 2026-05-31 — U3 complete: reason-code harmonization engine live
+
+**What changed:** Harmonization engine maps all reason codes and deduction types to 6 canonical archetypes.
+
+**Why:** U3 is the categorical target source for model training and the lens for the prevention roadmap.
+
+**State:** U1–U3 complete. 29/29 tests green (also fixed pre-existing `test_db.py` import-ordering bug). `src/harmonization/reason_codes.py` holds all mapping logic; `src/pipeline/02_harmonize.py` is the pipeline step runner. `item_setup_gap` archetype is defined but assigned by U4, not here — documented in reason_codes.py. U4–U16 remain.
+
+**Next:** U4 — point-in-time feature engineering. `src/pipeline/03_features.py` + `tests/pipeline/test_features.py`. Join chargebacks → shipments via multi-hop chain (96.5% match rate per EDA), look up `product_master_history` at ship_date, compute `sku_prior_chargeback_rate` with expanding window.
+
+---
+
 ## 2026-05-31 — U1 complete: DB connected, EDA run, schema mapped
 
 **Started from:** U1 infrastructure spike. DB helper, EDA script, tests committed.
