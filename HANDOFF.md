@@ -9,6 +9,20 @@ For things that didn't work, see FAILURES.md.
 
 ---
 
+## 2026-05-31 — U1 + U2 complete; both U4 blockers resolved
+
+**Started from:** Full pre-work complete (clarify → gates → brainstorm → plan). No code existed.
+
+**Did:**
+- U1: `db.py`, EDA script, `requirements.txt`, `.env.example`, 2 passing tests. Ran live EDA against Cinderhaven — confirmed 96.5% chargeback-to-shipment join rate via multi-hop chain.
+- U2: `raw.product_master_history` seeded (1,900 rows, 50 SKUs x 38 months, 39 SKUs with synthetic gaps), dbt view + 4 tests all passing. Committed in cinderhaven-data-platform.
+
+**State:** U1 and U2 done. Tests green. Both blockers for U4 resolved. U3–U16 remain.
+
+**Next:** U3 -- reason-code harmonization engine. `src/harmonization/reason_codes.py` + `src/pipeline/02_harmonize.py` + `tests/pipeline/test_harmonize.py`. Both `reason` and `deduction_type` are already clean enum codes -- no regex needed, just two lookup dicts mapping to the five canonical archetypes. Codes: `label_fine`, `damaged`, `pricing_error`, `late_delivery`, `short_ship` (reason); `label_fine`, `short_ship`, `slotting`, `pricing_error`, `damaged`, `spoilage`, `late_delivery`, `pallet_fine`, `promo_billback` (deduction_type).
+
+---
+
 ## 2026-05-31 — U2 complete: product_master_history seeded and live
 
 **Did:** Added `raw.product_master_history` to cinderhaven-data-platform.

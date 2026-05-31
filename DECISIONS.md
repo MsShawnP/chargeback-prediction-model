@@ -45,7 +45,17 @@ Each entry:
 
 ## Data & Schema
 
-[Decisions about data sources, schemas, transformations]
+### 2026-05-31 — Use multi-hop join chain for chargeback-to-shipment linkage; no direct join exists
+
+- **Why:** `raw.retailer_chargebacks` has no `order_id` column; `raw.retailer_shipments` has no `retailer_id` or `sku`. The only valid join is: `retailer_chargebacks (retailer_id, sku, month)` → `retailer_order_lines (sku, order_id)` → `retailer_orders (order_id, retailer_id)` → `retailer_shipments (order_id, ship_date)`, with `chargeback.month BETWEEN ship_date AND ship_date + 90 days`. Confirmed 96.5% match rate in EDA.
+- **Scope:** Feature engineering pipeline (U4), any future query joining chargebacks to shipments
+- **Do not:** Attempt to join `retailer_chargebacks.order_id` to shipments — that column does not exist. Do not join on `retailer_shipments.retailer_id` — that column does not exist either.
+
+### 2026-05-31 — Reason-code harmonization uses lookup dicts only; no regex or free-text parsing
+
+- **Why:** EDA revealed that both `raw.retailer_chargebacks.reason` and `raw.retailer_deduction_codes.deduction_type` contain clean enum-style codes (`label_fine`, `damaged`, `pricing_error`, `late_delivery`, `short_ship`, etc.), not narrative free text. The "keyword/regex" pathway described in the implementation plan is unnecessary.
+- **Scope:** `src/harmonization/reason_codes.py` and `src/pipeline/02_harmonize.py`
+- **Do not:** Add a regex/keyword matching pathway — it adds complexity with no benefit given the structured codes. If new free-text fields appear in future data, revisit then.
 
 ---
 
