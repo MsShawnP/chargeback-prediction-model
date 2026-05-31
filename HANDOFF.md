@@ -48,6 +48,18 @@ Still need to map these codes to the five canonical archetypes.
 
 ---
 
+## 2026-05-31 — U4 complete: point-in-time feature engineering
+
+**What changed:** `src/pipeline/features.py` builds the full labeled training DataFrame.
+
+**Why:** U4 is the data foundation for the model — correct point-in-time join and no-leakage chargeback rate are the two critical correctness properties.
+
+**State:** U1–U4 complete. 51/51 tests green. Key modules: `features.py` (pure functions), `03_features.py` (DB runner). One bug caught by tests: plain `Series.shift(1)` bleeds across group boundaries; fixed with `groupby.transform`. U5–U16 remain.
+
+**Next:** U5 — model training + SHAP. `src/pipeline/04_model.py` + `src/pipeline/model.py` (pure functions) + `tests/pipeline/test_model.py`. RandomForestClassifier, temporal train/test split, SHAP TreeExplainer, attribution string per row, AUC ≥ 0.65 hard gate. Reads `output/frames/training_features.parquet` (produced by `03_features.py run()`).
+
+---
+
 ## 2026-05-31 — U3 complete: reason-code harmonization engine live
 
 **What changed:** Harmonization engine maps all reason codes and deduction types to 6 canonical archetypes.
