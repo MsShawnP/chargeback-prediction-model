@@ -31,6 +31,18 @@ Each entry:
 
 ---
 
+### 2026-05-31 — Deliver five purpose-built artifacts, not a single SPA
+- **Why:** Different audiences need different formats. The CFO needs a printable tearsheet; the deductions person needs an interactive risk ledger; a technical evaluator needs a methodology doc. A single SPA serves none of them optimally. Multi-artifact also matches the Product Data Health Audit pattern in the portfolio.
+- **Scope:** All deliverable decisions for this project
+- **Do not:** Collapse deliverables into a single app to save build effort — the audience split is the point
+
+### 2026-05-31 — Split stack: Python ML pipeline + Quarto (reports) + React/Vite (interactive app)
+- **Why:** Each layer does what it's best at. Python owns ML/SHAP; Quarto renders narrative HTML + PDF from the same source; React handles the stateful interactive pieces (ledger + simulator). Quarto uses the Python/jupyter engine (not R/knitr) to stay on one language.
+- **Scope:** Global — defines the three-layer architecture
+- **Do not:** Use R for any pipeline work; do not attempt to render interactive simulations in Quarto
+
+---
+
 ## Data & Schema
 
 [Decisions about data sources, schemas, transformations]

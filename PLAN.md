@@ -5,41 +5,66 @@ session. For session-by-session state, see HANDOFF.md.
 
 ---
 
-## Goal
+## Goal — 2026-05-31
 
-[One sentence — what "done" looks like for this arc. Filled in after /clarify.]
+Build a complete, shippable Lailara portfolio piece proving that Cinderhaven's
+chargebacks are predictable and ~60% preventable — from the "chargebacks aren't
+random" reframe through an interpretable prediction model to a ranked prevention
+roadmap, delivered as one or more interactive HTML pieces.
 
 ## Why this arc, why now
 
-[One or two sentences. The reason matters when you come back in three
-weeks and wonder why this was the priority.]
+This is the portfolio's most technically ambitious piece and the predictive
+bridge between Product Data Health Audit (cause) and Retailer Deduction Recovery
+(effect). Building it now makes the causal argument across the whole portfolio
+complete.
 
 ## Business question this arc answers
 
 Which upstream data quality conditions will generate chargebacks, at what
 probability and dollar value, so the brand can intervene before shipment?
 
-## Tasks
+## Confirmed scope
 
-Work in vertical slices — one section/feature end-to-end before moving
-to the next.
+**In:**
+- Cross-retailer reason-code harmonization engine (Move 1)
+- Point-in-time feature engineering / historical data quality reconstruction (Move 2)
+- Interpretable tree-based model + SHAP attribution (Move 3)
+- Forward risk scoring on upcoming POs (Move 4)
+- Capital-allocation prevention roadmap (Move 5)
+- Interactive HTML portfolio deliverable(s) — story + methodology + outputs
+- Cinderhaven Data Platform (Postgres) as SSOT
 
-- [ ] Run /clarify to scope the first work arc
-- [ ] Run /office-hours to stress-test the approach
-- [ ] Run /plan-ceo-review for product gate
-- [ ] Run /plan-eng-review for architecture gate
-- [ ] Run /ce:brainstorm to produce the spec
-- [ ] Run /ce:plan to research and plan implementation
-
-## Out of scope for this arc
-
-- Real-time pre-ship scoring integration (engagement/integration work)
+**Out:**
+- Real-time pre-ship scoring integration (engagement work)
 - Dispute automation (deduction-recovery territory)
 - Actual data remediation (separate engagement)
+- Black-box models (barred — interpretability mandated)
+
+## Known constraint to solve in planning
+
+`product_master` is current-state only. Point-in-time join must reconstruct
+historical data quality from `distribution_log` auth/deauth dates and EDI
+change signals. No shortcut to today's state.
+
+## Tasks
+
+- [x] Run /clarify to scope the first work arc (2026-05-31)
+- [x] Run /office-hours to stress-test the approach (2026-05-31) — green light
+- [x] Run /plan-ceo-review for product gate (2026-05-31) — ship it
+- [x] Run /plan-eng-review for architecture gate (2026-05-31) — sound
+- [x] Run /ce:brainstorm to produce the spec (2026-05-31) — docs/brainstorms/chargeback-prediction-requirements.md
+- [x] Run /ce:plan to research and plan implementation (2026-05-31) — docs/plans/2026-05-31-001-feat-chargeback-prediction-suite-plan.md
+- [ ] Run /ce:work to execute (start with U1 — infrastructure spike)
 
 ## Definition of done for this arc
 
-- [ ] To be defined after /clarify completes
+- [ ] Interactive HTML deliverable(s) published and visually complete
+- [ ] Model trained on Cinderhaven data, predictions validated
+- [ ] Every risk score carries a plain-language attribution string
+- [ ] Prevention roadmap ranks root causes by dollar recovery value
+- [ ] Passes /ce:review and /qa
+- [ ] Lailara design system applied throughout
 
 ---
 
