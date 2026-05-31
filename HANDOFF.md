@@ -9,6 +9,18 @@ For things that didn't work, see FAILURES.md.
 
 ---
 
+## 2026-05-31 18:46 — U5 complete: model training + SHAP attribution live
+
+**What changed:** `src/pipeline/model.py` + `src/pipeline/04_model.py` + `tests/pipeline/test_model.py` built and passing.
+
+**Why:** U5 is the core predictive layer — every downstream deliverable depends on the model artifact, SHAP values, and attribution strings it produces.
+
+**State:** U1–U5 complete. 80/80 tests green. `model.py` holds all pure functions (temporal split, train, evaluate, SHAP, attribution strings). AUC gate (≥ 0.65) enforced in `04_model.py` runner. Runner requires `output/frames/training_features.parquet` (produced by `03_features.py run()`). U6–U16 untouched.
+
+**Next:** U6 — forward risk scoring + prevention roadmap. `src/pipeline/05_score.py` (score upcoming POs, attach dollar exposure) + `src/pipeline/06_roadmap.py` (group by archetype, apply preventability fractions, rank by prevention value). Reads model artifact from `output/model/chargeback_model.joblib`.
+
+---
+
 ## 2026-05-31 — U1 + U2 complete; both U4 blockers resolved
 
 **Started from:** Full pre-work complete (clarify → gates → brainstorm → plan). No code existed.
