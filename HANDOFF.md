@@ -9,6 +9,31 @@ For things that didn't work, see FAILURES.md.
 
 ---
 
+## 2026-05-31 — U2 complete: product_master_history seeded and live
+
+**Did:** Added `raw.product_master_history` to cinderhaven-data-platform.
+1,900 rows (50 SKUs x 38 monthly snapshots, 2024-01-01 to 2027-02-01).
+39/50 SKUs have synthetic historical data quality gaps that resolve
+monotonically. dbt staging model + 4 tests all pass.
+
+**Key facts for U4:**
+- Point-in-time lookup: `WHERE sku = :sku AND snapshot_date <= :ship_date ORDER BY snapshot_date DESC LIMIT 1`
+- History columns: `gtin14_present, upc_present, case_dims_present, case_weight_present, data_quality_score`
+- Known test case: CHP-AS-001 has `gtin14_present = FALSE` before 2025-03-01
+- Seed script: `cinderhaven-data-platform/scripts/seed_product_master_history.py` (SEED=42, reproducible)
+- dbt view: `public_staging.stg_product_master_history`
+
+**State:** U1 and U2 complete. Both blockers for U4 are resolved.
+
+**Next:** U3 -- reason-code harmonization engine.
+`src/harmonization/reason_codes.py` + `src/pipeline/02_harmonize.py` + `tests/pipeline/test_harmonize.py`.
+Key simplification vs. plan: `reason` field and `deduction_type` both use structured codes
+(`label_fine`, `damaged`, `pricing_error`, `late_delivery`, `short_ship`), not free text.
+The "keyword/regex" pathway is not needed -- just a lookup dict per pathway.
+Still need to map these codes to the five canonical archetypes.
+
+---
+
 ## 2026-05-31 — U1 complete: DB connected, EDA run, schema mapped
 
 **Started from:** U1 infrastructure spike. DB helper, EDA script, tests committed.

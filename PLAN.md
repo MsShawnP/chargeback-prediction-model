@@ -55,7 +55,17 @@ change signals. No shortcut to today's state.
 - [x] Run /plan-eng-review for architecture gate (2026-05-31) — sound
 - [x] Run /ce:brainstorm to produce the spec (2026-05-31) — docs/brainstorms/chargeback-prediction-requirements.md
 - [x] Run /ce:plan to research and plan implementation (2026-05-31) — docs/plans/2026-05-31-001-feat-chargeback-prediction-suite-plan.md
-- [ ] Run /ce:work to execute (start with U1 — infrastructure spike)
+- [x] Run /ce:work — U1: DB helper, EDA script, tests (2026-05-31)
+- [x] Run /ce:work — U2: product_master_history in cinderhaven-data-platform (2026-05-31)
+- [ ] Run /ce:work — U3: reason-code harmonization engine
+- [ ] Run /ce:work — U4: point-in-time feature engineering
+- [ ] Run /ce:work — U5: model training + SHAP attribution
+- [ ] Run /ce:work — U6: forward scoring + prevention roadmap
+- [ ] Run /ce:work — U7: pipeline orchestration + JSON/CSV export
+- [ ] Run /ce:work — U8–U10: React app (Risk Ledger + Simulator)
+- [ ] Run /ce:work — U11: Cloudflare Pages deployment
+- [ ] Run /ce:work — U12–U15: Quarto reports
+- [ ] Run /ce:work — U16: GitHub Actions CI/CD
 
 ## Definition of done for this arc
 
