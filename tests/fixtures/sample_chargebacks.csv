@@ -1,0 +1,8 @@
+chargeback_id,retailer_id,sku,chargeback_date,amount,reason
+CB-001,RET-1,CHP-AS-001,2024-03-15,1250.00,label_fine
+CB-002,RET-1,CHP-AS-002,2024-04-02,875.50,damaged
+CB-003,RET-2,CHP-AS-003,2024-05-10,320.00,pricing_error
+CB-004,RET-2,CHP-AS-004,2024-06-18,460.00,late_delivery
+CB-005,RET-3,CHP-AS-005,2024-07-22,990.00,short_ship
+CB-006,RET-3,CHP-AS-001,2024-08-05,1100.00,label_fine
+CB-007,RET-1,CHP-AS-003,2024-09-14,540.00,damaged
