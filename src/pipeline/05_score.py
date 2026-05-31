@@ -19,7 +19,14 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 from src.pipeline.db import query_to_df  # noqa: E402
-from src.pipeline.scoring import score_pos  # noqa: E402
+from src.pipeline.model import compute_shap_values  # noqa: E402
+from src.pipeline.scoring import (  # noqa: E402
+    attach_prior_chargeback_rate,
+    build_compliance_defaults,
+    build_feature_matrix,
+    build_product_quality_flags,
+    score_pos,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -73,9 +80,16 @@ def run(frames_dir: Path = FRAMES_DIR, model_dir: Path = MODEL_DIR) -> None:
         default_rate=default_rate,
     )
 
+    # Build feature matrix to compute SHAP values for the simulator (U7)
+    _enriched = build_product_quality_flags(pos_df, product_master_df)
+    _enriched = build_compliance_defaults(_enriched)
+    _enriched = attach_prior_chargeback_rate(_enriched, historical_rates, default_rate=default_rate)
+    X_pos = build_feature_matrix(_enriched, model)
+    shap_pos = compute_shap_values(model, X_pos)
+
     frames_dir.mkdir(parents=True, exist_ok=True)
-    out_path = frames_dir / "scored_pos.parquet"
-    scored.to_parquet(out_path, index=False)
+    scored.to_parquet(frames_dir / "scored_pos.parquet", index=False)
+    shap_pos.to_parquet(frames_dir / "scored_pos_shap.parquet", index=False)
     logger.info(
         "Scored %d POs — top dollar_exposure: $%.0f",
         len(scored),
