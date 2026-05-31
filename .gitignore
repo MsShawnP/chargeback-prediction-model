@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Environment and secrets
+.env
+.env.*
+*.key
+*.pem
+credentials.*
+secrets.*
+config.local.*
+
+# Data files (keep schemas/samples, not real data)
+data/raw/
+data/interim/
+data/processed/
+*.csv
+*.parquet
+*.feather
+!tests/fixtures/*.csv
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Model artifacts
+models/
+*.pkl
+*.joblib
+*.h5
+*.pt
+*.ckpt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude
+.claude-project-url
