@@ -59,9 +59,9 @@ change signals. No shortcut to today's state.
 - [x] Run /ce:work — U2: product_master_history in cinderhaven-data-platform (2026-05-31)
 - [x] Run /ce:work — U3: reason-code harmonization engine (2026-05-31)
 - [x] Run /ce:work — U4: point-in-time feature engineering (2026-05-31)
-- [ ] Run /ce:work — U5: model training + SHAP attribution
-- [ ] Run /ce:work — U6: forward scoring + prevention roadmap
-- [ ] Run /ce:work — U7: pipeline orchestration + JSON/CSV export
+- [x] Run /ce:work — U5: model training + SHAP attribution (2026-05-31)
+- [x] Run /ce:work — U6: forward scoring + prevention roadmap (2026-05-31)
+- [x] Run /ce:work — U7: pipeline orchestration + JSON/CSV export (2026-05-31)
 - [ ] Run /ce:work — U8–U10: React app (Risk Ledger + Simulator)
 - [ ] Run /ce:work — U11: Cloudflare Pages deployment
 - [ ] Run /ce:work — U12–U15: Quarto reports

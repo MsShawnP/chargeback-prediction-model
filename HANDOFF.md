@@ -9,6 +9,18 @@ For things that didn't work, see FAILURES.md.
 
 ---
 
+## 2026-05-31 19:40 — U7 complete: pipeline orchestration + JSON/CSV export live
+
+**What changed:** `src/pipeline/export.py`, `src/pipeline/07_export.py`, `run_pipeline.py`, `config.yml`, `frontend/public/json/` created; `05_score.py` updated to also save `scored_pos_shap.parquet`.
+
+**Why:** U7 is the final pure-Python step — it wires steps 01–07 and produces the three JSON files the React app needs plus CSVs for Quarto.
+
+**State:** U1–U7 complete. 148/148 tests green. `run_pipeline.py` loads steps 01–07 via importlib; 01_extract.py skipped gracefully (not yet built). JSON outputs land in `frontend/public/json/`. U8–U16 untouched. PLAN.md task checkboxes for U5, U6, U7 still show `[ ]` — needs update.
+
+**Next:** U8 — React app scaffold. `frontend/` Vite + TypeScript app following the Retailer Deduction Recovery pattern with Lailara Design System v2 tokens. Reads `frontend/public/json/risk_ledger.json`, `simulator.json`, `summary.json`.
+
+---
+
 ## 2026-05-31 18:46 — U5 complete: model training + SHAP attribution live
 
 **What changed:** `src/pipeline/model.py` + `src/pipeline/04_model.py` + `tests/pipeline/test_model.py` built and passing.
