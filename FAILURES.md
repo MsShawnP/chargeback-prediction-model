@@ -69,6 +69,20 @@ shouldn't re-attempt dead ends because the lesson got lost.
 
 ---
 
+### 2026-05-31 — Series.shift(1) crossed group boundaries in expanding-window chargeback rate
+
+**Attempted:** Computed `sku_prior_chargeback_rate` using global `.shift(1)` on the cumsum and cumcount Series after sorting by `(sku, retailer_id, ship_date)` and calling `groupby`.
+
+**Why it didn't work:** After sorting, groups are contiguous. A plain `Series.shift(1)` operates on the global index — the last value of group N bleeds into the first row of group N+1. The first shipment of every group after the first received the tail of the previous group's cumulative rate instead of the dataset mean.
+
+**What we tried instead:** Replaced with `groupby.transform(lambda s: ...)` so the cumsum and shift execute within each group independently. The test `test_prior_rate_does_not_include_current_row` caught this immediately.
+
+**Status:** Resolved
+
+**Tags:** pandas, groupby, shift, transform, expanding-window, leakage, prior-rate, U4
+
+---
+
 ### 2026-05-31 — Seed script and dbt both failed to connect: POSTGRES_PASSWORD not in environment
 
 **Attempted:** Ran `seed_product_master_history.py` from the cinderhaven-data-platform `scripts/` directory. Also ran `dbt run`. Both failed with authentication errors.

@@ -45,6 +45,21 @@ Each entry:
 
 ## Data & Schema
 
+### 2026-05-31 — Numbered pipeline scripts are thin runners; all testable logic lives in importable modules
+- **Why:** Python cannot import files whose names begin with a digit (`03_features.py`). The first attempt put functions inside the numbered scripts and tests couldn't import them. The fix: core logic lives in a properly-named module (`features.py`, `reason_codes.py`); the numbered file only calls `run()`.
+- **Scope:** Every pipeline step — `0N_*.py` is the DB-querying orchestration wrapper; `*.py` (no digit prefix) is where functions live and are tested.
+- **Do not:** Put testable logic directly in numbered pipeline scripts. Do not import from `src.pipeline._03_features` or similar workarounds.
+
+### 2026-05-31 — raw.retailer_shipments is line-level; direct join to chargebacks via retailer_id + sku works
+- **Why:** U4 implementation confirmed that `retailer_shipments` already contains `retailer_id` and `sku` per row — it is a shipment-line table, not a shipment-header table. The EDA script's own date-window join (`ON c.retailer_id = s.retailer_id AND c.sku = s.sku`) achieved 96.5% and is the correct approach. The multi-hop through `retailer_orders + retailer_order_lines` is unnecessary for the chargeback label join.
+- **Scope:** Feature engineering (U4) and any future query joining chargebacks to shipments
+- **Do not:** Build the multi-hop join chain for the chargeback label — it adds complexity with no benefit. If a future unit needs `order_id`-level precision, re-evaluate then.
+
+### 2026-05-31 — `item_setup_gap` archetype is assigned by feature engineering, not harmonization
+- **Why:** No raw reason code or deduction_type maps to `item_setup_gap`. The archetype represents missing product master fields (GTIN absent, dimensions absent) which are only visible in `product_master_history` boolean flags — not in the chargeback reason strings. Assigning it during harmonization would require joining to product data, which is U4's job.
+- **Scope:** `src/harmonization/reason_codes.py` and `src/pipeline/features.py`
+- **Do not:** Add a mapping from any reason code to `item_setup_gap` in `reason_codes.py`. Set it in the feature engineering step based on `gtin14_missing` or similar flags if needed for model labeling.
+
 ### 2026-05-31 — Use multi-hop join chain for chargeback-to-shipment linkage; no direct join exists
 
 - **Why:** `raw.retailer_chargebacks` has no `order_id` column; `raw.retailer_shipments` has no `retailer_id` or `sku`. The only valid join is: `retailer_chargebacks (retailer_id, sku, month)` → `retailer_order_lines (sku, order_id)` → `retailer_orders (order_id, retailer_id)` → `retailer_shipments (order_id, ship_date)`, with `chargeback.month BETWEEN ship_date AND ship_date + 90 days`. Confirmed 96.5% match rate in EDA.
@@ -82,4 +97,5 @@ Each entry:
 
 ## Reversed / Superseded
 
-[Reversed decisions with links to replacements go here]
+### ~~2026-05-31 — Use multi-hop join chain for chargeback-to-shipment linkage; no direct join exists~~
+**Superseded 2026-05-31 by the entry below.** The "no direct join" claim was wrong — `retailer_shipments` is at line granularity and has both `retailer_id` and `sku` directly.

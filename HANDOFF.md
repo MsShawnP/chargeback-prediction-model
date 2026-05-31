@@ -48,6 +48,18 @@ Still need to map these codes to the five canonical archetypes.
 
 ---
 
+## 2026-05-31 — SESSION WRAP: U3 + U4 complete
+
+**Started from:** U1 + U2 done. No harmonization or feature code existed.
+
+**Did:** Built U3 (reason-code harmonization engine, 27 tests) and U4 (point-in-time feature engineering, 22 tests). Also fixed a pre-existing test_db.py import-ordering bug. All pipeline logic lives in importable modules (`reason_codes.py`, `features.py`); numbered scripts (`02_harmonize.py`, `03_features.py`) are thin runners. 51/51 tests green.
+
+**State:** U1–U4 complete. `src/harmonization/reason_codes.py`, `src/pipeline/features.py` hold all testable logic. Pipeline runners need a live DB (flyctl proxy) or `output/frames/` parquet to run end-to-end. U5–U16 untouched.
+
+**Next:** U5 — `src/pipeline/model.py` (pure functions) + `src/pipeline/04_model.py` (runner). RandomForestClassifier, temporal train/test split, SHAP TreeExplainer, attribution strings, AUC ≥ 0.65 hard gate. Reads `output/frames/training_features.parquet`.
+
+---
+
 ## 2026-05-31 — U4 complete: point-in-time feature engineering
 
 **What changed:** `src/pipeline/features.py` builds the full labeled training DataFrame.

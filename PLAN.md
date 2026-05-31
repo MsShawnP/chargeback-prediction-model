@@ -57,8 +57,8 @@ change signals. No shortcut to today's state.
 - [x] Run /ce:plan to research and plan implementation (2026-05-31) — docs/plans/2026-05-31-001-feat-chargeback-prediction-suite-plan.md
 - [x] Run /ce:work — U1: DB helper, EDA script, tests (2026-05-31)
 - [x] Run /ce:work — U2: product_master_history in cinderhaven-data-platform (2026-05-31)
-- [ ] Run /ce:work — U3: reason-code harmonization engine
-- [ ] Run /ce:work — U4: point-in-time feature engineering
+- [x] Run /ce:work — U3: reason-code harmonization engine (2026-05-31)
+- [x] Run /ce:work — U4: point-in-time feature engineering (2026-05-31)
 - [ ] Run /ce:work — U5: model training + SHAP attribution
 - [ ] Run /ce:work — U6: forward scoring + prevention roadmap
 - [ ] Run /ce:work — U7: pipeline orchestration + JSON/CSV export
