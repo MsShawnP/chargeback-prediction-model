@@ -27,6 +27,20 @@ shouldn't re-attempt dead ends because the lesson got lost.
 
 ## Entries
 
+### 2026-06-01 — /ce:compound doc examples were wrong — composed from memory, not from reading the implementation
+
+**Attempted:** Solution Extractor subagent wrote code examples for the synthetic training labels compound doc from session notes and conversation history, without reading `scripts/generate_training_data.py`.
+
+**Why it didn't work:** The actual script uses a multiplicative probability model (BASE_RATE × feature multipliers, capped at 0.85). The examples showed an additive model (weighted sum, weights summing to 1.0). Feature names were also inverted (`missing_gtin14` vs. `gtin14_missing`). Both errors would have caused a reader to build the wrong architecture, and the feature name mismatch would cause a `KeyError` at runtime.
+
+**What we tried instead:** Phase 3 ce-kieran-python-reviewer read the actual script, caught both errors, and the corrections were applied before commit.
+
+**Status:** Resolved
+
+**Tags:** ce-compound, documentation, code-examples, always-read-implementation-first
+
+---
+
 ### 2026-05-31 — EDA script crashed on first run due to non-ASCII characters on Windows
 
 **Attempted:** Wrote `src/pipeline/eda.py` using `→`, `✓`, `⚠`, `—` in print statements. Committed and ran on Windows.

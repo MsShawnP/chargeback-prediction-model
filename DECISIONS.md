@@ -124,6 +124,15 @@ Each entry:
 
 ---
 
+## Documentation Process
+
+### 2026-06-01 — Always read the implementation before writing compound doc code examples
+- **Why:** Solution Extractor composed examples from session notes and produced an additive probability model when the real script (`generate_training_data.py`) uses a multiplicative model — architecturally different. Feature names were also inverted (`missing_gtin14` vs. `gtin14_missing`). Both were caught by the Phase 3 Python reviewer, but only because Phase 3 ran. Examples composed from memory will be wrong in non-obvious ways.
+- **Scope:** All `/ce:compound` runs that produce code examples. The orchestrator or Solution Extractor prompt must read the actual source files before drafting examples.
+- **Do not:** Write documentation code examples from memory, session notes, or paraphrase. Always read the file first.
+
+---
+
 ## Reversed / Superseded
 
 ### ~~2026-05-31 — Use multi-hop join chain for chargeback-to-shipment linkage; no direct join exists~~

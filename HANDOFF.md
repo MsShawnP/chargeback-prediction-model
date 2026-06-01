@@ -9,6 +9,18 @@ For things that didn't work, see FAILURES.md.
 
 ---
 
+## 2026-06-01 17:45 — SESSION WRAP: arc closed — /qa + /ce:compound complete
+
+**Started from:** /qa interrupted from prior session. 3 unpushed commits. Arc otherwise complete.
+
+**Did:** Full /qa browser pass (16 checks, 0 failures) — P0 risk_tier fix confirmed, SHAP savings confirmed, filters/pin card/empty state/mobile all verified. Ran /ce:compound full mode — documented synthetic training labels architecture pattern; Phase 3 Python reviewer caught two correctness bugs in doc examples (additive→multiplicative model, inverted feature names) before commit. Updated CLAUDE.md with docs/solutions/ discoverability mention.
+
+**State:** Arc complete. QA passed. Compound doc at docs/solutions/architecture-patterns/synthetic-training-labels-no-real-signal-2026-06-01.md. 3+ commits unpushed. DB password in .env needs manual rotation.
+
+**Next:** git push to back up all unpushed commits. Arc closed — ready to ship or start next portfolio project. Rotate DB password (flyctl postgres connect -a cinderhaven-db + ALTER ROLE).
+
+---
+
 ## 2026-06-01 13:00 — SESSION WRAP: short session, /qa interrupted
 
 **Started from:** /ce:review complete, 15 bugs fixed, 170/170 tests green.

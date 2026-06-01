@@ -73,7 +73,7 @@ change signals. No shortcut to today's state.
 - [x] Model trained on Cinderhaven data, predictions validated (2026-06-01 — AUC=0.7485, $691K chargebacks, $485K preventable 70%)
 - [x] Every risk score carries a plain-language attribution string
 - [x] Prevention roadmap ranks root causes by dollar recovery value
-- [x] Passes /ce:review (2026-06-01 — 15 bugs fixed; /qa remaining)
+- [x] Passes /ce:review and /qa (2026-06-01 — 15 bugs fixed; /qa 16/16 checks passed)
 - [x] Lailara design system applied throughout
 
 ---
