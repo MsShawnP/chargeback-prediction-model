@@ -82,7 +82,10 @@ Each entry:
 
 ## Output Formats
 
-[Decisions about deliverable formats, structure, organization]
+### 2026-05-31 — Simulator savings math uses SHAP delta proxy; raw feature values not stored in simulator.json
+- **Why:** `build_simulator_payload` enriches each risk-ledger row with per-feature SHAP values but not the original boolean feature values. The simulator interprets `shap_values[feature] > 0` as "this feature is active and contributing risk." Savings per row: `new_prob = max(0, prob − Σ positive_shap_deltas_for_active_toggles)`; `savings = delta_prob × (dollar_exposure / prob)`. This is pure JS math on the loaded JSON, no backend call.
+- **Scope:** `frontend/src/views/Simulator.tsx` and `src/pipeline/export.py` (simulator payload schema)
+- **Do not:** Store raw feature values in `simulator.json` to fix this — the SHAP proxy is intentional and avoids duplicating the feature matrix in the JSON. If exact feature values are needed for future UI (e.g., showing "this SKU has gtin14_missing = True"), add a `features` sub-dict to `build_simulator_payload`, update the TypeScript types, and revise the savings math accordingly.
 
 ---
 
