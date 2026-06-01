@@ -9,6 +9,18 @@ For things that didn't work, see FAILURES.md.
 
 ---
 
+## 2026-05-31 21:23 — U11–U16 complete: deployment + Quarto reports + CI/CD live
+
+**What changed:** React app deployed to Cloudflare Pages with 45-row sample dataset; three Quarto reports built (Prevention Roadmap, Executive Tearsheet, Methodology Appendix); GitHub Pages CI/CD workflow wired. `scripts/generate_sample_json.py` regenerates JSON when pipeline runs against Cinderhaven.
+
+**Why:** U11–U16 is the delivery layer — the model's output has to be accessible and publishable, not just runnable locally.
+
+**State:** React app live at https://chargeback-prediction-model.msshawnp.workers.dev (sample data). 148/148 tests green. `frontend/` build clean. All three `.qmd` files render (Plotly charts, Lailara CSS, data from `output/frames/` CSVs). Two arc items remain open: (1) pipeline run against Cinderhaven with `flyctl proxy` to replace sample data with real predictions; (2) `/ce:review` + `/qa` pass before marking the arc done.
+
+**Next:** Run `flyctl proxy` → `python run_pipeline.py` → redeploy frontend and re-render Quarto reports with real Cinderhaven data. Then `/ce:review` and `/qa`.
+
+---
+
 ## 2026-05-31 — U8–U10 complete: React app — Risk Ledger + Intervention Simulator live
 
 **What changed:** `frontend/` Vite + React 19 + TypeScript app scaffolded. 25 files — package.json, tsconfig (split app/node), vite.config.ts, wrangler.jsonc, eslint.config.js, src/types.ts, src/data.ts, src/main.tsx, src/App.tsx, src/App.css, src/views/RiskLedger.tsx + .css, src/views/Simulator.tsx + .css, src/components/RiskBadge.tsx, RetailerFilter.tsx, FixToggle.tsx, ImpactMeter.tsx.
