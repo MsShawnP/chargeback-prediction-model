@@ -26,18 +26,24 @@ logger = logging.getLogger(__name__)
 
 PIPELINE_ROOT = Path(__file__).resolve().parent
 STEPS_DIR = PIPELINE_ROOT / "src" / "pipeline"
+SCRIPTS_DIR = PIPELINE_ROOT / "scripts"
 CONFIG_PATH = PIPELINE_ROOT / "config.yml"
 
 # (step_name, script_path, optional)
 # optional=True → skip gracefully when script is absent instead of failing
+#
+# generate_training_data runs between feature engineering (03) and model
+# training (04).  It is optional so the pipeline still runs in environments
+# where the synthetic generator is not needed (e.g. CI smoke tests).
 STEPS: list[tuple[str, Path, bool]] = [
-    ("01_extract",   STEPS_DIR / "01_extract.py",   True),
-    ("02_harmonize", STEPS_DIR / "02_harmonize.py",  False),
-    ("03_features",  STEPS_DIR / "03_features.py",   False),
-    ("04_model",     STEPS_DIR / "04_model.py",      False),
-    ("05_score",     STEPS_DIR / "05_score.py",      False),
-    ("06_roadmap",   STEPS_DIR / "06_roadmap.py",    False),
-    ("07_export",    STEPS_DIR / "07_export.py",     False),
+    ("01_extract",            STEPS_DIR / "01_extract.py",                True),
+    ("02_harmonize",          STEPS_DIR / "02_harmonize.py",               False),
+    ("03_features",           STEPS_DIR / "03_features.py",                False),
+    ("generate_training_data", SCRIPTS_DIR / "generate_training_data.py",  False),
+    ("04_model",              STEPS_DIR / "04_model.py",                   False),
+    ("05_score",              STEPS_DIR / "05_score.py",                   False),
+    ("06_roadmap",            STEPS_DIR / "06_roadmap.py",                 False),
+    ("07_export",             STEPS_DIR / "07_export.py",                  False),
 ]
 
 

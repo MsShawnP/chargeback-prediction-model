@@ -38,8 +38,30 @@ MODEL_DIR = Path("output/model")
 
 
 def run(frames_dir: Path = FRAMES_DIR, model_dir: Path = MODEL_DIR) -> None:
-    """Train model, compute SHAP, write all output artifacts."""
-    df = pd.read_parquet(frames_dir / "training_features.parquet")
+    """Train model, compute SHAP, write all output artifacts.
+
+    Prefers training_features_synthetic.parquet when present — the synthetic
+    file has chargeback labels generated from the quality/compliance causal
+    model (see scripts/generate_training_data.py).  Falls back to the real
+    Cinderhaven training features, which have no embedded signal and will not
+    meet the AUC gate.
+    """
+    synthetic_path = frames_dir / "training_features_synthetic.parquet"
+    real_path = frames_dir / "training_features.parquet"
+
+    if synthetic_path.exists():
+        training_path = synthetic_path
+        logger.info("Using synthetic training data: %s", synthetic_path)
+    else:
+        training_path = real_path
+        logger.warning(
+            "Synthetic training data not found at %s — "
+            "falling back to real data (AUC gate will likely not be met). "
+            "Run scripts/generate_training_data.py first.",
+            synthetic_path,
+        )
+
+    df = pd.read_parquet(training_path)
 
     train_df, test_df = temporal_split(df)
     feature_cols = get_feature_columns(df)

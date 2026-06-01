@@ -28,30 +28,53 @@ def build_chargeback_labels(
 ) -> pd.DataFrame:
     """Add chargeback column (0/1) to shipments_df.
 
-    Label = 1 if any chargeback for (retailer_id, sku) falls within
-    [ship_date, ship_date + window_days].  Uses a temporary _row_id to
-    preserve the original row structure after the fan-out merge.
+    Label = 1 for the MOST RECENT shipment of the same (retailer_id, sku)
+    within window_days days BEFORE the chargeback date.  Assigning at most
+    one positive label per chargeback event avoids the many-to-many fan-out
+    that inflates the positive class and drowns the data-quality signal.
 
-    EDA finding (U1): retailer_shipments has retailer_id and sku directly —
-    no multi-hop through retailer_orders needed.
+    Expects shipments_df to already carry retailer_id, sku, and ship_date —
+    built by the multi-hop join in 03_features.py (shipments → orders → order_lines).
     """
     df = shipments_df.copy().reset_index(drop=True)
     df["_row_id"] = df.index
+    df["chargeback"] = 0
 
-    probe = df[["_row_id", "retailer_id", "sku", "ship_date"]].merge(
-        chargebacks_df[["retailer_id", "sku", "chargeback_date"]],
-        on=["retailer_id", "sku"],
-        how="left",
-    )
-    cutoff = probe["ship_date"] + pd.Timedelta(days=window_days)
-    probe["_in_window"] = (
-        probe["chargeback_date"].notna()
-        & (probe["chargeback_date"] >= probe["ship_date"])
-        & (probe["chargeback_date"] <= cutoff)
+    window = pd.Timedelta(days=window_days)
+    cb = chargebacks_df[["retailer_id", "sku", "chargeback_date"]].copy()
+
+    # Inner merge on (retailer_id, sku): produces one row per (shipment, chargeback) pair.
+    merged = df[["_row_id", "retailer_id", "sku", "ship_date"]].merge(
+        cb, on=["retailer_id", "sku"], how="inner"
     )
 
-    flags = probe.groupby("_row_id")["_in_window"].any()
-    df["chargeback"] = df["_row_id"].map(flags).fillna(False).astype(int)
+    # Keep only shipments that fall within [chargeback_date - window, chargeback_date).
+    if merged.empty:
+        return df.drop(columns=["_row_id"])
+
+    in_window = (
+        (merged["ship_date"] >= merged["chargeback_date"] - window)
+        & (merged["ship_date"] < merged["chargeback_date"])
+    )
+    merged = merged[in_window]
+
+    if not merged.empty:
+        # For each chargeback event, label only the most recent matching shipment.
+        most_recent = (
+            merged.sort_values("ship_date")
+            .groupby(["retailer_id", "sku", "chargeback_date"], sort=False)
+            .last()[["_row_id"]]
+            .reset_index()
+        )
+        df.loc[df["_row_id"].isin(most_recent["_row_id"]), "chargeback"] = 1
+
+    n_events = len(cb)
+    n_labeled = int(df["chargeback"].sum())
+    logger.info(
+        "Labeled %d shipments as chargeback (of %d events; %.1f%% match rate)",
+        n_labeled, n_events, 100 * n_labeled / n_events if n_events else 0,
+    )
+
     return df.drop(columns=["_row_id"])
 
 
@@ -145,6 +168,18 @@ def add_prior_chargeback_rate(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def add_time_features(df: pd.DataFrame) -> pd.DataFrame:
+    """Extract ship_month and ship_quarter from ship_date as integer features.
+
+    Seasonal patterns in chargeback rates (promotional periods, year-end
+    inventory pushes) are not captured by compliance or quality flags alone.
+    """
+    result = df.copy()
+    result["ship_month"] = result["ship_date"].dt.month
+    result["ship_quarter"] = result["ship_date"].dt.quarter
+    return result
+
+
 def encode_and_impute(df: pd.DataFrame) -> pd.DataFrame:
     """One-hot encode retailer_id; impute numeric NaN with column mean.
 
@@ -182,6 +217,7 @@ def build_training_features(
     df = build_chargeback_labels(shipments_df, chargebacks_df)
     df = add_product_quality_features(df, pmh_df)
     df = add_shipment_compliance_features(df)
+    df = add_time_features(df)
     df = add_prior_chargeback_rate(df)
     df = encode_and_impute(df)
 

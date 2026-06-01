@@ -15,7 +15,14 @@ logger = logging.getLogger(__name__)
 FRAMES_DIR = Path("output/frames")
 
 _EXTRACTS: list[tuple[str, str, str]] = [
-    ("chargebacks",     "SELECT * FROM raw.retailer_chargebacks",    "chargebacks.parquet"),
+    (
+        "chargebacks",
+        # Alias 'month' → 'chargeback_date' so downstream steps use a consistent name.
+        # The source table stores the charge month (first of month); we treat it as the
+        # chargeback date for the 90-day window join in build_chargeback_labels.
+        "SELECT *, month AS chargeback_date FROM raw.retailer_chargebacks",
+        "chargebacks.parquet",
+    ),
     ("deduction_codes", "SELECT * FROM raw.retailer_deduction_codes", "deduction_codes.parquet"),
 ]
 

@@ -7,6 +7,7 @@ from src.pipeline.features import (
     add_prior_chargeback_rate,
     add_product_quality_features,
     add_shipment_compliance_features,
+    add_time_features,
     build_chargeback_labels,
     build_training_features,
     encode_and_impute,
@@ -217,6 +218,52 @@ def test_compliance_preserves_existing_asn_sent_late(shipments, chargebacks):
 
 
 # ---------------------------------------------------------------------------
+# add_time_features
+# ---------------------------------------------------------------------------
+
+
+def test_add_time_features_adds_ship_month(shipments, chargebacks):
+    labeled = build_chargeback_labels(shipments, chargebacks)
+    result = add_time_features(labeled)
+    assert "ship_month" in result.columns
+
+
+def test_add_time_features_adds_ship_quarter(shipments, chargebacks):
+    labeled = build_chargeback_labels(shipments, chargebacks)
+    result = add_time_features(labeled)
+    assert "ship_quarter" in result.columns
+
+
+def test_add_time_features_month_values_in_range(shipments, chargebacks):
+    labeled = build_chargeback_labels(shipments, chargebacks)
+    result = add_time_features(labeled)
+    assert result["ship_month"].between(1, 12).all()
+
+
+def test_add_time_features_quarter_values_in_range(shipments, chargebacks):
+    labeled = build_chargeback_labels(shipments, chargebacks)
+    result = add_time_features(labeled)
+    assert result["ship_quarter"].between(1, 4).all()
+
+
+def test_add_time_features_month_matches_ship_date(shipments, chargebacks):
+    labeled = build_chargeback_labels(shipments, chargebacks)
+    result = add_time_features(labeled)
+    expected_months = result["ship_date"].dt.month
+    pd.testing.assert_series_equal(
+        result["ship_month"].reset_index(drop=True),
+        expected_months.reset_index(drop=True),
+        check_names=False,
+    )
+
+
+def test_add_time_features_row_count_unchanged(shipments, chargebacks):
+    labeled = build_chargeback_labels(shipments, chargebacks)
+    result = add_time_features(labeled)
+    assert len(result) == len(labeled)
+
+
+# ---------------------------------------------------------------------------
 # encode_and_impute
 # ---------------------------------------------------------------------------
 
@@ -279,6 +326,7 @@ def test_build_training_features_all_expected_columns_present(
         "data_quality_score",
         "asn_sent_late", "days_late", "all_labels_scannable",
         "sku_prior_chargeback_rate",
+        "ship_month", "ship_quarter",
     ]
     for col in expected:
         assert col in result.columns, f"Missing expected column: {col}"

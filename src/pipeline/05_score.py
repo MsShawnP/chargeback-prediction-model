@@ -35,8 +35,23 @@ MODEL_DIR = Path("output/model")
 
 
 def _load_historical_rates(frames_dir: Path) -> pd.DataFrame:
-    """Derive per-(sku, retailer_id) chargeback rates from the training feature frame."""
+    """Derive per-(sku, retailer_id) chargeback rates from the training feature frame.
+
+    encode_and_impute removes retailer_id and replaces it with one-hot dummy
+    columns (retailer_<RET_NAME>).  This function reconstructs retailer_id from
+    whichever dummy is True before grouping.
+    """
     training = pd.read_parquet(frames_dir / "training_features.parquet")
+
+    retailer_cols = [c for c in training.columns if c.startswith("retailer_")]
+    if retailer_cols and "retailer_id" not in training.columns:
+        def _decode(row: pd.Series) -> str:
+            for col in retailer_cols:
+                if row[col]:
+                    return col[len("retailer_"):].replace("_", "-", 1)
+            return "UNKNOWN"
+        training["retailer_id"] = training[retailer_cols].apply(_decode, axis=1)
+
     rates = (
         training.groupby(["sku", "retailer_id"])["sku_prior_chargeback_rate"]
         .mean()
@@ -57,18 +72,25 @@ def run(frames_dir: Path = FRAMES_DIR, model_dir: Path = MODEL_DIR) -> None:
             o.order_id,
             o.retailer_id,
             ol.sku,
-            o.order_date,
-            SUM(ol.quantity * ol.unit_price) AS order_value
+            o.po_date          AS order_date,
+            ol.line_total      AS order_value
         FROM raw.retailer_orders o
         JOIN raw.retailer_order_lines ol USING (order_id)
         WHERE o.order_id NOT IN (
             SELECT DISTINCT order_id FROM raw.retailer_shipments
         )
-        GROUP BY o.order_id, o.retailer_id, ol.sku, o.order_date
     """)
 
+    frames_dir.mkdir(parents=True, exist_ok=True)
+
     if pos_df.empty:
-        logger.warning("No upcoming POs found — scored_pos.parquet will be empty")
+        logger.warning(
+            "No upcoming POs found — all orders are already shipped. "
+            "Writing empty scored_pos.parquet and scored_pos_shap.parquet."
+        )
+        pd.DataFrame().to_parquet(frames_dir / "scored_pos.parquet", index=False)
+        pd.DataFrame().to_parquet(frames_dir / "scored_pos_shap.parquet", index=False)
+        return
 
     product_master_df = query_to_df("SELECT * FROM raw.product_master")
 
@@ -87,7 +109,6 @@ def run(frames_dir: Path = FRAMES_DIR, model_dir: Path = MODEL_DIR) -> None:
     X_pos = build_feature_matrix(_enriched, model)
     shap_pos = compute_shap_values(model, X_pos)
 
-    frames_dir.mkdir(parents=True, exist_ok=True)
     scored.to_parquet(frames_dir / "scored_pos.parquet", index=False)
     shap_pos.to_parquet(frames_dir / "scored_pos_shap.parquet", index=False)
     logger.info(

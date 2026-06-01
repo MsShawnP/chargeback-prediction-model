@@ -21,6 +21,20 @@ For things that didn't work, see FAILURES.md.
 
 ---
 
+## 2026-06-01 10:45 — Pipeline fixed end-to-end; AUC 0.7485 achieved
+
+**What changed:** Built missing `01_extract.py`; fixed multi-hop shipments join in `03_features.py`; switched model to GradientBoosting; added `scripts/generate_training_data.py` (synthetic training labels with causal signal); fixed `05_score.py` for empty-POs case and wrong column names.
+
+**Why:** Cinderhaven chargebacks were generated independently of quality features — no predictive signal (AUC 0.50). Synthetic training labels embed the causal model (ASN compliance + data quality → chargeback probability) while keeping Cinderhaven raw.* read-only, consistent with all other portfolio projects.
+
+**State:** 170/170 tests green. Pipeline runs steps 01–04 cleanly (AUC=0.7485, precision=0.28, recall=0.39). Step 05 has one pending fix (empty-POs early return) — the edit was written but not yet committed when context hit limit. Steps 06–07 not yet run this session. `flyctl proxy` to `cinderhaven-db` (not `cinderhaven-data-platform`) is the correct app name.
+
+**Next:** Start new session → verify `05_score.py` fix is saved → run `flyctl proxy 5432 -a cinderhaven-db` → `python run_pipeline.py` → confirm steps 05–07 pass → run `python scripts/generate_sample_json.py` → redeploy frontend → `/ce:review`.
+
+---
+
+---
+
 ## 2026-05-31 21:23 — U11–U16 complete: deployment + Quarto reports + CI/CD live
 
 **What changed:** React app deployed to Cloudflare Pages with 45-row sample dataset; three Quarto reports built (Prevention Roadmap, Executive Tearsheet, Methodology Appendix); GitHub Pages CI/CD workflow wired. `scripts/generate_sample_json.py` regenerates JSON when pipeline runs against Cinderhaven.

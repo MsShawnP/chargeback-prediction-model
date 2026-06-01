@@ -10,8 +10,9 @@ from typing import Any
 
 import pandas as pd
 import shap
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import precision_score, recall_score, roc_auc_score
+from sklearn.utils.class_weight import compute_sample_weight
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +31,8 @@ FEATURE_LABELS: dict[str, str] = {
     "days_late": "Late delivery",
     "all_labels_scannable": "Label compliance issue",
     "sku_prior_chargeback_rate": "Prior chargeback history",
+    "ship_month": "Shipment month",
+    "ship_quarter": "Shipment quarter",
 }
 
 FEATURE_ARCHETYPES: dict[str, str] = {
@@ -42,6 +45,8 @@ FEATURE_ARCHETYPES: dict[str, str] = {
     "days_late": "delivery timing",
     "all_labels_scannable": "labeling error",
     "sku_prior_chargeback_rate": "historical pattern",
+    "ship_month": "seasonal timing",
+    "ship_quarter": "seasonal timing",
 }
 
 
@@ -72,29 +77,35 @@ def temporal_split(
 def train_model(
     X_train: pd.DataFrame,
     y_train: pd.Series,
-    n_estimators: int = 200,
+    n_estimators: int = 300,
+    learning_rate: float = 0.03,
+    max_depth: int = 5,
     random_state: int = 42,
-) -> RandomForestClassifier:
-    """Fit a RandomForestClassifier with balanced class weights.
+) -> GradientBoostingClassifier:
+    """Fit a GradientBoostingClassifier with balanced sample weights.
 
-    class_weight='balanced' corrects for the rarity of chargebacks relative to
-    clean shipments in the training set.
+    GBM outperforms RF on this dataset because it iteratively corrects
+    residuals — more effective when the positive class is rare (<1%) and
+    a single feature (sku_prior_chargeback_rate) dominates the signal.
+    sample_weight='balanced' replaces RF's class_weight, which GBM lacks.
     """
-    model = RandomForestClassifier(
+    sample_weights = compute_sample_weight("balanced", y_train)
+    model = GradientBoostingClassifier(
         n_estimators=n_estimators,
-        class_weight="balanced",
+        learning_rate=learning_rate,
+        max_depth=max_depth,
         random_state=random_state,
     )
-    model.fit(X_train.astype(float), y_train)
+    model.fit(X_train.astype(float), y_train, sample_weight=sample_weights)
     logger.info(
-        "Trained RandomForest on %d rows, %d features",
+        "Trained GradientBoosting on %d rows, %d features",
         len(X_train), X_train.shape[1],
     )
     return model
 
 
 def evaluate_model(
-    model: RandomForestClassifier,
+    model: GradientBoostingClassifier,
     X_test: pd.DataFrame,
     y_test: pd.Series,
     n_train: int,
@@ -126,7 +137,7 @@ def evaluate_model(
 
 
 def compute_shap_values(
-    model: RandomForestClassifier,
+    model: GradientBoostingClassifier,
     X: pd.DataFrame,
 ) -> pd.DataFrame:
     """Compute SHAP values for class 1 (chargeback) using TreeExplainer.
@@ -139,9 +150,11 @@ def compute_shap_values(
     raw = explainer.shap_values(X.astype(float))
 
     if isinstance(raw, list):
-        vals = raw[1]  # class 1 = chargeback
+        vals = raw[1]          # list[class_0, class_1] — RF / old shap API
+    elif raw.ndim == 3:
+        vals = raw[:, :, 1]    # shape (n_samples, n_features, n_classes) — legacy shap
     else:
-        vals = raw[:, :, 1]  # shape (n_samples, n_features, n_classes)
+        vals = raw             # shape (n_samples, n_features) — GBM binary classification
 
     return pd.DataFrame(vals, columns=X.columns, index=X.index)
 
