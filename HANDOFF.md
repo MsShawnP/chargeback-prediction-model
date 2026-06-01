@@ -9,6 +9,18 @@ For things that didn't work, see FAILURES.md.
 
 ---
 
+## 2026-06-01 13:00 — SESSION WRAP: short session, /qa interrupted
+
+**Started from:** /ce:review complete, 15 bugs fixed, 170/170 tests green.
+
+**Did:** Ran /next (confirmed /qa is next). Started /qa, interrupted it to end session. No code changes.
+
+**State:** Identical to previous wrap. 3 commits unpushed. DB password in .env needs manual rotation.
+
+**Next:** `git push` to back up 3 unpushed commits. Then `/qa` against https://chargeback-prediction-model.msshawnp.workers.dev to close the arc.
+
+---
+
 ## 2026-06-01 12:46 — SESSION WRAP: /ce:review complete; 15 bugs fixed
 
 **Started from:** Pipeline verified end-to-end (AUC=0.7485), real data live. Only arc items remaining: /ce:review and /qa.
