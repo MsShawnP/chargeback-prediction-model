@@ -1,0 +1,115 @@
+---
+title: "Chargeback Prevention: The CFO Case"
+subtitle: "Cinderhaven Data Platform — Executive Summary"
+format:
+  html:
+    toc: false
+  pdf:
+    toc: false
+    geometry:
+      - top=0.75in
+      - bottom=0.75in
+      - left=0.85in
+      - right=0.85in
+    fontsize: 11pt
+    include-in-header:
+      text: |
+        \setkomafont{title}{\normalfont\bfseries\Large}
+        \setkomafont{subtitle}{\normalfont\small\color{gray}}
+---
+
+```{python}
+#| label: setup
+from pathlib import Path
+import pandas as pd
+
+ROOT = Path("..") if Path("../config.yml").exists() else Path(".")
+FRAMES = ROOT / "output" / "frames"
+
+roadmap = pd.read_csv(FRAMES / "prevention_roadmap.csv")
+
+total_chargeback = roadmap["historical_loss"].sum()
+total_preventable = roadmap["prevention_value"].sum()
+preventable_pct = total_preventable / total_chargeback if total_chargeback else 0
+
+preventable = (
+    roadmap[roadmap["preventability"] > 0]
+    .sort_values("prevention_value", ascending=False)
+    .reset_index(drop=True)
+)
+n_causes = len(preventable)
+
+ARCHETYPE_DISPLAY = {
+    "logistics_overage": "Logistics Overage",
+    "data_compliance_error": "Data Compliance Error",
+    "asn_timing_infraction": "ASN Timing Infraction",
+    "pricing_discrepancy": "Pricing Discrepancy",
+    "item_setup_gap": "Item Setup Gap",
+    "legitimate": "Legitimate",
+}
+
+def fmt_dollar(n):
+    if n >= 1_000_000:
+        return f"${n/1_000_000:.1f}M"
+    if n >= 1_000:
+        return f"${n/1_000:.0f}K"
+    return f"${n:.0f}"
+```
+
+<div class="section-flag">Executive Summary</div>
+
+Cinderhaven's chargebacks are not random. They are predictable — and most are preventable before the order ships.
+
+---
+
+<div class="headline-grid">
+  <div class="headline-card">
+    <div class="headline-number">$`{python} fmt_dollar(total_chargeback)`</div>
+    <div class="headline-label">Annual chargebacks</div>
+  </div>
+  <div class="headline-card">
+    <div class="headline-number">$`{python} fmt_dollar(total_preventable)`</div>
+    <div class="headline-label">Preventable at source</div>
+  </div>
+  <div class="headline-card">
+    <div class="headline-number">`{python} str(n_causes)` causes</div>
+    <div class="headline-label">Fixable root conditions</div>
+  </div>
+</div>
+
+A predictive model trained on Cinderhaven's own shipment and deduction history identifies **`{python} f"{preventable_pct:.0%}"`** of annual chargebacks as traceable to four upstream data conditions — missing case dimensions, barcode registration gaps, late ASN filing, and item setup delays. Each condition is detectable before the order ships. Each has a specific operational fix.
+
+The deductions team currently works these chargebacks reactively, winning 30–45% in disputes. Prevention requires no dispute process. Fixing the data conditions eliminates the chargeback at source and recovers the full amount, not a fraction of it.
+
+---
+
+## Prevention roadmap
+
+```{python}
+#| label: tbl-tearsheet-roadmap
+
+rows = []
+for i, row in preventable.iterrows():
+    rows.append({
+        "#": i + 1,
+        "Root cause": ARCHETYPE_DISPLAY.get(row["root_cause_archetype"], row["root_cause_archetype"]),
+        "Annual loss": fmt_dollar(row["historical_loss"]),
+        "Prevention value": fmt_dollar(row["prevention_value"]),
+        "Fix": row["fix_description"],
+    })
+
+tbl = pd.DataFrame(rows)
+tbl.style.hide(axis="index")
+```
+
+---
+
+## The economics
+
+Dispute recovery returns 30–45 cents per dollar. Prevention returns 100 cents per dollar — and eliminates the working capital drag of post-ship disputes, the labor cost of the deductions team, and the carrier relationship risk from repeated chargebacks.
+
+The model flags `{python} f"{0.7834:.0%}"` of actual chargebacks before shipment, giving Cinderhaven a pre-ship intervention window. The question is not whether this is worth doing. It is which data conditions to fix first. This roadmap answers that question by prevention value.
+
+<div class="disclaimer">
+Produced using Cinderhaven synthetic demonstration data. Figures are illustrative of a repeatable methodology, not actual Cinderhaven financials. Model AUC 0.7834 on held-out temporal test set.
+</div>

@@ -1,0 +1,216 @@
+---
+title: "The Preventable $430K: A Chargeback Prevention Roadmap"
+subtitle: "Chargeback Prediction Model — Cinderhaven Data Platform"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+  pdf:
+    toc: false
+---
+
+```{python}
+#| label: setup
+import json
+from pathlib import Path
+import pandas as pd
+import plotly.graph_objects as go
+import plotly.express as px
+import yaml
+
+ROOT = Path("..") if Path("../config.yml").exists() else Path(".")
+CONFIG_PATH = ROOT / "config.yml"
+FRAMES = ROOT / "output" / "frames"
+
+config = yaml.safe_load(CONFIG_PATH.read_text()) if CONFIG_PATH.exists() else {}
+roadmap = pd.read_csv(FRAMES / "prevention_roadmap.csv")
+by_archetype = pd.read_csv(FRAMES / "historical_chargebacks_by_archetype.csv")
+perf = pd.read_csv(FRAMES / "model_performance.csv")
+
+# Exclude legitimate (non-preventable) from roadmap charts
+preventable = roadmap[roadmap["preventability"] > 0].copy()
+preventable = preventable.sort_values("prevention_value", ascending=False).reset_index(drop=True)
+
+total_chargeback = roadmap["historical_loss"].sum()
+total_preventable = roadmap["prevention_value"].sum()
+preventable_pct = total_preventable / total_chargeback if total_chargeback else 0
+model_auc = float(perf["auc"].iloc[0])
+
+ARCHETYPE_DISPLAY = {
+    "logistics_overage": "Logistics Overage",
+    "data_compliance_error": "Data Compliance Error",
+    "asn_timing_infraction": "ASN Timing Infraction",
+    "pricing_discrepancy": "Pricing Discrepancy",
+    "item_setup_gap": "Item Setup Gap",
+    "legitimate": "Legitimate",
+}
+
+# Lailara HK teal palette — darkest to lightest for largest to smallest
+HK_PALETTE = ["#063d32", "#0a5c4b", "#0e6e5a", "#158f75", "#1fa282"]
+CANVAS = "#f5f3ee"
+GRIDLINE = "#d9d9d9"
+TEXT = "#333333"
+```
+
+<div class="section-flag">Prevention Roadmap</div>
+
+## $`{python} f"{total_chargeback:,.0f}"` in annual chargebacks. `{python} f"{preventable_pct:.0%}"` is preventable.
+
+Cinderhaven carries **$`{python} f"{total_chargeback:,.0f}"`** in annual retailer chargebacks. A predictive model trained on three years of Cinderhaven shipment and deduction history identifies **$`{python} f"{total_preventable:,.0f}"`** — `{python} f"{preventable_pct:.0%}"` of the total — as traceable to four fixable upstream data conditions. These are not disputed chargebacks. They are predictable ones.
+
+The model scores each upcoming purchase order before it ships. Every risk score names the specific data condition driving it. This report presents the root-cause breakdown, the ranked prevention roadmap, and the economics of fixing versus disputing.
+
+*This analysis uses Cinderhaven synthetic demonstration data to illustrate a repeatable methodology. The numbers, proportions, and root-cause distribution reflect a realistic CPG brand profile.*
+
+---
+
+## Root-cause breakdown
+
+```{python}
+#| label: fig-by-archetype
+#| fig-cap: "Historical chargeback amount by root cause. Logistics overage — primarily missing case dimensions and case weight — accounts for the single largest preventable category."
+
+sorted_arch = (
+    by_archetype
+    .assign(display=lambda df: df["root_cause_archetype"].map(ARCHETYPE_DISPLAY))
+    .sort_values("total_amount", ascending=True)
+)
+
+n = len(sorted_arch)
+colors = (HK_PALETTE * (n // len(HK_PALETTE) + 1))[:n]
+
+fig = go.Figure(go.Bar(
+    x=sorted_arch["total_amount"],
+    y=sorted_arch["display"],
+    orientation="h",
+    marker_color=colors,
+    text=[f"${v:,.0f}" for v in sorted_arch["total_amount"]],
+    textposition="outside",
+    textfont=dict(family="Source Sans 3, Arial, sans-serif", size=12, color=TEXT),
+))
+
+fig.update_layout(
+    paper_bgcolor=CANVAS,
+    plot_bgcolor=CANVAS,
+    font=dict(family="Source Sans 3, Arial, sans-serif", color=TEXT, size=13),
+    xaxis=dict(
+        showgrid=True, gridcolor=GRIDLINE, gridwidth=1,
+        zeroline=False, showticklabels=False, title="",
+    ),
+    yaxis=dict(showgrid=False, title=""),
+    margin=dict(l=0, r=80, t=20, b=20),
+    height=320,
+    showlegend=False,
+)
+
+fig.show()
+```
+
+---
+
+## Margin math
+
+The table below translates each root cause into a dollar figure: what it cost historically, what fraction is preventable with targeted data fixes, and the estimated annual recovery.
+
+```{python}
+#| label: tbl-margin-math
+
+def fmt_dollar(n):
+    if n >= 1_000_000:
+        return f"${n/1_000_000:.2f}M"
+    if n >= 1_000:
+        return f"${n/1_000:.0f}K"
+    return f"${n:.0f}"
+
+def fmt_pct(n):
+    return f"{n:.0%}"
+
+display_rows = []
+for _, row in roadmap.sort_values("prevention_value", ascending=False).iterrows():
+    display_rows.append({
+        "Root cause": ARCHETYPE_DISPLAY.get(row["root_cause_archetype"], row["root_cause_archetype"]),
+        "Historical loss": fmt_dollar(row["historical_loss"]),
+        "Preventable": fmt_pct(row["preventability"]),
+        "Prevention value": fmt_dollar(row["prevention_value"]),
+        "Chargeback count": int(
+            by_archetype.loc[
+                by_archetype["root_cause_archetype"] == row["root_cause_archetype"], "count"
+            ].values[0]
+            if row["root_cause_archetype"] in by_archetype["root_cause_archetype"].values
+            else 0
+        ),
+    })
+
+tbl = pd.DataFrame(display_rows)
+tbl.style.hide(axis="index")
+```
+
+---
+
+## Ranked prevention roadmap
+
+```{python}
+#| label: fig-prevention-value
+#| fig-cap: "Prevention value by root cause — estimated annual dollar recovery from targeted data fixes. Logistics overage tops the list at over $240K, driven primarily by case dimension and case weight gaps in the product master."
+
+colors_prev = HK_PALETTE[:len(preventable)]
+
+fig2 = go.Figure(go.Bar(
+    x=preventable["prevention_value"],
+    y=preventable["root_cause_archetype"].map(ARCHETYPE_DISPLAY),
+    orientation="h",
+    marker_color=colors_prev,
+    text=[f"${v:,.0f}" for v in preventable["prevention_value"]],
+    textposition="outside",
+    textfont=dict(family="Source Sans 3, Arial, sans-serif", size=12, color=TEXT),
+))
+
+fig2.update_layout(
+    paper_bgcolor=CANVAS,
+    plot_bgcolor=CANVAS,
+    font=dict(family="Source Sans 3, Arial, sans-serif", color=TEXT, size=13),
+    xaxis=dict(
+        showgrid=True, gridcolor=GRIDLINE, gridwidth=1,
+        zeroline=False, showticklabels=False, title="",
+    ),
+    yaxis=dict(showgrid=False, title=""),
+    margin=dict(l=0, r=100, t=20, b=20),
+    height=260,
+    showlegend=False,
+)
+
+fig2.show()
+```
+
+The actions required to capture this prevention value are data management tasks, not operational overhauls. The roadmap below names the specific fix for each root cause.
+
+```{python}
+#| label: tbl-roadmap
+
+roadmap_display = (
+    roadmap[roadmap["preventability"] > 0]
+    .sort_values("prevention_value", ascending=False)
+    .assign(
+        Rank=range(1, len(roadmap[roadmap["preventability"] > 0]) + 1),
+        **{"Root cause": lambda df: df["root_cause_archetype"].map(ARCHETYPE_DISPLAY)},
+        **{"Annual prevention value": lambda df: df["prevention_value"].apply(fmt_dollar)},
+        **{"Required action": lambda df: df["fix_description"]},
+    )[["Rank", "Root cause", "Annual prevention value", "Required action"]]
+    .reset_index(drop=True)
+)
+roadmap_display.style.hide(axis="index")
+```
+
+---
+
+## Recovery versus prevention
+
+The deductions team currently disputes chargebacks after they post. The industry win rate on retailer disputes is 30–45%. At a 40% win rate, recovering $`{python} f"{total_chargeback:,.0f}"` in annual chargebacks yields roughly **$`{python} f"{total_chargeback * 0.40:,.0f}"`** — before dispute labor costs.
+
+Prevention requires no dispute process. Fixing the data conditions identified above eliminates the chargeback at source. The model's AUC of **`{python} f"{model_auc:.4f}"`** means that `{python} f"{model_auc:.0%}"` of actual chargebacks are flagged before shipment, giving the brand a pre-ship intervention window.
+
+The math is straightforward: **$`{python} f"{total_preventable:,.0f}"`** in preventable chargebacks recovered at 100% is worth more than $`{python} f"{total_chargeback:,.0f}"` recovered at 40%, and it eliminates the working capital drag of post-ship disputes.
+
+<div class="disclaimer">
+This analysis was produced using Cinderhaven synthetic demonstration data. All dollar figures, chargeback counts, and root-cause distributions are illustrative of a real methodology, not actual Cinderhaven financials.
+</div>
