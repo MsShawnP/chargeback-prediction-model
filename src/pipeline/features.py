@@ -202,9 +202,10 @@ def encode_and_impute(df: pd.DataFrame) -> pd.DataFrame:
 
     check_cols = df.select_dtypes(include=["number", "bool"]).columns
     n_remaining = int(df[check_cols].isna().sum().sum())
-    assert n_remaining == 0, (
-        f"{n_remaining} NaN values remain in feature columns after imputation"
-    )
+    if n_remaining != 0:
+        raise ValueError(
+            f"{n_remaining} NaN values remain in feature columns after imputation"
+        )
     return df
 
 

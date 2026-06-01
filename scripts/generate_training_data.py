@@ -151,7 +151,7 @@ def reconstruct_retailer_id(df: pd.DataFrame) -> pd.Series:
     result = pd.Series("UNKNOWN", index=df.index)
     for col in retailer_cols:
         retailer_name = col[len(_RETAILER_PREFIX):]  # e.g. "RET_WALMART"
-        retailer_id = retailer_name.replace("_", "-", 1)  # e.g. "RET-WALMART"
+        retailer_id = retailer_name.replace("_", "-")  # e.g. "RET-WALMART"
         result = result.where(df[col].astype(bool) != True, retailer_id)
     return result
 

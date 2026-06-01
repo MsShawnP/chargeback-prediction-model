@@ -39,7 +39,7 @@ STEPS: list[tuple[str, Path, bool]] = [
     ("01_extract",            STEPS_DIR / "01_extract.py",                True),
     ("02_harmonize",          STEPS_DIR / "02_harmonize.py",               False),
     ("03_features",           STEPS_DIR / "03_features.py",                False),
-    ("generate_training_data", SCRIPTS_DIR / "generate_training_data.py",  False),
+    ("generate_training_data", SCRIPTS_DIR / "generate_training_data.py",  True),
     ("04_model",              STEPS_DIR / "04_model.py",                   False),
     ("05_score",              STEPS_DIR / "05_score.py",                   False),
     ("06_roadmap",            STEPS_DIR / "06_roadmap.py",                 False),
@@ -53,9 +53,10 @@ def _load_step(script_path: Path):
     importlib.util.spec_from_file_location handles numeric-prefixed filenames
     that Python's import machinery would otherwise reject.
     """
-    spec = importlib.util.spec_from_file_location("_pipeline_step", script_path)
+    module_name = f"_pipeline_{script_path.stem}"
+    spec = importlib.util.spec_from_file_location(module_name, script_path)
     module = importlib.util.module_from_spec(spec)
-    sys.modules["_pipeline_step"] = module
+    sys.modules[module_name] = module
     spec.loader.exec_module(module)
     return module
 

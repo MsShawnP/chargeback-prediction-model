@@ -249,25 +249,25 @@ def test_dollar_exposure_equals_order_value_times_probability():
 def test_risk_tier_high_for_high_probability():
     df = pd.DataFrame({"chargeback_probability": [RISK_TIER_HIGH]})
     result = assign_risk_tier(df)
-    assert result.iloc[0]["risk_tier"] == "high"
+    assert result.iloc[0]["risk_tier"] == "HIGH"
 
 
 def test_risk_tier_medium_for_medium_probability():
     df = pd.DataFrame({"chargeback_probability": [RISK_TIER_MEDIUM]})
     result = assign_risk_tier(df)
-    assert result.iloc[0]["risk_tier"] == "medium"
+    assert result.iloc[0]["risk_tier"] == "MEDIUM"
 
 
 def test_risk_tier_low_for_low_probability():
     df = pd.DataFrame({"chargeback_probability": [0.10]})
     result = assign_risk_tier(df)
-    assert result.iloc[0]["risk_tier"] == "low"
+    assert result.iloc[0]["risk_tier"] == "LOW"
 
 
 def test_risk_tier_covers_all_three_values():
     df = pd.DataFrame({"chargeback_probability": [0.0, 0.30, 0.70]})
     result = assign_risk_tier(df)
-    assert set(result["risk_tier"]) == {"low", "medium", "high"}
+    assert set(result["risk_tier"]) == {"LOW", "MEDIUM", "HIGH"}
 
 
 # ---------------------------------------------------------------------------
@@ -372,4 +372,4 @@ def test_score_pos_risk_tier_column_present(
         sample_pos, sample_product_master, sample_historical_rates, tiny_model
     )
     assert "risk_tier" in result.columns
-    assert set(result["risk_tier"]).issubset({"high", "medium", "low"})
+    assert set(result["risk_tier"]).issubset({"HIGH", "MEDIUM", "LOW"})

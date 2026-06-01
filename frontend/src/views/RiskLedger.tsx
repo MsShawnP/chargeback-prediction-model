@@ -58,7 +58,7 @@ export default function RiskLedger({ entries }: Props) {
   }, [filtered]);
 
   const pinnedEntry = pinnedKey
-    ? (filtered.find((e) => rowKey(e) === pinnedKey) ?? null)
+    ? (entries.find((e) => rowKey(e) === pinnedKey) ?? null)
     : null;
 
   function togglePin(e: RiskEntry) {
@@ -173,6 +173,9 @@ export default function RiskLedger({ entries }: Props) {
                   key={key}
                   className={`ledger-row${pinnedKey === key ? " pinned" : ""}`}
                   onClick={() => togglePin(e)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(ev) => { if (ev.key === "Enter" || ev.key === " ") togglePin(e); }}
                 >
                   <td>{e.sku}</td>
                   <td>{e.retailer}</td>

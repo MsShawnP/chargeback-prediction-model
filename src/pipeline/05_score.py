@@ -41,14 +41,16 @@ def _load_historical_rates(frames_dir: Path) -> pd.DataFrame:
     columns (retailer_<RET_NAME>).  This function reconstructs retailer_id from
     whichever dummy is True before grouping.
     """
-    training = pd.read_parquet(frames_dir / "training_features.parquet")
+    synthetic_path = frames_dir / "training_features_synthetic.parquet"
+    training_path = synthetic_path if synthetic_path.exists() else frames_dir / "training_features.parquet"
+    training = pd.read_parquet(training_path)
 
     retailer_cols = [c for c in training.columns if c.startswith("retailer_")]
     if retailer_cols and "retailer_id" not in training.columns:
         def _decode(row: pd.Series) -> str:
             for col in retailer_cols:
                 if row[col]:
-                    return col[len("retailer_"):].replace("_", "-", 1)
+                    return col[len("retailer_"):].replace("_", "-")
             return "UNKNOWN"
         training["retailer_id"] = training[retailer_cols].apply(_decode, axis=1)
 
@@ -108,6 +110,12 @@ def run(frames_dir: Path = FRAMES_DIR, model_dir: Path = MODEL_DIR) -> None:
     _enriched = attach_prior_chargeback_rate(_enriched, historical_rates, default_rate=default_rate)
     X_pos = build_feature_matrix(_enriched, model)
     shap_pos = compute_shap_values(model, X_pos)
+
+    # Align shap_pos rows to match scored's dollar_exposure sort order.
+    # score_pos() sorts its result by dollar_exposure; X_pos is in pos_df order.
+    pos_order = {oid: i for i, oid in enumerate(pos_df["order_id"])}
+    scored_indices = [pos_order[oid] for oid in scored["order_id"]]
+    shap_pos = shap_pos.iloc[scored_indices].reset_index(drop=True)
 
     scored.to_parquet(frames_dir / "scored_pos.parquet", index=False)
     shap_pos.to_parquet(frames_dir / "scored_pos_shap.parquet", index=False)

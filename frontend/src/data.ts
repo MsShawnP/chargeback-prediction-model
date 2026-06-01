@@ -31,6 +31,9 @@ export async function loadSummary(): Promise<Summary> {
   if (res.status === 404) return DEFAULT_SUMMARY;
   if (!res.ok) throw new Error(`Failed to load summary.json: ${res.status}`);
   const data: unknown = await res.json();
+  if (typeof data !== "object" || data === null) return DEFAULT_SUMMARY;
+  const s = data as Record<string, unknown>;
+  if (typeof s.model_auc !== "number") return DEFAULT_SUMMARY;
   return data as Summary;
 }
 

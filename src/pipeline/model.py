@@ -118,7 +118,11 @@ def evaluate_model(
     proba = model.predict_proba(X_test.astype(float))[:, 1]
     pred = (proba >= 0.5).astype(int)
 
-    auc = float(roc_auc_score(y_test, proba))
+    if len(set(y_test)) < 2:
+        logger.warning("Test set has only one class — AUC not computed, returning 0.0")
+        auc = 0.0
+    else:
+        auc = float(roc_auc_score(y_test, proba))
     precision = float(precision_score(y_test, pred, zero_division=0))
     recall = float(recall_score(y_test, pred, zero_division=0))
 

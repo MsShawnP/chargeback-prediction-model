@@ -140,7 +140,7 @@ def check_chargeback_shipment_join() -> dict:
         result["order_id_rate"] = round(rate, 3)
         print(f"  order_id join:        {matched:,}/{total:,} = {rate:.1%}")
         if rate >= 0.5:
-            print("  OK Match rate ≥ 50% -- U4 can use order_id join")
+            print("  OK Match rate >= 50% -- U4 can use order_id join")
         else:
             print("  !!  Match rate < 50% -- evaluate date-window fallback")
     except Exception as exc:
@@ -163,7 +163,7 @@ def check_chargeback_shipment_join() -> dict:
         result["window_rate"] = round(rate_w, 3)
         print(f"  date-window join:     {matched_w:,}/{total:,} = {rate_w:.1%}")
         if rate_w >= 0.5:
-            print("  OK Window join ≥ 50% -- viable fallback if order_id join is weak")
+            print("  OK Window join >= 50% -- viable fallback if order_id join is weak")
     except Exception as exc:
         print(f"  Date-window join failed: {exc}")
         result["window_error"] = str(exc)

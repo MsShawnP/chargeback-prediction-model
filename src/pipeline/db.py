@@ -2,7 +2,7 @@
 Database connection helpers for the Cinderhaven pipeline.
 
 Requires DATABASE_URL in the environment (set it in .env or export before running).
-Run `flyctl proxy 5432 -a cinderhaven-data-platform` to expose the Fly.io Postgres.
+Run `flyctl proxy 5432 -a cinderhaven-db` to expose the Fly.io Postgres.
 """
 
 import contextlib
@@ -33,7 +33,7 @@ def _get_url() -> str:
 @contextlib.contextmanager
 def connection():
     """Yield a psycopg2 connection; close it on exit regardless of exceptions."""
-    conn = psycopg2.connect(_get_url())
+    conn = psycopg2.connect(_get_url(), connect_timeout=10)
     try:
         yield conn
     finally:

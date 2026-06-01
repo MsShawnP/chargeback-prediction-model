@@ -13,6 +13,7 @@ export default function FixToggle({ featureKey, label, affectedCount, active, on
       onClick={() => onToggle(featureKey)}
       role="switch"
       aria-checked={active}
+      aria-label={label}
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onToggle(featureKey); }}
     >

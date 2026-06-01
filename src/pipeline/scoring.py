@@ -141,11 +141,11 @@ def compute_dollar_exposure(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def assign_risk_tier(df: pd.DataFrame) -> pd.DataFrame:
-    """Classify each row as 'high', 'medium', or 'low' by chargeback_probability."""
+    """Classify each row as 'HIGH', 'MEDIUM', or 'LOW' by chargeback_probability."""
     result = df.copy()
-    result["risk_tier"] = "low"
-    result.loc[result["chargeback_probability"] >= RISK_TIER_MEDIUM, "risk_tier"] = "medium"
-    result.loc[result["chargeback_probability"] >= RISK_TIER_HIGH, "risk_tier"] = "high"
+    result["risk_tier"] = "LOW"
+    result.loc[result["chargeback_probability"] >= RISK_TIER_MEDIUM, "risk_tier"] = "MEDIUM"
+    result.loc[result["chargeback_probability"] >= RISK_TIER_HIGH, "risk_tier"] = "HIGH"
     return result
 
 
@@ -188,8 +188,11 @@ def score_pos(
         shap_df = compute_shap_values(model, X)
         proba_series = pd.Series(proba, index=X.index)
         result["attribution"] = build_attribution_strings(proba_series, shap_df).values
+    except ImportError:
+        logger.debug("SHAP library not available; attribution strings skipped")
+        result["attribution"] = ""
     except Exception as exc:
-        logger.warning("Attribution strings skipped: %s", exc)
+        logger.error("SHAP attribution failed: %s", exc, exc_info=True)
         result["attribution"] = ""
 
     return result.sort_values("dollar_exposure", ascending=False).reset_index(drop=True)
