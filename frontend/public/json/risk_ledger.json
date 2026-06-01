@@ -1,0 +1,407 @@
+[
+  {
+    "sku": "CHP-RF-003",
+    "retailer": "ACM",
+    "ship_date": "2027-01-31",
+    "probability": 0.8056,
+    "dollar_exposure": 7721.68,
+    "attribution_string": "Missing GTIN-14 barcode \u2192 data compliance \u2192 81% probability within 14 days",
+    "risk_tier": "HIGH"
+  },
+  {
+    "sku": "CHP-RF-005",
+    "retailer": "ALB",
+    "ship_date": "2027-02-22",
+    "probability": 0.7491,
+    "dollar_exposure": 7389.12,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 75% probability within 14 days",
+    "risk_tier": "HIGH"
+  },
+  {
+    "sku": "CHP-RF-003",
+    "retailer": "ALB",
+    "ship_date": "2027-02-10",
+    "probability": 0.6201,
+    "dollar_exposure": 7337.02,
+    "attribution_string": "Missing GTIN-14 barcode \u2192 data compliance \u2192 62% probability within 14 days",
+    "risk_tier": "HIGH"
+  },
+  {
+    "sku": "CHP-RF-010",
+    "retailer": "WMT",
+    "ship_date": "2027-03-02",
+    "probability": 0.7214,
+    "dollar_exposure": 6493.32,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 72% probability within 14 days",
+    "risk_tier": "HIGH"
+  },
+  {
+    "sku": "CHP-RF-001",
+    "retailer": "ALB",
+    "ship_date": "2027-02-01",
+    "probability": 0.6352,
+    "dollar_exposure": 6410.44,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 64% probability within 14 days",
+    "risk_tier": "HIGH"
+  },
+  {
+    "sku": "CHP-AS-005",
+    "retailer": "ACM",
+    "ship_date": "2027-03-05",
+    "probability": 0.5489,
+    "dollar_exposure": 5383.06,
+    "attribution_string": "Missing case weight \u2192 logistics audit \u2192 55% probability within 14 days",
+    "risk_tier": "HIGH"
+  },
+  {
+    "sku": "CHP-RF-001",
+    "retailer": "WMT",
+    "ship_date": "2027-03-02",
+    "probability": 0.457,
+    "dollar_exposure": 5358.78,
+    "attribution_string": "Missing case weight \u2192 logistics audit \u2192 46% probability within 14 days",
+    "risk_tier": "MEDIUM"
+  },
+  {
+    "sku": "CHP-AS-012",
+    "retailer": "KGR",
+    "ship_date": "2027-02-13",
+    "probability": 0.5875,
+    "dollar_exposure": 4735.25,
+    "attribution_string": "Missing UPC \u2192 data compliance \u2192 59% probability within 14 days",
+    "risk_tier": "HIGH"
+  },
+  {
+    "sku": "CHP-RF-009",
+    "retailer": "ACM",
+    "ship_date": "2027-03-08",
+    "probability": 0.3439,
+    "dollar_exposure": 3361.97,
+    "attribution_string": "Late ASN filing \u2192 ASN timing \u2192 34% probability within 14 days",
+    "risk_tier": "MEDIUM"
+  },
+  {
+    "sku": "CHP-FZ-008",
+    "retailer": "KGR",
+    "ship_date": "2027-02-12",
+    "probability": 0.6849,
+    "dollar_exposure": 3329.3,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 68% probability within 14 days",
+    "risk_tier": "HIGH"
+  },
+  {
+    "sku": "CHP-AS-002",
+    "retailer": "TGT",
+    "ship_date": "2027-03-03",
+    "probability": 0.4326,
+    "dollar_exposure": 3263.97,
+    "attribution_string": "Missing GTIN-14 barcode \u2192 data compliance \u2192 43% probability within 14 days",
+    "risk_tier": "MEDIUM"
+  },
+  {
+    "sku": "CHP-AS-017",
+    "retailer": "ACM",
+    "ship_date": "2027-02-11",
+    "probability": 0.7265,
+    "dollar_exposure": 3191.51,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 73% probability within 14 days",
+    "risk_tier": "HIGH"
+  },
+  {
+    "sku": "CHP-AS-017",
+    "retailer": "TGT",
+    "ship_date": "2027-02-26",
+    "probability": 0.4361,
+    "dollar_exposure": 3176.55,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 44% probability within 14 days",
+    "risk_tier": "MEDIUM"
+  },
+  {
+    "sku": "CHP-FZ-008",
+    "retailer": "TGT",
+    "ship_date": "2027-03-05",
+    "probability": 0.6866,
+    "dollar_exposure": 3167.97,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 69% probability within 14 days",
+    "risk_tier": "HIGH"
+  },
+  {
+    "sku": "CHP-RF-003",
+    "retailer": "TGT",
+    "ship_date": "2027-02-27",
+    "probability": 0.2774,
+    "dollar_exposure": 2766.51,
+    "attribution_string": "Missing GTIN-14 barcode \u2192 data compliance \u2192 28% probability within 14 days",
+    "risk_tier": "MEDIUM"
+  },
+  {
+    "sku": "CHP-RF-002",
+    "retailer": "WMT",
+    "ship_date": "2027-02-16",
+    "probability": 0.5857,
+    "dollar_exposure": 2524.37,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 59% probability within 14 days",
+    "risk_tier": "HIGH"
+  },
+  {
+    "sku": "CHP-RF-010",
+    "retailer": "ALB",
+    "ship_date": "2027-01-18",
+    "probability": 0.2414,
+    "dollar_exposure": 2503.08,
+    "attribution_string": "Late ASN filing \u2192 ASN timing \u2192 24% probability within 14 days",
+    "risk_tier": "MEDIUM"
+  },
+  {
+    "sku": "CHP-FZ-006",
+    "retailer": "WMT",
+    "ship_date": "2027-01-16",
+    "probability": 0.7906,
+    "dollar_exposure": 2439.79,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 79% probability within 14 days",
+    "risk_tier": "HIGH"
+  },
+  {
+    "sku": "CHP-FZ-002",
+    "retailer": "TGT",
+    "ship_date": "2027-01-31",
+    "probability": 0.2602,
+    "dollar_exposure": 2424.54,
+    "attribution_string": "Missing case weight \u2192 logistics audit \u2192 26% probability within 14 days",
+    "risk_tier": "MEDIUM"
+  },
+  {
+    "sku": "CHP-AS-011",
+    "retailer": "WMT",
+    "ship_date": "2027-02-02",
+    "probability": 0.3686,
+    "dollar_exposure": 2318.86,
+    "attribution_string": "Missing case weight \u2192 logistics audit \u2192 37% probability within 14 days",
+    "risk_tier": "MEDIUM"
+  },
+  {
+    "sku": "CHP-AS-005",
+    "retailer": "ACM",
+    "ship_date": "2027-02-24",
+    "probability": 0.6594,
+    "dollar_exposure": 2292.73,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 66% probability within 14 days",
+    "risk_tier": "HIGH"
+  },
+  {
+    "sku": "CHP-FZ-005",
+    "retailer": "ACM",
+    "ship_date": "2027-01-16",
+    "probability": 0.1779,
+    "dollar_exposure": 2074.67,
+    "attribution_string": "High historical chargeback rate \u2192 item setup \u2192 18% probability within 14 days",
+    "risk_tier": "LOW"
+  },
+  {
+    "sku": "CHP-AS-006",
+    "retailer": "TGT",
+    "ship_date": "2027-01-19",
+    "probability": 0.4131,
+    "dollar_exposure": 1922.15,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 41% probability within 14 days",
+    "risk_tier": "MEDIUM"
+  },
+  {
+    "sku": "CHP-AS-020",
+    "retailer": "ALB",
+    "ship_date": "2027-02-19",
+    "probability": 0.4418,
+    "dollar_exposure": 1874.56,
+    "attribution_string": "Missing case weight \u2192 logistics audit \u2192 44% probability within 14 days",
+    "risk_tier": "MEDIUM"
+  },
+  {
+    "sku": "CHP-RF-010",
+    "retailer": "KGR",
+    "ship_date": "2027-02-03",
+    "probability": 0.4087,
+    "dollar_exposure": 1819.53,
+    "attribution_string": "Missing GTIN-14 barcode \u2192 data compliance \u2192 41% probability within 14 days",
+    "risk_tier": "MEDIUM"
+  },
+  {
+    "sku": "CHP-FZ-015",
+    "retailer": "WMT",
+    "ship_date": "2027-02-13",
+    "probability": 0.3453,
+    "dollar_exposure": 1376.02,
+    "attribution_string": "Missing case weight \u2192 logistics audit \u2192 35% probability within 14 days",
+    "risk_tier": "MEDIUM"
+  },
+  {
+    "sku": "CHP-FZ-001",
+    "retailer": "KGR",
+    "ship_date": "2027-03-15",
+    "probability": 0.426,
+    "dollar_exposure": 1278.0,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 43% probability within 14 days",
+    "risk_tier": "MEDIUM"
+  },
+  {
+    "sku": "CHP-AS-006",
+    "retailer": "KGR",
+    "ship_date": "2027-03-12",
+    "probability": 0.1186,
+    "dollar_exposure": 1202.13,
+    "attribution_string": "High historical chargeback rate \u2192 item setup \u2192 12% probability within 14 days",
+    "risk_tier": "LOW"
+  },
+  {
+    "sku": "CHP-AS-016",
+    "retailer": "KGR",
+    "ship_date": "2027-02-12",
+    "probability": 0.2155,
+    "dollar_exposure": 1131.59,
+    "attribution_string": "Late ASN filing \u2192 ASN timing \u2192 22% probability within 14 days",
+    "risk_tier": "MEDIUM"
+  },
+  {
+    "sku": "CHP-RF-013",
+    "retailer": "ALB",
+    "ship_date": "2027-01-31",
+    "probability": 0.472,
+    "dollar_exposure": 1091.26,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 47% probability within 14 days",
+    "risk_tier": "MEDIUM"
+  },
+  {
+    "sku": "CHP-RF-007",
+    "retailer": "ALB",
+    "ship_date": "2027-02-14",
+    "probability": 0.5821,
+    "dollar_exposure": 1024.5,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 58% probability within 14 days",
+    "risk_tier": "HIGH"
+  },
+  {
+    "sku": "CHP-RF-015",
+    "retailer": "KGR",
+    "ship_date": "2027-01-16",
+    "probability": 0.2465,
+    "dollar_exposure": 918.21,
+    "attribution_string": "Missing GTIN-14 barcode \u2192 data compliance \u2192 25% probability within 14 days",
+    "risk_tier": "MEDIUM"
+  },
+  {
+    "sku": "CHP-FZ-001",
+    "retailer": "WMT",
+    "ship_date": "2027-01-22",
+    "probability": 0.2373,
+    "dollar_exposure": 769.33,
+    "attribution_string": "Missing GTIN-14 barcode \u2192 data compliance \u2192 24% probability within 14 days",
+    "risk_tier": "MEDIUM"
+  },
+  {
+    "sku": "CHP-FZ-006",
+    "retailer": "ALB",
+    "ship_date": "2027-03-01",
+    "probability": 0.0799,
+    "dollar_exposure": 746.91,
+    "attribution_string": "High historical chargeback rate \u2192 item setup \u2192 8% probability within 14 days",
+    "risk_tier": "LOW"
+  },
+  {
+    "sku": "CHP-RF-007",
+    "retailer": "ACM",
+    "ship_date": "2027-03-03",
+    "probability": 0.1555,
+    "dollar_exposure": 686.22,
+    "attribution_string": "High historical chargeback rate \u2192 item setup \u2192 16% probability within 14 days",
+    "risk_tier": "LOW"
+  },
+  {
+    "sku": "CHP-RF-015",
+    "retailer": "TGT",
+    "ship_date": "2027-02-16",
+    "probability": 0.3504,
+    "dollar_exposure": 675.22,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 35% probability within 14 days",
+    "risk_tier": "MEDIUM"
+  },
+  {
+    "sku": "CHP-AS-015",
+    "retailer": "TGT",
+    "ship_date": "2027-03-07",
+    "probability": 0.3916,
+    "dollar_exposure": 635.18,
+    "attribution_string": "High historical chargeback rate \u2192 item setup \u2192 39% probability within 14 days",
+    "risk_tier": "MEDIUM"
+  },
+  {
+    "sku": "CHP-AS-013",
+    "retailer": "ACM",
+    "ship_date": "2027-02-10",
+    "probability": 0.6707,
+    "dollar_exposure": 607.65,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 67% probability within 14 days",
+    "risk_tier": "HIGH"
+  },
+  {
+    "sku": "CHP-FZ-008",
+    "retailer": "ALB",
+    "ship_date": "2027-01-24",
+    "probability": 0.3361,
+    "dollar_exposure": 590.86,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 34% probability within 14 days",
+    "risk_tier": "MEDIUM"
+  },
+  {
+    "sku": "CHP-FZ-015",
+    "retailer": "ACM",
+    "ship_date": "2027-03-14",
+    "probability": 0.5201,
+    "dollar_exposure": 581.99,
+    "attribution_string": "Missing case weight \u2192 logistics audit \u2192 52% probability within 14 days",
+    "risk_tier": "HIGH"
+  },
+  {
+    "sku": "CHP-FZ-015",
+    "retailer": "TGT",
+    "ship_date": "2027-02-03",
+    "probability": 0.0741,
+    "dollar_exposure": 438.01,
+    "attribution_string": "Late ASN filing \u2192 ASN timing \u2192 7% probability within 14 days",
+    "risk_tier": "LOW"
+  },
+  {
+    "sku": "CHP-RF-005",
+    "retailer": "KGR",
+    "ship_date": "2027-03-04",
+    "probability": 0.1837,
+    "dollar_exposure": 393.3,
+    "attribution_string": "High historical chargeback rate \u2192 item setup \u2192 18% probability within 14 days",
+    "risk_tier": "LOW"
+  },
+  {
+    "sku": "CHP-AS-016",
+    "retailer": "TGT",
+    "ship_date": "2027-03-09",
+    "probability": 0.0626,
+    "dollar_exposure": 179.54,
+    "attribution_string": "High historical chargeback rate \u2192 item setup \u2192 6% probability within 14 days",
+    "risk_tier": "LOW"
+  },
+  {
+    "sku": "CHP-FZ-010",
+    "retailer": "KGR",
+    "ship_date": "2027-02-19",
+    "probability": 0.0613,
+    "dollar_exposure": 134.98,
+    "attribution_string": "High historical chargeback rate \u2192 item setup \u2192 6% probability within 14 days",
+    "risk_tier": "LOW"
+  },
+  {
+    "sku": "CHP-AS-020",
+    "retailer": "ACM",
+    "ship_date": "2027-03-07",
+    "probability": 0.0757,
+    "dollar_exposure": 111.43,
+    "attribution_string": "High historical chargeback rate \u2192 item setup \u2192 8% probability within 14 days",
+    "risk_tier": "LOW"
+  }
+]

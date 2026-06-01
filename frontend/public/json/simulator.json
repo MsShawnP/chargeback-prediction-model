@@ -1,0 +1,902 @@
+[
+  {
+    "sku": "CHP-RF-003",
+    "retailer": "ACM",
+    "ship_date": "2027-01-31",
+    "probability": 0.8056,
+    "dollar_exposure": 7721.68,
+    "attribution_string": "Missing GTIN-14 barcode \u2192 data compliance \u2192 81% probability within 14 days",
+    "risk_tier": "HIGH",
+    "shap_values": {
+      "case_dims_missing": 0.250221,
+      "gtin14_missing": 0.270157,
+      "case_weight_missing": -0.007636,
+      "upc_missing": -0.001205,
+      "data_quality_score": 0.06943,
+      "asn_sent_late": 0.010053,
+      "days_late": 0.012233,
+      "all_labels_scannable": -0.060386,
+      "sku_prior_chargeback_rate": 0.006043
+    }
+  },
+  {
+    "sku": "CHP-RF-005",
+    "retailer": "ALB",
+    "ship_date": "2027-02-22",
+    "probability": 0.7491,
+    "dollar_exposure": 7389.12,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 75% probability within 14 days",
+    "risk_tier": "HIGH",
+    "shap_values": {
+      "case_dims_missing": 0.247432,
+      "case_weight_missing": 0.2262,
+      "gtin14_missing": 0.011622,
+      "upc_missing": 0.010451,
+      "data_quality_score": 0.068055,
+      "asn_sent_late": -0.000464,
+      "days_late": 0.017819,
+      "all_labels_scannable": -0.064422,
+      "sku_prior_chargeback_rate": 0.011521
+    }
+  },
+  {
+    "sku": "CHP-RF-003",
+    "retailer": "ALB",
+    "ship_date": "2027-02-10",
+    "probability": 0.6201,
+    "dollar_exposure": 7337.02,
+    "attribution_string": "Missing GTIN-14 barcode \u2192 data compliance \u2192 62% probability within 14 days",
+    "risk_tier": "HIGH",
+    "shap_values": {
+      "gtin14_missing": 0.131361,
+      "upc_missing": 0.131179,
+      "case_dims_missing": 0.11654,
+      "case_weight_missing": 0.011846,
+      "data_quality_score": 0.102009,
+      "asn_sent_late": -0.003142,
+      "days_late": 0.008832,
+      "all_labels_scannable": -0.043186,
+      "sku_prior_chargeback_rate": 0.007103
+    }
+  },
+  {
+    "sku": "CHP-RF-010",
+    "retailer": "WMT",
+    "ship_date": "2027-03-02",
+    "probability": 0.7214,
+    "dollar_exposure": 6493.32,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 72% probability within 14 days",
+    "risk_tier": "HIGH",
+    "shap_values": {
+      "case_dims_missing": 0.234574,
+      "case_weight_missing": 0.228217,
+      "gtin14_missing": -0.006808,
+      "upc_missing": 0.008759,
+      "data_quality_score": 0.072625,
+      "asn_sent_late": 0.072692,
+      "days_late": 0.008978,
+      "all_labels_scannable": -0.051304,
+      "sku_prior_chargeback_rate": 0.007423
+    }
+  },
+  {
+    "sku": "CHP-RF-001",
+    "retailer": "ALB",
+    "ship_date": "2027-02-01",
+    "probability": 0.6352,
+    "dollar_exposure": 6410.44,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 64% probability within 14 days",
+    "risk_tier": "HIGH",
+    "shap_values": {
+      "case_dims_missing": 0.205109,
+      "gtin14_missing": 0.191067,
+      "case_weight_missing": 0.009663,
+      "upc_missing": 0.001869,
+      "data_quality_score": 0.073718,
+      "asn_sent_late": 0.0028,
+      "days_late": 0.010298,
+      "all_labels_scannable": -0.057669,
+      "sku_prior_chargeback_rate": 0.013421
+    }
+  },
+  {
+    "sku": "CHP-AS-005",
+    "retailer": "ACM",
+    "ship_date": "2027-03-05",
+    "probability": 0.5489,
+    "dollar_exposure": 5383.06,
+    "attribution_string": "Missing case weight \u2192 logistics audit \u2192 55% probability within 14 days",
+    "risk_tier": "HIGH",
+    "shap_values": {
+      "case_dims_missing": 0.154966,
+      "case_weight_missing": 0.164029,
+      "gtin14_missing": 0.008198,
+      "upc_missing": 0.018931,
+      "data_quality_score": 0.073934,
+      "asn_sent_late": 0.00784,
+      "days_late": 0.018797,
+      "all_labels_scannable": -0.034353,
+      "sku_prior_chargeback_rate": 0.010985
+    }
+  },
+  {
+    "sku": "CHP-RF-001",
+    "retailer": "WMT",
+    "ship_date": "2027-03-02",
+    "probability": 0.457,
+    "dollar_exposure": 5358.78,
+    "attribution_string": "Missing case weight \u2192 logistics audit \u2192 46% probability within 14 days",
+    "risk_tier": "MEDIUM",
+    "shap_values": {
+      "case_weight_missing": 0.25296,
+      "gtin14_missing": 0.002072,
+      "case_dims_missing": -0.00113,
+      "upc_missing": -0.006181,
+      "data_quality_score": 0.036307,
+      "asn_sent_late": 0.010986,
+      "days_late": 0.018546,
+      "all_labels_scannable": -0.02486,
+      "sku_prior_chargeback_rate": 0.014233
+    }
+  },
+  {
+    "sku": "CHP-AS-012",
+    "retailer": "KGR",
+    "ship_date": "2027-02-13",
+    "probability": 0.5875,
+    "dollar_exposure": 4735.25,
+    "attribution_string": "Missing UPC \u2192 data compliance \u2192 59% probability within 14 days",
+    "risk_tier": "HIGH",
+    "shap_values": {
+      "gtin14_missing": 0.127076,
+      "upc_missing": 0.128274,
+      "case_dims_missing": 0.109323,
+      "case_weight_missing": 0.009564,
+      "data_quality_score": 0.098109,
+      "asn_sent_late": -0.004749,
+      "days_late": 0.006865,
+      "all_labels_scannable": -0.032322,
+      "sku_prior_chargeback_rate": 0.008546
+    }
+  },
+  {
+    "sku": "CHP-RF-009",
+    "retailer": "ACM",
+    "ship_date": "2027-03-08",
+    "probability": 0.3439,
+    "dollar_exposure": 3361.97,
+    "attribution_string": "Late ASN filing \u2192 ASN timing \u2192 34% probability within 14 days",
+    "risk_tier": "MEDIUM",
+    "shap_values": {
+      "gtin14_missing": 0.003377,
+      "case_dims_missing": -0.005225,
+      "case_weight_missing": 0.015845,
+      "upc_missing": 0.003502,
+      "data_quality_score": 0.011277,
+      "asn_sent_late": 0.080997,
+      "days_late": 0.010546,
+      "all_labels_scannable": -0.031116,
+      "sku_prior_chargeback_rate": 0.07704
+    }
+  },
+  {
+    "sku": "CHP-FZ-008",
+    "retailer": "KGR",
+    "ship_date": "2027-02-12",
+    "probability": 0.6849,
+    "dollar_exposure": 3329.3,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 68% probability within 14 days",
+    "risk_tier": "HIGH",
+    "shap_values": {
+      "gtin14_missing": 0.136842,
+      "upc_missing": 0.139677,
+      "case_dims_missing": 0.145933,
+      "case_weight_missing": -0.003097,
+      "data_quality_score": 0.093303,
+      "asn_sent_late": 0.061775,
+      "days_late": 0.017622,
+      "all_labels_scannable": -0.058553,
+      "sku_prior_chargeback_rate": 0.018581
+    }
+  },
+  {
+    "sku": "CHP-AS-002",
+    "retailer": "TGT",
+    "ship_date": "2027-03-03",
+    "probability": 0.4326,
+    "dollar_exposure": 3263.97,
+    "attribution_string": "Missing GTIN-14 barcode \u2192 data compliance \u2192 43% probability within 14 days",
+    "risk_tier": "MEDIUM",
+    "shap_values": {
+      "gtin14_missing": 0.244506,
+      "case_dims_missing": 0.015922,
+      "case_weight_missing": 0.014322,
+      "upc_missing": -0.001996,
+      "data_quality_score": 0.041811,
+      "asn_sent_late": -0.003162,
+      "days_late": 0.022443,
+      "all_labels_scannable": -0.02707,
+      "sku_prior_chargeback_rate": 0.008337
+    }
+  },
+  {
+    "sku": "CHP-AS-017",
+    "retailer": "ACM",
+    "ship_date": "2027-02-11",
+    "probability": 0.7265,
+    "dollar_exposure": 3191.51,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 73% probability within 14 days",
+    "risk_tier": "HIGH",
+    "shap_values": {
+      "case_dims_missing": 0.242371,
+      "case_weight_missing": 0.220896,
+      "gtin14_missing": 0.004805,
+      "upc_missing": 0.012673,
+      "data_quality_score": 0.072917,
+      "asn_sent_late": -0.002402,
+      "days_late": 0.0082,
+      "all_labels_scannable": -0.035976,
+      "sku_prior_chargeback_rate": 0.013946
+    }
+  },
+  {
+    "sku": "CHP-AS-017",
+    "retailer": "TGT",
+    "ship_date": "2027-02-26",
+    "probability": 0.4361,
+    "dollar_exposure": 3176.55,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 44% probability within 14 days",
+    "risk_tier": "MEDIUM",
+    "shap_values": {
+      "case_dims_missing": 0.230347,
+      "gtin14_missing": 0.009365,
+      "case_weight_missing": 0.003717,
+      "upc_missing": 0.017871,
+      "data_quality_score": 0.044036,
+      "asn_sent_late": -0.004842,
+      "days_late": 0.017423,
+      "all_labels_scannable": -0.04185,
+      "sku_prior_chargeback_rate": 0.0065
+    }
+  },
+  {
+    "sku": "CHP-FZ-008",
+    "retailer": "TGT",
+    "ship_date": "2027-03-05",
+    "probability": 0.6866,
+    "dollar_exposure": 3167.97,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 69% probability within 14 days",
+    "risk_tier": "HIGH",
+    "shap_values": {
+      "case_dims_missing": 0.224137,
+      "gtin14_missing": 0.211978,
+      "case_weight_missing": 0.003602,
+      "upc_missing": 0.015023,
+      "data_quality_score": 0.06244,
+      "asn_sent_late": 0.068882,
+      "days_late": 0.018404,
+      "all_labels_scannable": -0.034909,
+      "sku_prior_chargeback_rate": 0.015253
+    }
+  },
+  {
+    "sku": "CHP-RF-003",
+    "retailer": "TGT",
+    "ship_date": "2027-02-27",
+    "probability": 0.2774,
+    "dollar_exposure": 2766.51,
+    "attribution_string": "Missing GTIN-14 barcode \u2192 data compliance \u2192 28% probability within 14 days",
+    "risk_tier": "MEDIUM",
+    "shap_values": {
+      "gtin14_missing": 0.130153,
+      "case_dims_missing": 0.002191,
+      "case_weight_missing": 0.00862,
+      "upc_missing": -0.005363,
+      "data_quality_score": 0.043948,
+      "asn_sent_late": 0.081615,
+      "days_late": 0.024524,
+      "all_labels_scannable": -0.029461,
+      "sku_prior_chargeback_rate": 0.018221
+    }
+  },
+  {
+    "sku": "CHP-RF-002",
+    "retailer": "WMT",
+    "ship_date": "2027-02-16",
+    "probability": 0.5857,
+    "dollar_exposure": 2524.37,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 59% probability within 14 days",
+    "risk_tier": "HIGH",
+    "shap_values": {
+      "gtin14_missing": 0.119906,
+      "upc_missing": 0.124509,
+      "case_dims_missing": 0.128485,
+      "case_weight_missing": 0.007286,
+      "data_quality_score": 0.093645,
+      "asn_sent_late": 0.003041,
+      "days_late": 0.013141,
+      "all_labels_scannable": -0.065284,
+      "sku_prior_chargeback_rate": 0.014885
+    }
+  },
+  {
+    "sku": "CHP-RF-010",
+    "retailer": "ALB",
+    "ship_date": "2027-01-18",
+    "probability": 0.2414,
+    "dollar_exposure": 2503.08,
+    "attribution_string": "Late ASN filing \u2192 ASN timing \u2192 24% probability within 14 days",
+    "risk_tier": "MEDIUM",
+    "shap_values": {
+      "gtin14_missing": 0.018382,
+      "case_dims_missing": -0.009414,
+      "case_weight_missing": 0.01642,
+      "upc_missing": 0.007271,
+      "data_quality_score": 0.007155,
+      "asn_sent_late": 0.083569,
+      "days_late": 0.010972,
+      "all_labels_scannable": -0.050501,
+      "sku_prior_chargeback_rate": 0.018375
+    }
+  },
+  {
+    "sku": "CHP-FZ-006",
+    "retailer": "WMT",
+    "ship_date": "2027-01-16",
+    "probability": 0.7906,
+    "dollar_exposure": 2439.79,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 79% probability within 14 days",
+    "risk_tier": "HIGH",
+    "shap_values": {
+      "case_dims_missing": 0.259887,
+      "gtin14_missing": 0.258392,
+      "case_weight_missing": 0.016765,
+      "upc_missing": -0.007392,
+      "data_quality_score": 0.066329,
+      "asn_sent_late": 0.060745,
+      "days_late": 0.009373,
+      "all_labels_scannable": -0.044732,
+      "sku_prior_chargeback_rate": 0.005398
+    }
+  },
+  {
+    "sku": "CHP-FZ-002",
+    "retailer": "TGT",
+    "ship_date": "2027-01-31",
+    "probability": 0.2602,
+    "dollar_exposure": 2424.54,
+    "attribution_string": "Missing case weight \u2192 logistics audit \u2192 26% probability within 14 days",
+    "risk_tier": "MEDIUM",
+    "shap_values": {
+      "case_weight_missing": 0.118289,
+      "gtin14_missing": 0.006154,
+      "case_dims_missing": 0.011583,
+      "upc_missing": 0.012259,
+      "data_quality_score": 0.040059,
+      "asn_sent_late": 0.001192,
+      "days_late": 0.006399,
+      "all_labels_scannable": -0.036788,
+      "sku_prior_chargeback_rate": 0.009953
+    }
+  },
+  {
+    "sku": "CHP-AS-011",
+    "retailer": "WMT",
+    "ship_date": "2027-02-02",
+    "probability": 0.3686,
+    "dollar_exposure": 2318.86,
+    "attribution_string": "Missing case weight \u2192 logistics audit \u2192 37% probability within 14 days",
+    "risk_tier": "MEDIUM",
+    "shap_values": {
+      "case_weight_missing": 0.178785,
+      "gtin14_missing": 0.01856,
+      "case_dims_missing": -0.002954,
+      "upc_missing": -0.000687,
+      "data_quality_score": 0.042098,
+      "asn_sent_late": -0.002495,
+      "days_late": 0.005924,
+      "all_labels_scannable": -0.020803,
+      "sku_prior_chargeback_rate": 0.014169
+    }
+  },
+  {
+    "sku": "CHP-AS-005",
+    "retailer": "ACM",
+    "ship_date": "2027-02-24",
+    "probability": 0.6594,
+    "dollar_exposure": 2292.73,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 66% probability within 14 days",
+    "risk_tier": "HIGH",
+    "shap_values": {
+      "case_dims_missing": 0.203832,
+      "gtin14_missing": 0.199024,
+      "case_weight_missing": 0.017762,
+      "upc_missing": 0.010645,
+      "data_quality_score": 0.063294,
+      "asn_sent_late": 0.000513,
+      "days_late": 0.020366,
+      "all_labels_scannable": -0.067203,
+      "sku_prior_chargeback_rate": 0.017327
+    }
+  },
+  {
+    "sku": "CHP-FZ-005",
+    "retailer": "ACM",
+    "ship_date": "2027-01-16",
+    "probability": 0.1779,
+    "dollar_exposure": 2074.67,
+    "attribution_string": "High historical chargeback rate \u2192 item setup \u2192 18% probability within 14 days",
+    "risk_tier": "LOW",
+    "shap_values": {
+      "gtin14_missing": -0.009187,
+      "case_dims_missing": 0.009282,
+      "case_weight_missing": -0.005929,
+      "upc_missing": 0.003851,
+      "data_quality_score": 0.000754,
+      "asn_sent_late": 0.001445,
+      "days_late": 0.009233,
+      "all_labels_scannable": -0.053658,
+      "sku_prior_chargeback_rate": 0.041068
+    }
+  },
+  {
+    "sku": "CHP-AS-006",
+    "retailer": "TGT",
+    "ship_date": "2027-01-19",
+    "probability": 0.4131,
+    "dollar_exposure": 1922.15,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 41% probability within 14 days",
+    "risk_tier": "MEDIUM",
+    "shap_values": {
+      "case_dims_missing": 0.219919,
+      "gtin14_missing": 0.018248,
+      "case_weight_missing": 0.00709,
+      "upc_missing": 0.007368,
+      "data_quality_score": 0.030596,
+      "asn_sent_late": -0.003606,
+      "days_late": 0.018147,
+      "all_labels_scannable": -0.041739,
+      "sku_prior_chargeback_rate": 0.009746
+    }
+  },
+  {
+    "sku": "CHP-AS-020",
+    "retailer": "ALB",
+    "ship_date": "2027-02-19",
+    "probability": 0.4418,
+    "dollar_exposure": 1874.56,
+    "attribution_string": "Missing case weight \u2192 logistics audit \u2192 44% probability within 14 days",
+    "risk_tier": "MEDIUM",
+    "shap_values": {
+      "case_weight_missing": 0.242097,
+      "gtin14_missing": 0.0074,
+      "case_dims_missing": 0.009641,
+      "upc_missing": 0.00395,
+      "data_quality_score": 0.036632,
+      "asn_sent_late": -0.001367,
+      "days_late": 0.014464,
+      "all_labels_scannable": -0.024941,
+      "sku_prior_chargeback_rate": 0.01694
+    }
+  },
+  {
+    "sku": "CHP-RF-010",
+    "retailer": "KGR",
+    "ship_date": "2027-02-03",
+    "probability": 0.4087,
+    "dollar_exposure": 1819.53,
+    "attribution_string": "Missing GTIN-14 barcode \u2192 data compliance \u2192 41% probability within 14 days",
+    "risk_tier": "MEDIUM",
+    "shap_values": {
+      "gtin14_missing": 0.207117,
+      "case_dims_missing": -0.004206,
+      "case_weight_missing": -0.000152,
+      "upc_missing": 0.015931,
+      "data_quality_score": 0.044503,
+      "asn_sent_late": -0.000255,
+      "days_late": 0.01783,
+      "all_labels_scannable": -0.050016,
+      "sku_prior_chargeback_rate": 0.019717
+    }
+  },
+  {
+    "sku": "CHP-FZ-015",
+    "retailer": "WMT",
+    "ship_date": "2027-02-13",
+    "probability": 0.3453,
+    "dollar_exposure": 1376.02,
+    "attribution_string": "Missing case weight \u2192 logistics audit \u2192 35% probability within 14 days",
+    "risk_tier": "MEDIUM",
+    "shap_values": {
+      "case_weight_missing": 0.176934,
+      "gtin14_missing": 0.001519,
+      "case_dims_missing": 0.00199,
+      "upc_missing": -0.005573,
+      "data_quality_score": 0.040314,
+      "asn_sent_late": 0.010175,
+      "days_late": 0.022209,
+      "all_labels_scannable": -0.025727,
+      "sku_prior_chargeback_rate": 0.016676
+    }
+  },
+  {
+    "sku": "CHP-FZ-001",
+    "retailer": "KGR",
+    "ship_date": "2027-03-15",
+    "probability": 0.426,
+    "dollar_exposure": 1278.0,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 43% probability within 14 days",
+    "risk_tier": "MEDIUM",
+    "shap_values": {
+      "case_dims_missing": 0.226112,
+      "gtin14_missing": 0.016691,
+      "case_weight_missing": 0.012273,
+      "upc_missing": -0.005337,
+      "data_quality_score": 0.034226,
+      "asn_sent_late": -0.001419,
+      "days_late": 0.011858,
+      "all_labels_scannable": -0.035625,
+      "sku_prior_chargeback_rate": 0.017794
+    }
+  },
+  {
+    "sku": "CHP-AS-006",
+    "retailer": "KGR",
+    "ship_date": "2027-03-12",
+    "probability": 0.1186,
+    "dollar_exposure": 1202.13,
+    "attribution_string": "High historical chargeback rate \u2192 item setup \u2192 12% probability within 14 days",
+    "risk_tier": "LOW",
+    "shap_values": {
+      "gtin14_missing": 0.00831,
+      "case_dims_missing": 0.00137,
+      "case_weight_missing": -0.009139,
+      "upc_missing": 0.015529,
+      "data_quality_score": 0.002728,
+      "asn_sent_late": -0.001394,
+      "days_late": 0.020957,
+      "all_labels_scannable": -0.052983,
+      "sku_prior_chargeback_rate": 0.018205
+    }
+  },
+  {
+    "sku": "CHP-AS-016",
+    "retailer": "KGR",
+    "ship_date": "2027-02-12",
+    "probability": 0.2155,
+    "dollar_exposure": 1131.59,
+    "attribution_string": "Late ASN filing \u2192 ASN timing \u2192 22% probability within 14 days",
+    "risk_tier": "MEDIUM",
+    "shap_values": {
+      "gtin14_missing": 7.5e-05,
+      "case_dims_missing": 0.016791,
+      "case_weight_missing": -0.007583,
+      "upc_missing": -0.005475,
+      "data_quality_score": 0.005746,
+      "asn_sent_late": 0.06382,
+      "days_late": 0.009279,
+      "all_labels_scannable": -0.049257,
+      "sku_prior_chargeback_rate": 0.009963
+    }
+  },
+  {
+    "sku": "CHP-RF-013",
+    "retailer": "ALB",
+    "ship_date": "2027-01-31",
+    "probability": 0.472,
+    "dollar_exposure": 1091.26,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 47% probability within 14 days",
+    "risk_tier": "MEDIUM",
+    "shap_values": {
+      "case_dims_missing": 0.269857,
+      "gtin14_missing": 0.01488,
+      "case_weight_missing": -0.008677,
+      "upc_missing": 7e-06,
+      "data_quality_score": 0.031962,
+      "asn_sent_late": 0.011657,
+      "days_late": 0.008232,
+      "all_labels_scannable": -0.047908,
+      "sku_prior_chargeback_rate": 0.015585
+    }
+  },
+  {
+    "sku": "CHP-RF-007",
+    "retailer": "ALB",
+    "ship_date": "2027-02-14",
+    "probability": 0.5821,
+    "dollar_exposure": 1024.5,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 58% probability within 14 days",
+    "risk_tier": "HIGH",
+    "shap_values": {
+      "gtin14_missing": 0.109641,
+      "upc_missing": 0.105579,
+      "case_dims_missing": 0.115286,
+      "case_weight_missing": 0.017796,
+      "data_quality_score": 0.101777,
+      "asn_sent_late": 0.067131,
+      "days_late": 0.018932,
+      "all_labels_scannable": -0.033475,
+      "sku_prior_chargeback_rate": 0.01675
+    }
+  },
+  {
+    "sku": "CHP-RF-015",
+    "retailer": "KGR",
+    "ship_date": "2027-01-16",
+    "probability": 0.2465,
+    "dollar_exposure": 918.21,
+    "attribution_string": "Missing GTIN-14 barcode \u2192 data compliance \u2192 25% probability within 14 days",
+    "risk_tier": "MEDIUM",
+    "shap_values": {
+      "gtin14_missing": 0.09939,
+      "case_dims_missing": 0.019507,
+      "case_weight_missing": -0.008852,
+      "upc_missing": 0.007897,
+      "data_quality_score": 0.035185,
+      "asn_sent_late": 0.008369,
+      "days_late": 0.013728,
+      "all_labels_scannable": -0.020788,
+      "sku_prior_chargeback_rate": 0.006735
+    }
+  },
+  {
+    "sku": "CHP-FZ-001",
+    "retailer": "WMT",
+    "ship_date": "2027-01-22",
+    "probability": 0.2373,
+    "dollar_exposure": 769.33,
+    "attribution_string": "Missing GTIN-14 barcode \u2192 data compliance \u2192 24% probability within 14 days",
+    "risk_tier": "MEDIUM",
+    "shap_values": {
+      "gtin14_missing": 0.091615,
+      "case_dims_missing": 0.015038,
+      "case_weight_missing": 0.007475,
+      "upc_missing": -0.005557,
+      "data_quality_score": 0.031912,
+      "asn_sent_late": 0.00024,
+      "days_late": 0.02298,
+      "all_labels_scannable": -0.030194,
+      "sku_prior_chargeback_rate": 0.017911
+    }
+  },
+  {
+    "sku": "CHP-FZ-006",
+    "retailer": "ALB",
+    "ship_date": "2027-03-01",
+    "probability": 0.0799,
+    "dollar_exposure": 746.91,
+    "attribution_string": "High historical chargeback rate \u2192 item setup \u2192 8% probability within 14 days",
+    "risk_tier": "LOW",
+    "shap_values": {
+      "gtin14_missing": 0.018964,
+      "case_dims_missing": -0.001898,
+      "case_weight_missing": 0.014246,
+      "upc_missing": 0.006145,
+      "data_quality_score": 0.007252,
+      "asn_sent_late": 0.002405,
+      "days_late": 0.019621,
+      "all_labels_scannable": -0.05658,
+      "sku_prior_chargeback_rate": 0.017776
+    }
+  },
+  {
+    "sku": "CHP-RF-007",
+    "retailer": "ACM",
+    "ship_date": "2027-03-03",
+    "probability": 0.1555,
+    "dollar_exposure": 686.22,
+    "attribution_string": "High historical chargeback rate \u2192 item setup \u2192 16% probability within 14 days",
+    "risk_tier": "LOW",
+    "shap_values": {
+      "gtin14_missing": 0.004647,
+      "case_dims_missing": -0.001812,
+      "case_weight_missing": 0.004569,
+      "upc_missing": 0.001666,
+      "data_quality_score": 0.010033,
+      "asn_sent_late": 0.008568,
+      "days_late": 0.019484,
+      "all_labels_scannable": -0.027975,
+      "sku_prior_chargeback_rate": 0.018793
+    }
+  },
+  {
+    "sku": "CHP-RF-015",
+    "retailer": "TGT",
+    "ship_date": "2027-02-16",
+    "probability": 0.3504,
+    "dollar_exposure": 675.22,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 35% probability within 14 days",
+    "risk_tier": "MEDIUM",
+    "shap_values": {
+      "case_dims_missing": 0.184782,
+      "gtin14_missing": 0.001086,
+      "case_weight_missing": -0.005268,
+      "upc_missing": 0.015012,
+      "data_quality_score": 0.040553,
+      "asn_sent_late": 0.005399,
+      "days_late": 0.024745,
+      "all_labels_scannable": -0.037301,
+      "sku_prior_chargeback_rate": 0.005117
+    }
+  },
+  {
+    "sku": "CHP-AS-015",
+    "retailer": "TGT",
+    "ship_date": "2027-03-07",
+    "probability": 0.3916,
+    "dollar_exposure": 635.18,
+    "attribution_string": "High historical chargeback rate \u2192 item setup \u2192 39% probability within 14 days",
+    "risk_tier": "MEDIUM",
+    "shap_values": {
+      "gtin14_missing": 0.006722,
+      "case_dims_missing": 0.017524,
+      "case_weight_missing": -0.006359,
+      "upc_missing": -0.006,
+      "data_quality_score": 0.00697,
+      "asn_sent_late": 0.073278,
+      "days_late": 0.016179,
+      "all_labels_scannable": -0.054135,
+      "sku_prior_chargeback_rate": 0.126516
+    }
+  },
+  {
+    "sku": "CHP-AS-013",
+    "retailer": "ACM",
+    "ship_date": "2027-02-10",
+    "probability": 0.6707,
+    "dollar_exposure": 607.65,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 67% probability within 14 days",
+    "risk_tier": "HIGH",
+    "shap_values": {
+      "case_dims_missing": 0.215483,
+      "gtin14_missing": 0.200504,
+      "case_weight_missing": 0.002678,
+      "upc_missing": -0.001664,
+      "data_quality_score": 0.06323,
+      "asn_sent_late": 0.007979,
+      "days_late": 0.007044,
+      "all_labels_scannable": -0.051004,
+      "sku_prior_chargeback_rate": 0.010385
+    }
+  },
+  {
+    "sku": "CHP-FZ-008",
+    "retailer": "ALB",
+    "ship_date": "2027-01-24",
+    "probability": 0.3361,
+    "dollar_exposure": 590.86,
+    "attribution_string": "Missing case dimensions \u2192 logistics audit \u2192 34% probability within 14 days",
+    "risk_tier": "MEDIUM",
+    "shap_values": {
+      "case_dims_missing": 0.166555,
+      "gtin14_missing": 0.006266,
+      "case_weight_missing": 0.012439,
+      "upc_missing": -0.008285,
+      "data_quality_score": 0.038763,
+      "asn_sent_late": 0.003548,
+      "days_late": 0.022054,
+      "all_labels_scannable": -0.062128,
+      "sku_prior_chargeback_rate": 0.019412
+    }
+  },
+  {
+    "sku": "CHP-FZ-015",
+    "retailer": "ACM",
+    "ship_date": "2027-03-14",
+    "probability": 0.5201,
+    "dollar_exposure": 581.99,
+    "attribution_string": "Missing case weight \u2192 logistics audit \u2192 52% probability within 14 days",
+    "risk_tier": "HIGH",
+    "shap_values": {
+      "case_dims_missing": 0.142834,
+      "case_weight_missing": 0.149112,
+      "gtin14_missing": 0.01956,
+      "upc_missing": 0.014203,
+      "data_quality_score": 0.063592,
+      "asn_sent_late": -0.000905,
+      "days_late": 0.016347,
+      "all_labels_scannable": -0.066062,
+      "sku_prior_chargeback_rate": 0.015979
+    }
+  },
+  {
+    "sku": "CHP-FZ-015",
+    "retailer": "TGT",
+    "ship_date": "2027-02-03",
+    "probability": 0.0741,
+    "dollar_exposure": 438.01,
+    "attribution_string": "Late ASN filing \u2192 ASN timing \u2192 7% probability within 14 days",
+    "risk_tier": "LOW",
+    "shap_values": {
+      "gtin14_missing": 0.007274,
+      "case_dims_missing": 0.017241,
+      "case_weight_missing": 0.001259,
+      "upc_missing": 0.018244,
+      "data_quality_score": 0.002975,
+      "asn_sent_late": 0.074802,
+      "days_late": 0.021611,
+      "all_labels_scannable": -0.057858,
+      "sku_prior_chargeback_rate": 0.015458
+    }
+  },
+  {
+    "sku": "CHP-RF-005",
+    "retailer": "KGR",
+    "ship_date": "2027-03-04",
+    "probability": 0.1837,
+    "dollar_exposure": 393.3,
+    "attribution_string": "High historical chargeback rate \u2192 item setup \u2192 18% probability within 14 days",
+    "risk_tier": "LOW",
+    "shap_values": {
+      "gtin14_missing": 0.004109,
+      "case_dims_missing": 0.012471,
+      "case_weight_missing": -0.008437,
+      "upc_missing": 0.018558,
+      "data_quality_score": 0.003363,
+      "asn_sent_late": -0.003833,
+      "days_late": 0.024146,
+      "all_labels_scannable": -0.067987,
+      "sku_prior_chargeback_rate": 0.005465
+    }
+  },
+  {
+    "sku": "CHP-AS-016",
+    "retailer": "TGT",
+    "ship_date": "2027-03-09",
+    "probability": 0.0626,
+    "dollar_exposure": 179.54,
+    "attribution_string": "High historical chargeback rate \u2192 item setup \u2192 6% probability within 14 days",
+    "risk_tier": "LOW",
+    "shap_values": {
+      "gtin14_missing": 0.004207,
+      "case_dims_missing": -0.006568,
+      "case_weight_missing": 0.018433,
+      "upc_missing": 0.003951,
+      "data_quality_score": 0.003844,
+      "asn_sent_late": 0.001271,
+      "days_late": 0.017118,
+      "all_labels_scannable": -0.021813,
+      "sku_prior_chargeback_rate": 0.015775
+    }
+  },
+  {
+    "sku": "CHP-FZ-010",
+    "retailer": "KGR",
+    "ship_date": "2027-02-19",
+    "probability": 0.0613,
+    "dollar_exposure": 134.98,
+    "attribution_string": "High historical chargeback rate \u2192 item setup \u2192 6% probability within 14 days",
+    "risk_tier": "LOW",
+    "shap_values": {
+      "gtin14_missing": -0.002759,
+      "case_dims_missing": 0.002193,
+      "case_weight_missing": 0.006655,
+      "upc_missing": -0.00279,
+      "data_quality_score": 0.007141,
+      "asn_sent_late": 0.007101,
+      "days_late": 0.013963,
+      "all_labels_scannable": -0.069138,
+      "sku_prior_chargeback_rate": 0.009414
+    }
+  },
+  {
+    "sku": "CHP-AS-020",
+    "retailer": "ACM",
+    "ship_date": "2027-03-07",
+    "probability": 0.0757,
+    "dollar_exposure": 111.43,
+    "attribution_string": "High historical chargeback rate \u2192 item setup \u2192 8% probability within 14 days",
+    "risk_tier": "LOW",
+    "shap_values": {
+      "gtin14_missing": 0.000416,
+      "case_dims_missing": 0.002851,
+      "case_weight_missing": 0.001117,
+      "upc_missing": 0.005179,
+      "data_quality_score": 0.005118,
+      "asn_sent_late": 0.009443,
+      "days_late": 0.021447,
+      "all_labels_scannable": -0.064723,
+      "sku_prior_chargeback_rate": 0.019412
+    }
+  }
+]
