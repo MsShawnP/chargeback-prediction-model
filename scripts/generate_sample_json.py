@@ -175,31 +175,12 @@ for cfg in SCENARIO_CONFIGS:
 ledger.sort(key=lambda r: r["dollar_exposure"], reverse=True)
 simulator.sort(key=lambda r: r["dollar_exposure"], reverse=True)
 
-# Summary — based on historical chargebacks, not forward POs
-summary = {
-    "total_chargeback_amount": 691338.0,
-    "total_preventable": 430400.0,
-    "preventable_pct": 0.6225,
-    "root_cause_counts": {
-        "logistics_overage": 255,
-        "data_compliance_error": 159,
-        "legitimate": 110,
-        "asn_timing_infraction": 83,
-        "pricing_discrepancy": 55,
-        "item_setup_gap": 28,
-    },
-    "model_auc": 0.7834,
-}
-
-# Write JSON
+# Write JSON — summary.json is written by 07_export from real pipeline data; skip it here.
 (OUTPUT_DIR / "risk_ledger.json").write_text(
     json.dumps(ledger, indent=2), encoding="utf-8"
 )
 (OUTPUT_DIR / "simulator.json").write_text(
     json.dumps(simulator, indent=2), encoding="utf-8"
-)
-(OUTPUT_DIR / "summary.json").write_text(
-    json.dumps(summary, indent=2), encoding="utf-8"
 )
 
 tier_counts = {t: sum(1 for r in ledger if r["risk_tier"] == t) for t in ("HIGH", "MEDIUM", "LOW")}
@@ -208,6 +189,4 @@ total_exposure = sum(r["dollar_exposure"] for r in ledger)
 print(f"Generated {len(ledger)} rows -> frontend/public/json/")
 print(f"  Risk tiers: HIGH={tier_counts['HIGH']}, MEDIUM={tier_counts['MEDIUM']}, LOW={tier_counts['LOW']}")
 print(f"  Total forward exposure: ${total_exposure:,.0f}")
-print(f"  Historical total: ${summary['total_chargeback_amount']:,.0f}")
-print(f"  Preventable:      ${summary['total_preventable']:,.0f} ({summary['preventable_pct']:.1%})")
-print(f"  Model AUC:        {summary['model_auc']}")
+print("  (summary.json written by pipeline 07_export — not overwritten)")

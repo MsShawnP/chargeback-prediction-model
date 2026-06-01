@@ -1,14 +1,12 @@
 {
-  "total_chargeback_amount": 691338.0,
-  "total_preventable": 430400.0,
-  "preventable_pct": 0.6225,
+  "total_chargeback_amount": 691338.17,
+  "total_preventable": 485467.78,
+  "preventable_pct": 0.7022,
   "root_cause_counts": {
-    "logistics_overage": 255,
-    "data_compliance_error": 159,
-    "legitimate": 110,
-    "asn_timing_infraction": 83,
-    "pricing_discrepancy": 55,
-    "item_setup_gap": 28
+    "asn_timing_infraction": 133,
+    "data_compliance_error": 161,
+    "logistics_overage": 254,
+    "pricing_discrepancy": 142
   },
-  "model_auc": 0.7834
+  "model_auc": 0.7485
 }

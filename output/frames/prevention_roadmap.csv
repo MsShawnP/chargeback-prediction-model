@@ -1,7 +1,5 @@
-root_cause_archetype,historical_loss,preventability,prevention_value,fix_description
-logistics_overage,370000.0,0.65,240500.0,Populate missing case dimensions and case weight in product master before order confirmation
-data_compliance_error,160000.0,0.70,112000.0,Register GTIN-14 and UPC with GS1; confirm barcodes scan at case level before each shipment
-asn_timing_infraction,80000.0,0.60,48000.0,Submit ASN within 24 hours of ship confirmation; automate from WMS on pallet scan
-pricing_discrepancy,52000.0,0.30,15600.0,Reconcile promotional price lists with retailer portals before order acknowledgment
-item_setup_gap,26000.0,0.55,14300.0,Complete item setup in retailer portal (1WorldSync or SupplySync) before first purchase order
-legitimate,3338.0,0.00,0.0,No remediation — valid retailer deductions for confirmed overages
+root_cause_archetype,historical_loss,preventability_fraction,prevention_value,fix_description
+logistics_overage,256838.26,0.7,179786.782,Audit pick-and-pack procedures; add case-count verification before palletizing
+data_compliance_error,158150.37,0.8,126520.296,"Populate missing barcodes (GTIN-14, UPC) and verify label compliance before shipment"
+asn_timing_infraction,133509.77,0.7,93456.83899999999,Submit Advance Ship Notices within the retailer-required lead time window
+pricing_discrepancy,142839.77,0.6,85703.862,Reconcile PO unit prices against approved price lists before invoicing
