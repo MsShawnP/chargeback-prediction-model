@@ -9,15 +9,15 @@ For things that didn't work, see FAILURES.md.
 
 ---
 
-## 2026-06-01 11:46 — Pipeline fully verified; frontend redeployed with real data
+## 2026-06-01 11:46 — SESSION WRAP: pipeline verified end-to-end; real data live
 
-**What changed:** Full pipeline (steps 01–07) confirmed end-to-end against Cinderhaven; frontend redeployed with real summary data.
+**Started from:** Steps 01–04 confirmed AUC=0.7485 last session; 05–07 unconfirmed (context limit hit mid-run). Frontend still on sample data.
 
-**Why:** Previous session left steps 05–07 unconfirmed due to context limit. This session verified all steps, patched generate_sample_json.py to not overwrite summary.json (07_export owns it), and pushed real values live.
+**Did:** Ran full pipeline (01–07) against Cinderhaven — all steps green. Fixed generate_sample_json.py to not overwrite summary.json (07_export owns it). Redeployed frontend with real summary data (AUC=0.7485, $485K preventable, 70%). 170/170 tests passing.
 
-**State:** 170/170 tests green. AUC=0.7485. $691K total chargebacks, $485K preventable (70%). summary.json has real pipeline values. risk_ledger.json and simulator.json have sample forward POs (no upcoming POs exist in Cinderhaven — all orders shipped). App live at https://chargeback-prediction-model.msshawnp.workers.dev. PLAN.md pipeline validation item marked done. Only open arc items: /ce:review and /qa.
+**State:** App live at https://chargeback-prediction-model.msshawnp.workers.dev with real summary. Risk Ledger and Simulator show sample forward POs (no upcoming POs exist in Cinderhaven — all orders shipped). Only open items: /ce:review and /qa.
 
-**Next:** Run `/ce:review` to get the reviewer ensemble pass, then `/qa` to close the arc.
+**Next:** Run `/ce:review` (reviewer ensemble pass), then `/qa` to close the arc.
 
 ---
 

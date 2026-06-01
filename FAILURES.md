@@ -139,6 +139,34 @@ shouldn't re-attempt dead ends because the lesson got lost.
 
 ---
 
+### 2026-06-01 — flyctl proxy launch reported failure when tunnel was already live
+
+**Attempted:** Ran `flyctl proxy 5432 -a cinderhaven-db` at session start to establish the DB tunnel.
+
+**Why it didn't work:** The previous session's flyctl proxy process (PID 16296) was still running and already bound to 127.0.0.1:5432. flyctl exited with "bind: Only one usage of each socket address" — which reads as a hard failure.
+
+**What we tried instead:** Ran `netstat -ano | Select-String ":5432"` to check what was using the port, then `Get-Process -Id <pid>` to confirm it was flyctl. Tunnel was already live; proceeded directly to the pipeline run.
+
+**Status:** Resolved — before trying to start a new proxy, check if port 5432 is already listening (`Test-NetConnection localhost 5432`). If yes, verify it's flyctl and skip the proxy launch.
+
+**Tags:** flyctl, proxy, port-conflict, cinderhaven, windows, already-running
+
+---
+
+### 2026-06-01 — Running long pipeline as background PowerShell job stalled silently
+
+**Attempted:** Dispatched `python run_pipeline.py` with `run_in_background: true` via the PowerShell tool to avoid blocking.
+
+**Why it didn't work:** The background task completed silently after step 04 (model training) — no completion notification arrived and the output file stopped updating at line 50. The job likely hit the 2-minute default timeout while GradientBoosting training ran for ~9 minutes. Steps 05–07 never executed.
+
+**What we tried instead:** Re-ran `python run_pipeline.py` interactively (no background flag) with a 10-minute timeout. All 7 steps completed cleanly.
+
+**Status:** Resolved
+
+**Tags:** pipeline, background-job, powershell, timeout, run_in_background, long-running
+
+---
+
 ### 2026-06-01 — First synthetic signal attempt (quality flags as primary) got AUC 0.62, not 0.65
 
 **Attempted:** Made `gtin14_missing` (5× multiplier) the dominant synthetic chargeback signal. Model achieved AUC 0.62.

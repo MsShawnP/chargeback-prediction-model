@@ -86,6 +86,13 @@ Each entry:
 
 ## Output Formats
 
+### 2026-06-01 — 07_export owns summary.json; generate_sample_json.py does not write it
+- **Why:** After a real pipeline run, `07_export` writes `summary.json` with authoritative values (AUC, preventable amount, root-cause counts from Cinderhaven). `generate_sample_json.py` previously overwrote it with stale hardcoded numbers, which would have deployed wrong figures to the live app.
+- **Scope:** Any script touching `frontend/public/json/summary.json`.
+- **Do not:** Have `generate_sample_json.py` write `summary.json`, even as a fallback. If the pipeline hasn't run, the real values aren't known — an empty or stale file is less misleading than confidently wrong numbers.
+
+---
+
 ### 2026-05-31 — Simulator savings math uses SHAP delta proxy; raw feature values not stored in simulator.json
 - **Why:** `build_simulator_payload` enriches each risk-ledger row with per-feature SHAP values but not the original boolean feature values. The simulator interprets `shap_values[feature] > 0` as "this feature is active and contributing risk." Savings per row: `new_prob = max(0, prob − Σ positive_shap_deltas_for_active_toggles)`; `savings = delta_prob × (dollar_exposure / prob)`. This is pure JS math on the loaded JSON, no backend call.
 - **Scope:** `frontend/src/views/Simulator.tsx` and `src/pipeline/export.py` (simulator payload schema)
