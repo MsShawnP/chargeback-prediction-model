@@ -70,7 +70,7 @@ change signals. No shortcut to today's state.
 ## Definition of done for this arc
 
 - [x] Interactive HTML deliverable(s) published and visually complete
-- [ ] Model trained on Cinderhaven data, predictions validated (sample data — needs pipeline run vs Cinderhaven)
+- [x] Model trained on Cinderhaven data, predictions validated (2026-06-01 — AUC=0.7485, $691K chargebacks, $485K preventable 70%)
 - [x] Every risk score carries a plain-language attribution string
 - [x] Prevention roadmap ranks root causes by dollar recovery value
 - [ ] Passes /ce:review and /qa
