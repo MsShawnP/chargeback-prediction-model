@@ -1,0 +1,42 @@
+# _quarto.yml — Chargeback Prediction Model — Quarto project configuration.
+# Three reports: prevention_roadmap.qmd, tearsheet.qmd, methodology.qmd.
+# All use Python/jupyter engine; CSV data from output/frames/.
+
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "Chargeback Prediction Model"
+  navbar: false
+  sidebar: false
+
+# Python/jupyter engine for all documents
+engine: jupyter
+
+execute:
+  echo: false
+  warning: false
+  message: false
+  freeze: auto
+
+format:
+  html:
+    theme: cosmo
+    css: assets/report.css
+    fig-align: center
+    toc: true
+    toc-depth: 2
+    embed-resources: false
+    html-math-method: plain
+  pdf:
+    pdf-engine: lualatex
+    documentclass: scrartcl
+    toc: false
+    number-sections: false
+    geometry:
+      - top=0.8in
+      - bottom=0.8in
+      - left=0.8in
+      - right=0.8in
+    fontsize: 11pt

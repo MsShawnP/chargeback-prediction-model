@@ -30,6 +30,10 @@ data/processed/
 *.parquet
 *.feather
 !tests/fixtures/*.csv
+# Quarto sample CSVs — overwritten by pipeline in CI with real data
+!output/frames/prevention_roadmap.csv
+!output/frames/historical_chargebacks_by_archetype.csv
+!output/frames/model_performance.csv
 
 # Jupyter
 .ipynb_checkpoints/
