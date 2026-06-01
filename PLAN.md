@@ -63,18 +63,18 @@ change signals. No shortcut to today's state.
 - [x] Run /ce:work — U6: forward scoring + prevention roadmap (2026-05-31)
 - [x] Run /ce:work — U7: pipeline orchestration + JSON/CSV export (2026-05-31)
 - [x] Run /ce:work — U8–U10: React app (Risk Ledger + Simulator) (2026-05-31)
-- [ ] Run /ce:work — U11: Cloudflare Pages deployment
-- [ ] Run /ce:work — U12–U15: Quarto reports
-- [ ] Run /ce:work — U16: GitHub Actions CI/CD
+- [x] Run /ce:work — U11: Cloudflare Pages deployment (2026-05-31)
+- [x] Run /ce:work — U12–U15: Quarto reports (2026-05-31)
+- [x] Run /ce:work — U16: GitHub Actions CI/CD (2026-05-31)
 
 ## Definition of done for this arc
 
-- [ ] Interactive HTML deliverable(s) published and visually complete
-- [ ] Model trained on Cinderhaven data, predictions validated
-- [ ] Every risk score carries a plain-language attribution string
-- [ ] Prevention roadmap ranks root causes by dollar recovery value
+- [x] Interactive HTML deliverable(s) published and visually complete
+- [ ] Model trained on Cinderhaven data, predictions validated (sample data — needs pipeline run vs Cinderhaven)
+- [x] Every risk score carries a plain-language attribution string
+- [x] Prevention roadmap ranks root causes by dollar recovery value
 - [ ] Passes /ce:review and /qa
-- [ ] Lailara design system applied throughout
+- [x] Lailara design system applied throughout
 
 ---
 
