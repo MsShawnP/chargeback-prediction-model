@@ -9,6 +9,18 @@ For things that didn't work, see FAILURES.md.
 
 ---
 
+## 2026-06-01 12:46 — /ce:review complete; 15 bugs fixed across 13 files
+
+**What changed:** 13-persona code review ran; 15 findings fixed (1 P0, 9 P1, 5 P2).
+
+**Why:** The P0 (risk_tier lowercase vs uppercase) permanently broke the Simulator "affected count." The SHAP/scored row order mismatch assigned wrong SHAP values to every simulated intervention. Both fixed.
+
+**State:** 170/170 tests green. TypeScript clean. All confirmed functional bugs resolved. 6 items deferred (non-atomic writes, HistGBT speedup, SHAP subset, SQL injection in eda.py, Step 03 DB re-query, one-hot extract). DB password in .env needs manual rotation. Arc items remaining: /qa.
+
+**Next:** Rotate DB password via `flyctl postgres connect -a cinderhaven-db` + `ALTER ROLE`. Then run `/qa` to close the arc.
+
+---
+
 ## 2026-06-01 11:46 — SESSION WRAP: pipeline verified end-to-end; real data live
 
 **Started from:** Steps 01–04 confirmed AUC=0.7485 last session; 05–07 unconfirmed (context limit hit mid-run). Frontend still on sample data.
