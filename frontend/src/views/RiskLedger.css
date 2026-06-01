@@ -1,0 +1,195 @@
+.risk-ledger {}
+
+/* Summary bar */
+.summary-bar {
+  display: flex;
+  gap: 0;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  margin-bottom: 20px;
+}
+
+.summary-stat {
+  flex: 1;
+  padding: 16px 20px;
+  border-right: 1px solid var(--rule);
+}
+
+.summary-stat:last-child { border-right: none; }
+
+.summary-label {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--ink-soft);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.summary-value {
+  display: block;
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.summary-value-high { color: var(--accent-rose); }
+
+/* Filter bar */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.retailer-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+}
+
+.retailer-filter label {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--ink-soft);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.retailer-filter select {
+  font-family: var(--sans);
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  padding: 5px 10px;
+  cursor: pointer;
+  min-width: 180px;
+}
+
+.retailer-filter select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.tier-chips {
+  display: flex;
+  gap: 8px;
+}
+
+/* Click-to-pin callout card */
+.pin-card {
+  background: #1a1a1a;
+  color: #fff;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  border-radius: 2px;
+}
+
+.pin-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.pin-sku {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.pin-close {
+  margin-left: auto;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #d8d8d8;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pin-close:hover { background: rgba(255, 255, 255, 0.1); }
+
+.pin-card-body {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.pin-detail {}
+
+.pin-detail-label {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #9a9a9a;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.pin-detail-value {
+  display: block;
+  font-size: 16px;
+  color: #ededed;
+  font-variant-numeric: tabular-nums;
+}
+
+.pin-attribution {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 14px;
+}
+
+.pin-attribution-label {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #9a9a9a;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.pin-attribution-text {
+  font-size: 16px;
+  color: #d8d8d8;
+  line-height: 1.5;
+  margin: 0;
+  font-style: italic;
+}
+
+/* Table row interaction */
+.ledger-row {
+  cursor: pointer;
+  transition: background 120ms;
+}
+
+.ledger-row:hover { background: var(--surface); }
+
+.ledger-row.pinned { background: var(--surface-danger); }
+
+.attribution-cell {
+  font-size: 14px;
+  color: var(--ink-soft);
+  max-width: 400px;
+}
