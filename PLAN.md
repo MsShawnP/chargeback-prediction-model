@@ -62,7 +62,7 @@ change signals. No shortcut to today's state.
 - [x] Run /ce:work — U5: model training + SHAP attribution (2026-05-31)
 - [x] Run /ce:work — U6: forward scoring + prevention roadmap (2026-05-31)
 - [x] Run /ce:work — U7: pipeline orchestration + JSON/CSV export (2026-05-31)
-- [ ] Run /ce:work — U8–U10: React app (Risk Ledger + Simulator)
+- [x] Run /ce:work — U8–U10: React app (Risk Ledger + Simulator) (2026-05-31)
 - [ ] Run /ce:work — U11: Cloudflare Pages deployment
 - [ ] Run /ce:work — U12–U15: Quarto reports
 - [ ] Run /ce:work — U16: GitHub Actions CI/CD
