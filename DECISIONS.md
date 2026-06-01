@@ -100,6 +100,13 @@ Each entry:
 
 ---
 
+### 2026-06-01 — Tests for pipeline output fields must assert the TypeScript-contract value, not just Python round-trip consistency
+- **Why:** `assign_risk_tier` emitted `"low"/"medium"/"high"` and tests asserted those same lowercase values — tests passed for months while confirming the wrong behavior. The TypeScript `RiskEntry` type declared `"HIGH" | "MEDIUM" | "LOW"`. The bug was present from the first commit and only caught by code review, not tests.
+- **Scope:** Any pipeline function whose output is consumed by the TypeScript frontend — field values, field names, and data types must be verified against `frontend/src/types.ts`, not just internal Python consistency.
+- **Do not:** Write Python tests that only verify Python-to-Python round-trips for fields that cross the pipeline→frontend contract. If a TypeScript type declares a union or specific casing, the Python test must assert that exact value.
+
+---
+
 ## Writing & Voice
 
 ### 2026-05-31 — Use Economist style for all written deliverables

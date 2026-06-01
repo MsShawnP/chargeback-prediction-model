@@ -9,6 +9,18 @@ For things that didn't work, see FAILURES.md.
 
 ---
 
+## 2026-06-01 12:46 — SESSION WRAP: /ce:review complete; 15 bugs fixed
+
+**Started from:** Pipeline verified end-to-end (AUC=0.7485), real data live. Only arc items remaining: /ce:review and /qa.
+
+**Did:** 13-persona parallel review; synthesized 25 primary findings; applied 15 fixes (1 P0, 9 P1, 5 P2). Key fixes: risk_tier uppercase (Simulator permanently showed 0 affected), SHAP/scored row alignment (wrong SHAP values for every intervention), retailer decode bug, historical rates using wrong parquet. 170/170 tests green; TypeScript clean. 6 items deferred (non-atomic writes, HistGBT, SHAP subset, SQL pattern, DB re-query, one-hot extract).
+
+**State:** All confirmed functional bugs resolved. DB password in .env needs manual rotation. Only remaining arc item: /qa.
+
+**Next:** Rotate DB password (`flyctl postgres connect -a cinderhaven-db` + `ALTER ROLE`). Then run `/qa` to do a browser/user testing pass on the live app and close the arc.
+
+---
+
 ## 2026-06-01 12:46 — /ce:review complete; 15 bugs fixed across 13 files
 
 **What changed:** 13-persona code review ran; 15 findings fixed (1 P0, 9 P1, 5 P2).

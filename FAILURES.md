@@ -167,6 +167,48 @@ shouldn't re-attempt dead ends because the lesson got lost.
 
 ---
 
+### 2026-06-01 — Code reviewer flagged item_setup_gap as missing from PREVENTABILITY_FRACTIONS (false positive)
+
+**Attempted:** kieran-python reviewer (KP-09) flagged that `item_setup_gap` was absent from `PREVENTABILITY_FRACTIONS` in `roadmap.py`, meaning it would silently get `0.0` via `.fillna(0.0)`.
+
+**Why it didn't work:** The finding was wrong. `item_setup_gap: 0.80` is present in `PREVENTABILITY_FRACTIONS` at `roadmap.py:22`. The reviewer failed to read the full dict before flagging.
+
+**What we tried instead:** Verified by reading the file before applying the fix. Suppressed as a false positive.
+
+**Status:** False positive — no fix needed. Dict already correct.
+
+**Tags:** code-review, false-positive, roadmap, PREVENTABILITY_FRACTIONS, item_setup_gap, reviewer-error
+
+---
+
+### 2026-06-01 — SHAP delta clamping review finding was a false positive (K-003)
+
+**Attempted:** TypeScript reviewer (K-003) flagged that `activeReduction` could be negative in `computeSavings()` (Simulator.tsx), making `newProb > probability` and generating negative savings.
+
+**Why it didn't work:** The finding was wrong. The function explicitly guards: `if (shap > 0) activeReduction += shap` — only positive SHAP values are accumulated, so `activeReduction >= 0` always, and `newProb <= probability` always holds. No clamping at 1 is needed.
+
+**What we tried instead:** Verified by reading the code before applying the fix. Suppressed as a false positive.
+
+**Status:** False positive — no fix needed. Guard already present.
+
+**Tags:** code-review, false-positive, simulator, shap, typescript, clamping, reviewer-error
+
+---
+
+### 2026-06-01 — Test assertions used wrong lowercase risk tier values — tests confirmed the bug
+
+**Attempted:** Tests in `test_scoring.py` asserted `risk_tier == "high"` / `"medium"` / `"low"`. The production code also emitted lowercase. Both appeared to agree.
+
+**Why it didn't work:** The TypeScript type declared `"HIGH" | "MEDIUM" | "LOW"` (uppercase). Tests and production code were both wrong in the same direction — the tests confirmed the bug instead of catching it. Only the cross-reviewer code review surfaced the mismatch.
+
+**What we tried instead:** Fixed `assign_risk_tier` to emit uppercase and updated the 5 test assertions to match. 170/170 green.
+
+**Status:** Resolved
+
+**Tags:** code-review, risk-tier, uppercase, test-assertions, false-confidence, scoring, typescript
+
+---
+
 ### 2026-06-01 — First synthetic signal attempt (quality flags as primary) got AUC 0.62, not 0.65
 
 **Attempted:** Made `gtin14_missing` (5× multiplier) the dominant synthetic chargeback signal. Model achieved AUC 0.62.
