@@ -9,6 +9,18 @@ For things that didn't work, see FAILURES.md.
 
 ---
 
+## 2026-06-01 11:46 — Pipeline fully verified; frontend redeployed with real data
+
+**What changed:** Full pipeline (steps 01–07) confirmed end-to-end against Cinderhaven; frontend redeployed with real summary data.
+
+**Why:** Previous session left steps 05–07 unconfirmed due to context limit. This session verified all steps, patched generate_sample_json.py to not overwrite summary.json (07_export owns it), and pushed real values live.
+
+**State:** 170/170 tests green. AUC=0.7485. $691K total chargebacks, $485K preventable (70%). summary.json has real pipeline values. risk_ledger.json and simulator.json have sample forward POs (no upcoming POs exist in Cinderhaven — all orders shipped). App live at https://chargeback-prediction-model.msshawnp.workers.dev. PLAN.md pipeline validation item marked done. Only open arc items: /ce:review and /qa.
+
+**Next:** Run `/ce:review` to get the reviewer ensemble pass, then `/qa` to close the arc.
+
+---
+
 ## 2026-05-31 21:23 — SESSION WRAP: U11–U16 complete
 
 **Started from:** U1–U10 complete. React app built but JSON files empty; U11–U16 untouched.
