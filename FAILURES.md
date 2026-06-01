@@ -94,3 +94,31 @@ shouldn't re-attempt dead ends because the lesson got lost.
 **Status:** Resolved — consider adding `POSTGRES_PASSWORD` to the cinderhaven-data-platform `.env` and loading it in a project shell alias or `direnv`.
 
 **Tags:** postgres, authentication, env-var, POSTGRES_PASSWORD, dbt, seed, cinderhaven
+
+---
+
+### 2026-05-31 — Unicode `→` in generate_sample_json.py print statements crashed on Windows (repeat failure)
+
+**Attempted:** Used `→` (U+2192) in a print statement inside `scripts/generate_sample_json.py`.
+
+**Why it didn't work:** Windows default terminal encoding is cp1252. Same root cause as the U1 EDA failure — the lesson didn't carry over to the new script. `UnicodeEncodeError` on first run.
+
+**What we tried instead:** Replaced `→` with `->`. Ran cleanly.
+
+**Status:** Resolved
+
+**Tags:** windows, unicode, encoding, cp1252, print, scripts — second occurrence; the fix from U1 should have been a checklist item for every new script
+
+---
+
+### 2026-05-31 — generate_sample_json.py produced rows with fewer than 9 SHAP keys
+
+**Attempted:** `make_shap_values()` assigned SHAP values to features in `missing_bool_features` inside the `if missing_bool_features:` branch, then skipped to the scalar features (data_quality_score, asn_sent_late, etc.). Boolean features not in the missing list were never assigned.
+
+**Why it didn't work:** The function initialised `shap = {}` and only populated a key when it encountered it. Rows with `missing_bool_features = ["case_dims_missing"]` would have `case_dims_missing` set but not `gtin14_missing`, `upc_missing`, or `case_weight_missing`. Validation check `all(len(r['shap_values']) == 9 for r in sim)` caught it.
+
+**What we tried instead:** Added a follow-up loop after the branch: `for feat in bool_feats: if feat not in shap: shap[feat] = small_value`. All rows then have exactly 9 keys.
+
+**Status:** Resolved
+
+**Tags:** sample-data, shap, json, generator, dict-initialization, validation

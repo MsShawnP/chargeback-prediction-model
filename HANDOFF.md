@@ -9,6 +9,18 @@ For things that didn't work, see FAILURES.md.
 
 ---
 
+## 2026-05-31 21:23 — SESSION WRAP: U11–U16 complete
+
+**Started from:** U1–U10 complete. React app built but JSON files empty; U11–U16 untouched.
+
+**Did:** Deployed React app to Cloudflare Pages (sample 45-row dataset, live at https://chargeback-prediction-model.msshawnp.workers.dev). Quarto scaffold with Lailara CSS + self-hosted fonts. Three `.qmd` reports: Prevention Roadmap (Plotly charts, margin math), Executive Tearsheet (CFO headline-grid), Methodology Appendix (harmonization, point-in-time, SHAP worked example). GitHub Pages CI/CD (`render.yml`). `scripts/generate_sample_json.py` for re-generating JSON from real pipeline output.
+
+**State:** 148/148 tests green. Build clean. App live with sample data. `.qmd` files written, not yet rendered locally (no Quarto on this machine). Both workflows committed; need GitHub secrets (`CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `DATABASE_URL`) before CI activates. Arc items open: real pipeline data, `/ce:review`, `/qa`.
+
+**Next:** `flyctl proxy` → `python run_pipeline.py` → `python scripts/generate_sample_json.py` → re-deploy frontend → add GitHub secrets → push → confirm CI. Then `/ce:review` and `/qa` to close the arc.
+
+---
+
 ## 2026-05-31 21:23 — U11–U16 complete: deployment + Quarto reports + CI/CD live
 
 **What changed:** React app deployed to Cloudflare Pages with 45-row sample dataset; three Quarto reports built (Prevention Roadmap, Executive Tearsheet, Methodology Appendix); GitHub Pages CI/CD workflow wired. `scripts/generate_sample_json.py` regenerates JSON when pipeline runs against Cinderhaven.

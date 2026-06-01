@@ -98,6 +98,14 @@ Each entry:
 
 ---
 
+### 2026-05-31 — Commit sample JSON + CSV data with gitignore exceptions; deploy before real pipeline data is available
+
+- **Why:** The pipeline requires `flyctl proxy` and a live Cinderhaven connection. Blocking the portfolio deployment on that connection means the deliverable isn't live until an arbitrary infrastructure step is complete. Sample data (generated with a committed script and a fixed seed) makes the app demonstrable immediately and gets replaced when the pipeline runs. The alternative — deploying an empty-array app — is a worse portfolio artifact.
+- **Scope:** `frontend/public/json/` (React app) and `output/frames/*.csv` (Quarto reports). Both have `.gitignore` exceptions. The generator script `scripts/generate_sample_json.py` documents how to regenerate.
+- **Do not:** Hard-code sample values in the app or reports — all numbers must come from the JSON/CSV files so that running the real pipeline automatically upgrades the deliverables without touching application code.
+
+---
+
 ## Reversed / Superseded
 
 ### ~~2026-05-31 — Use multi-hop join chain for chargeback-to-shipment linkage; no direct join exists~~
