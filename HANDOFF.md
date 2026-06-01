@@ -33,6 +33,18 @@ For things that didn't work, see FAILURES.md.
 
 ---
 
+## 2026-06-01 11:00 — SESSION WRAP: pipeline running, AUC gate passed
+
+**Started from:** U1–U16 built, React app live on sample data. Real pipeline never run — `01_extract.py` missing.
+
+**Did:** Built `01_extract.py`; fixed multi-hop join and schema mismatches in `03_features.py`; diagnosed zero signal in Cinderhaven chargebacks (synthetic data, no quality correlation); researched Lailara project precedent (all treat Postgres as read-only); built `scripts/generate_training_data.py` with causal synthetic labels (ASN + quality → chargeback); switched to GradientBoosting; fixed SHAP 2D/3D shape; rewrote `build_chargeback_labels` (most-recent-shipment-per-event); fixed `05_score.py` column names, retailer reconstruction, empty-POs guard. 170/170 tests. AUC=0.7485.
+
+**State:** Steps 01–04 verified green this session. Step 05 fix committed but not yet confirmed by a full run (context limit hit mid-run). Steps 06–07 not verified. Frontend still on sample data. `flyctl proxy` target is `cinderhaven-db` (not `cinderhaven-data-platform`).
+
+**Next:** `flyctl proxy 5432 -a cinderhaven-db` → `python run_pipeline.py` → confirm 05–07 pass → `python scripts/generate_sample_json.py` → redeploy frontend → `/ce:review`.
+
+---
+
 ---
 
 ## 2026-05-31 21:23 — U11–U16 complete: deployment + Quarto reports + CI/CD live

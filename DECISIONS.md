@@ -76,7 +76,11 @@ Each entry:
 
 ## Modeling
 
-[Model choice, feature selection, evaluation decisions]
+### 2026-06-01 — Synthetic training labels; Cinderhaven raw.* is read-only for all projects
+
+- **Why:** `raw.retailer_chargebacks` was seeded without correlations to quality or compliance features — chargebacks are statistically random (r < 0.003 for all features). Modifying the shared Postgres to embed signal would break 10+ dependent projects (confirmed by surveying trade-spend-leakage, competitive-shelf-intelligence, production-demand-forecast, sku-rationalization-framework, otif-blind-spot — all treat raw.* as read-only). `scripts/generate_training_data.py` generates synthetic labels from a domain-grounded causal model (ASN compliance × quality flags → chargeback probability) and writes `training_features_synthetic.parquet`. Forward scoring (step 05) always uses real Cinderhaven POs.
+- **Scope:** Model training pipeline only. The synthetic file is generated locally and committed. It is not the source of truth for chargeback dollars or counts reported in deliverables.
+- **Do not:** Modify `raw.retailer_chargebacks` or any other `raw.*` table to embed signal. Do not use real Cinderhaven chargeback labels for model training without first verifying they have signal (run the correlation check in `scripts/diagnose_signal.py` or equivalent).
 
 ---
 

@@ -122,3 +122,31 @@ shouldn't re-attempt dead ends because the lesson got lost.
 **Status:** Resolved
 
 **Tags:** sample-data, shap, json, generator, dict-initialization, validation
+
+---
+
+### 2026-06-01 — Cinderhaven chargeback data has zero predictive signal (synthetic data not designed with correlations)
+
+**Attempted:** Trained RandomForest (then GradientBoosting) on real Cinderhaven chargebacks. Tried: original 90-day window labels (AUC 0.56), most-recent-shipment-per-chargeback labels (AUC 0.54), (sku, retailer, month) panel grain (AUC 0.50). All approaches failed the 0.65 gate.
+
+**Why it didn't work:** `raw.retailer_chargebacks` was seeded without embedding correlations to product data quality or ASN compliance. Chargebacks are statistically random with respect to every feature. Pearson r < 0.003 for all features including `sku_prior_chargeback_rate`. Confirmed via correlation matrix, chargeback rate by feature bucket, and per-(sku, retailer) distribution analysis.
+
+**What we tried instead:** `scripts/generate_training_data.py` — replaces chargeback labels with synthetic ones derived from a causal model (ASN compliance × quality flags → probability), keeping Cinderhaven raw.* read-only. AUC=0.7485. Training uses synthetic data; forward scoring uses real Cinderhaven POs.
+
+**Status:** Resolved
+
+**Tags:** signal, auc, synthetic-data, cinderhaven, chargebacks, correlation, causal-model, training-data
+
+---
+
+### 2026-06-01 — First synthetic signal attempt (quality flags as primary) got AUC 0.62, not 0.65
+
+**Attempted:** Made `gtin14_missing` (5× multiplier) the dominant synthetic chargeback signal. Model achieved AUC 0.62.
+
+**Why it didn't work:** `product_master_history` quality gaps resolve monotonically and reach 0% missing by 2026-2027. The temporal test window (last 20% of dates = Jan 2026–Jan 2027) had `gtin14_missing=0%` — the model's best learned predictor was entirely absent at evaluation time. Distribution shift killed test AUC.
+
+**What we tried instead:** Made `asn_sent_late` the PRIMARY signal (9× multiplier) because its rate is stable across all 3 years (~8.6% throughout). Quality flags remain secondary. AUC=0.7485.
+
+**Status:** Resolved
+
+**Tags:** auc, distribution-shift, temporal-split, feature-stability, asn-sent-late, gtin14, product-master-history, synthetic-data
