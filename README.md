@@ -50,3 +50,7 @@ Part of the Lailara LLC analytics portfolio. Bridges the Product Data Health
 Audit (finds the data problems) and Retailer Deduction Recovery (disputes
 chargebacks after arrival) by proving the causal link and quantifying the
 prevention opportunity.
+
+---
+
+Built by [Lailara LLC](https://lailarallc.com) — data hygiene and analytics consulting for specialty food brands scaling into national retail.
