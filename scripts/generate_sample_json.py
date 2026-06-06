@@ -18,7 +18,7 @@ random.seed(SEED)
 OUTPUT_DIR = Path("frontend/public/json")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-RETAILERS = ["WMT", "TGT", "KGR", "ALB", "ACM"]
+RETAILERS = ["WMT", "COSTCO", "WHOLEFOODS", "SPROUTS", "KGR", "REGIONAL"]
 
 SKUS = (
     [f"CHP-AS-{i:03d}" for i in range(1, 21)]   # Ambient Shelf (20)

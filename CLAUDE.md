@@ -137,3 +137,15 @@ PLAN.md defines the current arc of work. Read it at session start.
 - Default to short responses unless the task is substantive
 - Default to asking before promoting a log entry to a DECISIONS.md entry
 - Default to answering, not offering to answer
+
+## Data contract
+
+Data contract: 50 SKUs / 5 product lines / 6 retailers per CINDERHAVEN_CANONICAL.md
+
+Canonical retailers: WMT (Walmart, 180 doors), COSTCO (Costco, 60 doors),
+WHOLEFOODS (Whole Foods, 120 doors), SPROUTS (Sprouts, 90 doors),
+KGR (Kroger, 150 doors), REGIONAL (Regional Group, 40 doors).
+
+All demo fixtures, test data, and generated JSON must use only these six
+retailer codes. The generator script (`scripts/generate_sample_json.py`)
+is the source of truth for demo data.
