@@ -58,7 +58,7 @@ def profile_date_ranges() -> None:
     _section("Date Ranges")
     probes = [
         ("raw.retailer_shipments", "ship_date"),
-        ("raw.retailer_chargebacks", "chargeback_date"),
+        ("raw.retailer_chargebacks", "month"),
     ]
     for table, col in probes:
         try:
