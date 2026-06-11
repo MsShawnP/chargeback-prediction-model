@@ -30,33 +30,49 @@ export default function App() {
   }
 
   return (
-    <div className="app">
-      <header>
-        <h1>Cinderhaven Provisions — Chargeback Risk</h1>
-        <p className="subtitle">
-          Predictive model · Forward risk scoring · Prevention roadmap
-        </p>
+    <div className="lailara-page">
+      <header className="lailara-header">
+        <nav className="lailara-nav-inner">
+          <a href="https://lailarallc.com" className="lailara-wordmark" target="_blank" rel="noopener noreferrer">Lailara LLC</a>
+          <span className="lailara-tool-name">Chargeback Risk</span>
+        </nav>
       </header>
+      <main className="lailara-main">
+        <div className="app">
+          <header>
+            <h1>Cinderhaven Provisions — Chargeback Risk</h1>
+            <p className="subtitle">
+              Predictive model · Forward risk scoring · Prevention roadmap
+            </p>
+          </header>
 
-      <nav className="tab-nav">
-        <button
-          className={`tab-btn${activeTab === "ledger" ? " active" : ""}`}
-          onClick={() => setActiveTab("ledger")}
-        >
-          Risk Ledger
-        </button>
-        <button
-          className={`tab-btn${activeTab === "simulator" ? " active" : ""}`}
-          onClick={() => setActiveTab("simulator")}
-        >
-          Intervention Simulator
-        </button>
-      </nav>
+          <nav className="tab-nav">
+            <button
+              className={`tab-btn${activeTab === "ledger" ? " active" : ""}`}
+              onClick={() => setActiveTab("ledger")}
+            >
+              Risk Ledger
+            </button>
+            <button
+              className={`tab-btn${activeTab === "simulator" ? " active" : ""}`}
+              onClick={() => setActiveTab("simulator")}
+            >
+              Intervention Simulator
+            </button>
+          </nav>
 
-      {activeTab === "ledger" && <RiskLedger entries={riskLedger} />}
-      {activeTab === "simulator" && (
-        <Simulator entries={simulator} summary={summary} />
-      )}
+          {activeTab === "ledger" && <RiskLedger entries={riskLedger} />}
+          {activeTab === "simulator" && (
+            <Simulator entries={simulator} summary={summary} />
+          )}
+        </div>
+      </main>
+      <footer className="lailara-footer">
+        <div className="lailara-footer-inner">
+          <p>Built by <a href="https://lailarallc.com" target="_blank" rel="noopener noreferrer">Lailara LLC</a></p>
+          <p className="lailara-footer-note">Data: Cinderhaven Provisions synthetic dataset.</p>
+        </div>
+      </footer>
     </div>
   );
 }

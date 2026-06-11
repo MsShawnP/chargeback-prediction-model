@@ -90,8 +90,8 @@
 
 /* Click-to-pin callout card */
 .pin-card {
-  background: #1a1a1a;
-  color: #fff;
+  background: var(--dark-card-bg);
+  color: var(--dark-card-text);
   padding: 20px 24px;
   margin-bottom: 20px;
   border-radius: 2px;
@@ -108,7 +108,7 @@
   font-family: var(--serif);
   font-size: 22px;
   font-weight: 700;
-  color: #fff;
+  color: var(--dark-card-text);
   letter-spacing: -0.01em;
 }
 
@@ -116,7 +116,7 @@
   margin-left: auto;
   background: none;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #d8d8d8;
+  color: var(--dark-card-sub);
   cursor: pointer;
   width: 28px;
   height: 28px;
@@ -143,7 +143,7 @@
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: #9a9a9a;
+  color: var(--dark-card-muted);
   font-weight: 700;
   margin-bottom: 4px;
 }
@@ -151,12 +151,12 @@
 .pin-detail-value {
   display: block;
   font-size: 16px;
-  color: #ededed;
+  color: var(--dark-card-item);
   font-variant-numeric: tabular-nums;
 }
 
 .pin-attribution {
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid var(--dark-card-border);
   padding-top: 14px;
 }
 
@@ -165,14 +165,14 @@
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: #9a9a9a;
+  color: var(--dark-card-muted);
   font-weight: 700;
   margin-bottom: 8px;
 }
 
 .pin-attribution-text {
   font-size: 16px;
-  color: #d8d8d8;
+  color: var(--dark-card-sub);
   line-height: 1.5;
   margin: 0;
   font-style: italic;
@@ -192,4 +192,10 @@
   font-size: 14px;
   color: var(--ink-soft);
   max-width: 400px;
+}
+
+@media (max-width: 640px) {
+  .summary-bar { flex-direction: column; }
+  .summary-stat { border-right: none; border-bottom: 1px solid var(--rule); }
+  .summary-stat:last-child { border-bottom: none; }
 }

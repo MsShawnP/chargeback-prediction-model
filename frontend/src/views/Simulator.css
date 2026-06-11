@@ -118,8 +118,8 @@
 
 /* ROI callout */
 .roi-callout {
-  background: #1a1a1a;
-  color: #ededed;
+  background: var(--dark-card-bg);
+  color: var(--dark-card-item);
   padding: 20px 24px;
   margin-bottom: 16px;
   border-radius: 2px;
@@ -127,7 +127,7 @@
   line-height: 1.55;
 }
 
-.roi-callout strong { color: #fff; }
+.roi-callout strong { color: var(--dark-card-text); }
 
 .summary-note {
   font-size: 14px;

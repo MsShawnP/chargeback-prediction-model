@@ -32,6 +32,14 @@
   --surface-warning: #fdeee0;
   --surface-success: #e4f5f0;
 
+  /* Dark callout card */
+  --dark-card-bg: #1a1a1a;
+  --dark-card-text: #ffffff;
+  --dark-card-sub: #d8d8d8;
+  --dark-card-muted: #9a9a9a;
+  --dark-card-border: rgba(255, 255, 255, 0.12);
+  --dark-card-item: #ededed;
+
   /* Typography */
   --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
   --sans: 'Source Sans 3', 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
