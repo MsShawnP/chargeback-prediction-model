@@ -328,3 +328,15 @@ Then follow the Heavy tier workflow: /office-hours → /plan-ceo-review →
 /plan-eng-review → /ce:brainstorm → /ce:plan → /ce:work.
 
 ---
+
+---
+
+## 2026-06-11 — SESSION WRAP: lailara-frame Batch 2 FULL-PASS deployed
+
+**Started from:** Arc complete (QA passed 2026-06-01). This session was frame-rollout only.
+
+**Did:** Applied lailara-frame v1.0.1. Vendored CSS+fonts into frontend/src/. Wrapped App.tsx with lailara-page/header/main/footer brand frame. Added --dark-card-* CSS custom properties to App.css. Tokenized all hardcoded dark-card hex values in RiskLedger.css and Simulator.css. Added 375px media query to stack summary stats vertically. All 4 frame criteria pass. Deployed to chargeback.lailarallc.com via wrangler.
+
+**State:** Clean. All criteria pass. No content-level drift. Committed (ea6c25e).
+
+**Next:** No further work needed on this repo from the frame rollout. Any future work is new-arc.
