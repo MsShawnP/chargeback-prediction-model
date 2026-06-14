@@ -34,7 +34,8 @@ REASON_TO_ARCHETYPE: dict[str, str] = {
     "damaged":       "logistics_overage",
     "pricing_error": "pricing_discrepancy",
     "late_delivery": "asn_timing_infraction",
-    "short_ship":    "logistics_overage",
+    "short_ship":              "logistics_overage",
+    "receiving_discrepancy":   "data_compliance_error",
 }
 
 # retailer_deduction_codes.deduction_type → archetype

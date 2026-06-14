@@ -1,5 +1,5 @@
 root_cause_archetype,count,total_amount,mean_amount
 logistics_overage,4236,424190.16,100.14
-data_compliance_error,141,137040.91,971.92
+data_compliance_error,1363,214312.93,157.24
 asn_timing_infraction,270,38306.86,141.88
 pricing_discrepancy,16,16398.76,1024.92
