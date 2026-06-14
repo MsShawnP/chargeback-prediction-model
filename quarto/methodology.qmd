@@ -120,9 +120,9 @@ A probability score without an explanation is operationally useless. A buyer who
 
 The model is required to produce a plain-language attribution string for every prediction. No exception. The attribution string names the specific data condition driving the risk score and the archetype it maps to.
 
-### Model: RandomForestClassifier with SHAP
+### Model: GradientBoostingClassifier with SHAP
 
-A RandomForestClassifier provides native SHAP (SHapley Additive exPlanations) support via `shap.TreeExplainer`. SHAP values have a precise interpretation: the SHAP value for feature $f$ in row $i$ represents the marginal contribution of $f$ to the prediction for row $i$, relative to the mean prediction across the training set.
+A GradientBoostingClassifier provides native SHAP (SHapley Additive exPlanations) support via `shap.TreeExplainer`. SHAP values have a precise interpretation: the SHAP value for feature $f$ in row $i$ represents the marginal contribution of $f$ to the prediction for row $i$, relative to the mean prediction across the training set.
 
 Positive SHAP values push the prediction above the mean (toward chargeback). Negative SHAP values push it below (away from chargeback). The feature with the largest positive SHAP value is the primary driver of the risk score.
 
