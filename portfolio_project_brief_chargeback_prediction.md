@@ -29,7 +29,7 @@ The deeper problem is timing. By the time a chargeback pattern is visible in the
 
 #### The Status Quo
 
-The deductions person (if there is one) works a queue of chargebacks reactively, disputing what they can within the window and absorbing the rest. The CFO sees "deductions: $680K" on the P&L as a single line. Nobody asks "which of our data quality problems caused these, and what would it cost to fix them at the source?" — because nobody has ever connected the upstream data to the downstream penalty. So the prevention conversation never happens.
+The deductions person (if there is one) works a queue of chargebacks reactively, disputing what they can within the window and absorbing the rest. The CFO sees "deductions: $693K" on the P&L as a single line. Nobody asks "which of our data quality problems caused these, and what would it cost to fix them at the source?" — because nobody has ever connected the upstream data to the downstream penalty. So the prevention conversation never happens.
 
 ---
 
@@ -76,7 +76,7 @@ Train an interpretable supervised model targeting chargeback probability per shi
 Score upcoming, un-shipped purchase orders against the model before they leave the dock. Dollarize each: Risk Exposure = Invoice Value × Predicted Chargeback Probability. Isolate the high-exposure fulfillment runs so the team can intervene upstream — fix the data, correct the ASN, hold the shipment — before the penalty is triggered.
 
 **Move 5 — The capital-allocation prevention roadmap.**
-Roll per-SKU risk into an executive priority list ranked not by data volume but by *financial recovery value*. "These four root causes drive 60% of your chargebacks. Fixing them prevents an estimated $410K/year. Here's the order, by prevention value." This is the output that turns the model into a board-ready business case for data governance.
+Roll per-SKU risk into an executive priority list ranked not by data volume but by *financial recovery value*. "These four root causes drive 60% of your chargebacks. Fixing them prevents an estimated $443K/year. Here's the order, by prevention value." This is the output that turns the model into a board-ready business case for data governance.
 
 #### The Output
 
@@ -87,7 +87,7 @@ Delivered in whatever form planning settles on — the analytical substance is t
 
 #### The Margin Math
 
-For a $25M brand with $680K/year in chargebacks, the preventable portion broken into root-cause groups, each tied to a specific fix:
+For a $25M brand with $693K/year in chargebacks, the preventable portion broken into root-cause groups, each tied to a specific fix:
 
 | Root Cause Group | Historical Loss | Preventable | Actionable Data Resolution |
 |------------------|:---------------:|:-----------:|----------------------------|
@@ -95,25 +95,25 @@ For a $25M brand with $680K/year in chargebacks, the preventable portion broken 
 | EDI sequence & timing gaps | $180K | $126K | Adjust ASN transmission automation triggers |
 | Item setup incompleteness | $140K | $84K | Populate missing state-level pricing/tax indices |
 | Other / legitimate | $120K | $32K | Mostly legitimate; sharpen dispute strategy |
-| **Total** | **$680K** | **~$410K** | **~1.5–2 points of net margin** |
+| **Total** | **$693K** | **~$443K** | **~1.5–2 points of net margin** |
 
 - **Preventable is permanent.** ~60% of chargebacks trace to a handful of fixable root causes. Fixing the upstream data stops the recurrence — unlike disputing, which recovers some of one quarter's loss and then resets.
 - **Recovery vs. prevention economics:** recovery is reactive, partial, and forever; prevention is one-time and eliminates the recurrence. The model shifts the brand off the dispute treadmill.
 - **The forecast cleanup:** fewer data-error chargebacks → fewer item suppressions → protected velocity → cleaner forecast. The doom-loop connection again.
 
-**Total estimated value: ~$410K/year** in preventable chargebacks at a $25M brand — most of it permanent rather than the partial, recurring recovery that disputing alone delivers.
+**Total estimated value: ~$443K/year** in preventable chargebacks at a $25M brand — most of it permanent rather than the partial, recurring recovery that disputing alone delivers.
 
 #### Before / After
 
-- **Before:** Chargebacks arrive cryptically coded. The deductions person disputes what they can. The CFO sees "$680K" and shrugs — it's the cost of doing business. The same data problems generate the same chargebacks next quarter. The treadmill never stops.
+- **Before:** Chargebacks arrive cryptically coded. The deductions person disputes what they can. The CFO sees "$693K" and shrugs — it's the cost of doing business. The same data problems generate the same chargebacks next quarter. The treadmill never stops.
 
-- **After:** The model flags that 60% of chargebacks trace to four data quality root causes. The brand fixes those four things once. Chargebacks drop by an estimated $410K/year — permanently, not via disputing. The risk score flags new chargeback-prone shipments before they ship, so the team intervenes upstream. The treadmill stops.
+- **After:** The model flags that 60% of chargebacks trace to four data quality root causes. The brand fixes those four things once. Chargebacks drop by an estimated $443K/year — permanently, not via disputing. The risk score flags new chargeback-prone shipments before they ship, so the team intervenes upstream. The treadmill stops.
 
 #### Who Else Sees This?
 
 - **Primary:** CFO (owns the deduction line), COO/ops (owns the data quality that drives it), the deductions person (gets a prioritized, attributed view instead of a blind queue).
 - **Secondary:** CEO (sees a written-off cost become controllable), the data/IT lead (gets a quantified ROI for the data cleanup they've been asking budget for).
-- **How it gets shared:** The CFO sees "$410K of this $680K is preventable, here are the four causes" and immediately funds the data fix. The attribution turns a cost center into a project with a business case.
+- **How it gets shared:** The CFO sees "$443K of this $693K is preventable, here are the four causes" and immediately funds the data fix. The attribution turns a cost center into a project with a business case.
 
 ---
 
@@ -142,7 +142,7 @@ Deliberately deferred — this brief scopes the *what* and *why*; the *how* gets
   2. Root-cause attribution — which data quality issues drive which chargeback types, with dollar relationships
   3. Per-SKU/retailer risk scores
   4. Prevention roadmap — the root causes ranked by prevention value
-  5. The business case for the data fixes ("fix these four things, prevent $410K/year")
+  5. The business case for the data fixes ("fix these four things, prevent $443K/year")
   6. A sharpened dispute strategy for the chargebacks that remain
 - **Why this piece sells it:** The reframe — "your chargebacks are predictable and 60% are preventable" — is a claim no other consultant makes, and the model proves it on the brand's own data. The pitch writes itself: *"Deduction recovery consultants charge a percentage to fight your battles after you've already lost the cash. We build a model that stops the battles from happening — by identifying the four data errors causing 60% of your fines."* The CFO funds it to turn a written-off cost into a controllable one.
 
@@ -171,14 +171,14 @@ Deliberately deferred — this brief scopes the *what* and *why*; the *how* gets
 
 ### 8. Cinderhaven Integration
 
-Cinderhaven's deduction history shows $680K/year in chargebacks across its retailers. The model finds:
+Cinderhaven's deduction history shows $693K/year in chargebacks across its retailers. The model finds:
 
 - **60% of chargebacks trace to four data quality root causes** — incomplete case dimensions, GTIN mismatches at two retailers, an ASN timing pattern, and a labeling compliance gap on one product line.
 - **SKUs with incomplete case dimensions carry 3.2x the compliance-chargeback rate** of clean SKUs.
 - **The model predicts next quarter's chargebacks** within a defensible accuracy band, flagging the highest-risk SKU/retailer combinations before they ship.
-- **Fixing the top four root causes would prevent an estimated $410K/year** — permanently.
+- **Fixing the top four root causes would prevent an estimated $443K/year** — permanently.
 
-Headline: **$410K of Cinderhaven's $680K chargeback bill wasn't random — it was four fixable data problems generating the same penalties every quarter.**
+Headline: **$443K of Cinderhaven's $693K chargeback bill wasn't random — it was four fixable data problems generating the same penalties every quarter.**
 
 Runs on the existing Cinderhaven Data Platform — joins `fct_deductions`, the product data marts, EDI history, and shipment data. Consistent with the chargeback figures in Retailer Deduction Recovery and the data quality findings in Product Data Health Audit (the model formalizes the causal link those two pieces imply).
 

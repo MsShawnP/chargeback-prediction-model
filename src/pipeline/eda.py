@@ -25,8 +25,8 @@ OUTPUT = Path("output/frames")
 
 EXPECTED_ROW_RANGES = {
     "raw.retailer_chargebacks": (5000, 7000),
-    "raw.retailer_deductions": (10000, 25000),
-    "raw.retailer_shipments": (40000, 55000),
+    "raw.retailer_deductions": (10000, 20000),
+    "raw.retailer_shipments": (40000, 50000),
     "raw.product_master": (20, 50),
     "raw.distribution_log": (10, 1000),
     "raw.retailer_deduction_codes": (5, 100),

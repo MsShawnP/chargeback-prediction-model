@@ -47,8 +47,9 @@ DEDUCTION_TYPE_TO_ARCHETYPE: dict[str, str] = {
     "damaged":        "logistics_overage",
     "spoilage":       "logistics_overage",
     "late_delivery":  "asn_timing_infraction",
-    "pallet_fine":    "logistics_overage",
-    "promo_billback": "legitimate",
+    "pallet_fine":              "logistics_overage",
+    "promo_billback":           "legitimate",
+    "receiving_discrepancy":    "data_compliance_error",
 }
 
 
