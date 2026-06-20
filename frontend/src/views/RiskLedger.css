@@ -5,8 +5,8 @@
   display: flex;
   gap: 0;
   background: var(--panel);
-  border: 1px solid var(--rule);
-  border-left: 3px solid var(--accent);
+  border: none;
+  border-left: 4px solid var(--accent);
   margin-bottom: 20px;
 }
 

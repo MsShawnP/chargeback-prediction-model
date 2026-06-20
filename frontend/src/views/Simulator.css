@@ -16,8 +16,8 @@
   gap: 14px;
   padding: 14px 16px;
   background: var(--panel);
-  border: 1px solid var(--rule);
-  border-left: 3px solid var(--rule);
+  border: none;
+  border-left: 4px solid var(--rule);
   margin-bottom: 8px;
   cursor: pointer;
   transition: border-left-color 150ms, background 150ms;
