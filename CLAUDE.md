@@ -149,3 +149,5 @@ KGR (Kroger, 150 doors), REGIONAL (Regional Group, 40 doors).
 All demo fixtures, test data, and generated JSON must use only these six
 retailer codes. The generator script (`scripts/generate_sample_json.py`)
 is the source of truth for demo data.
+
+Never write secrets, tokens, or passwords into tracked files, READMEs, or commit messages — use environment variables and secret stores only.
