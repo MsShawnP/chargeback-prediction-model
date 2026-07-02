@@ -33,7 +33,7 @@ total_preventable = roadmap["prevention_value"].sum()
 preventable_pct = total_preventable / total_chargeback if total_chargeback else 0
 
 preventable = (
-    roadmap[roadmap["preventability"] > 0]
+    roadmap[roadmap["preventability_fraction"] > 0]
     .sort_values("prevention_value", ascending=False)
     .reset_index(drop=True)
 )

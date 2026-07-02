@@ -1,5 +1,5 @@
 ---
-title: "The Preventable $430K: A Chargeback Prevention Roadmap"
+title: "The Preventable Chargeback: A Prevention Roadmap"
 subtitle: "Chargeback Prediction Model — Cinderhaven Data Platform"
 format:
   html:
@@ -28,7 +28,7 @@ by_archetype = pd.read_csv(FRAMES / "historical_chargebacks_by_archetype.csv")
 perf = pd.read_csv(FRAMES / "model_performance.csv")
 
 # Exclude legitimate (non-preventable) from roadmap charts
-preventable = roadmap[roadmap["preventability"] > 0].copy()
+preventable = roadmap[roadmap["preventability_fraction"] > 0].copy()
 preventable = preventable.sort_values("prevention_value", ascending=False).reset_index(drop=True)
 
 total_chargeback = roadmap["historical_loss"].sum()
@@ -130,7 +130,7 @@ for _, row in roadmap.sort_values("prevention_value", ascending=False).iterrows(
     display_rows.append({
         "Root cause": ARCHETYPE_DISPLAY.get(row["root_cause_archetype"], row["root_cause_archetype"]),
         "Historical loss": fmt_dollar(row["historical_loss"]),
-        "Preventable": fmt_pct(row["preventability"]),
+        "Preventable": fmt_pct(row["preventability_fraction"]),
         "Prevention value": fmt_dollar(row["prevention_value"]),
         "Chargeback count": int(
             by_archetype.loc[
@@ -188,10 +188,10 @@ The actions required to capture this prevention value are data management tasks,
 #| label: tbl-roadmap
 
 roadmap_display = (
-    roadmap[roadmap["preventability"] > 0]
+    roadmap[roadmap["preventability_fraction"] > 0]
     .sort_values("prevention_value", ascending=False)
     .assign(
-        Rank=range(1, len(roadmap[roadmap["preventability"] > 0]) + 1),
+        Rank=range(1, len(roadmap[roadmap["preventability_fraction"] > 0]) + 1),
         **{"Root cause": lambda df: df["root_cause_archetype"].map(ARCHETYPE_DISPLAY)},
         **{"Annual prevention value": lambda df: df["prevention_value"].apply(fmt_dollar)},
         **{"Required action": lambda df: df["fix_description"]},

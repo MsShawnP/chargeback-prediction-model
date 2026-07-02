@@ -1,5 +1,5 @@
 root_cause_archetype,historical_loss,preventability_fraction,prevention_value,fix_description
-logistics_overage,424190.16,0.7,296933.11199999996,Audit pick-and-pack procedures; add case-count verification before palletizing
-data_compliance_error,214312.93,0.8,171450.344,"Populate missing barcodes (GTIN-14, UPC) and verify label compliance before shipment"
-asn_timing_infraction,38306.86,0.7,26814.802,Submit Advance Ship Notices within the retailer-required lead time window
-pricing_discrepancy,16398.76,0.6,9839.256,Reconcile PO unit prices against approved price lists before invoicing
+logistics_overage,244901.64,0.7,171431.148,Audit pick-and-pack procedures; add case-count verification before palletizing
+data_compliance_error,142513.51,0.8,114010.80800000002,"Populate missing barcodes (GTIN-14, UPC) and verify label compliance before shipment"
+asn_timing_infraction,41748.82,0.7,29224.174,Submit Advance Ship Notices within the retailer-required lead time window
+pricing_discrepancy,17036.09,0.6,10221.654,Reconcile PO unit prices against approved price lists before invoicing

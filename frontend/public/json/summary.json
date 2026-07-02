@@ -1,11 +1,11 @@
 {
-  "total_chargeback_amount": 693208.71,
-  "total_preventable": 505037.51,
-  "preventable_pct": 0.7286,
+  "total_chargeback_amount": 446200.06,
+  "total_preventable": 324887.78,
+  "preventable_pct": 0.7281,
   "root_cause_counts": {
-    "asn_timing_infraction": 270,
-    "data_compliance_error": 1363,
-    "logistics_overage": 4236,
+    "asn_timing_infraction": 273,
+    "data_compliance_error": 300,
+    "logistics_overage": 2284,
     "pricing_discrepancy": 16
   },
   "model_auc": 0.6986
