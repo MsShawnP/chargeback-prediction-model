@@ -1,18 +1,18 @@
 name: Render Quarto reports and deploy to GitHub Pages
 
-# Runs the full Python pipeline, renders all three Quarto reports, and
-# deploys the resulting _site to GitHub Pages. DATABASE_URL must be set
-# as a repository secret pointing to the Cinderhaven Postgres instance
-# (via flyctl proxy or Fly.io private networking).
+# Renders all three Quarto reports from the frames already committed at
+# output/frames/*.csv and deploys the resulting _site to GitHub Pages.
+# Postgres is only reachable via Fly.io private networking, which CI
+# runners can't reach -- the pipeline (run_pipeline.py) must be run
+# locally against a live DB and its output/frames/*.csv committed
+# before pushing. This workflow does not touch the database.
 
 on:
   push:
     branches: [main]
     paths:
       - "quarto/**"
-      - "src/**"
-      - "run_pipeline.py"
-      - "requirements.txt"
+      - "output/frames/*.csv"
       - ".github/workflows/render.yml"
   workflow_dispatch:
 
@@ -23,7 +23,7 @@ permissions:
 
 jobs:
   render:
-    name: Pipeline + render
+    name: Render
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -38,8 +38,12 @@ jobs:
           cache: "pip"
           cache-dependency-path: requirements.txt
 
-      - name: Install Python dependencies
-        run: pip install -r requirements.txt
+      - name: Install Python dependencies for Quarto rendering
+        # Only the packages the .qmd Python cells import are needed here
+        # (pandas, plotly, pyyaml, the Jupyter engine) -- not the full
+        # pipeline stack (psycopg2, scikit-learn, shap), since the
+        # pipeline itself does not run in CI.
+        run: pip install pandas pyarrow plotly kaleido pyyaml jupyter nbformat nbclient ipykernel
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -51,11 +55,6 @@ jobs:
           quarto install tinytex --no-prompt || true
           tlmgr install scrlayer-scrpage koma-script booktabs colortbl array \
             xcolor enumitem parskip longtable multirow caption etoolbox || true
-
-      - name: Run pipeline
-        run: python run_pipeline.py
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Render Quarto reports
         run: quarto render quarto/
