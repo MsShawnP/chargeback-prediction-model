@@ -1,0 +1,246 @@
+/* report.css — Lailara Design System v2 for Quarto HTML reports.
+   Applied via _quarto.yml css field; supplements the cosmo bootstrap base. */
+
+@import url('./fonts/fonts.css');
+
+:root {
+  /* Canvas & London greyscale */
+  --ll-canvas:      #f5f3ee;
+  --ll-ink:         #0d0d0d;
+  --ll-text:        #333333;
+  --ll-text-sec:    #595959;
+  --ll-gridline:    #d9d9d9;
+  --ll-disabled:    #b3b3b3;
+  --ll-reference:   #666666;
+
+  /* Chicago (accent blue) */
+  --ll-navy:        #1f2e7a;
+  --ll-navy-hover:  #141e52;
+  --ll-navy-light:  #8e9ad0;
+
+  /* Brand red — text and rules only, never fill */
+  --ll-red:         #cc100a;
+
+  /* Hong Kong teal — sequential data */
+  --ll-hk-5:        #063d32;
+  --ll-hk-15:       #0a5c4b;
+  --ll-hk-25:       #0e6e5a;
+  --ll-hk-35:       #158f75;
+  --ll-hk-45:       #1fa282;
+  --ll-hk-55:       #35b595;
+  --ll-hk-70:       #6dcdb5;
+  --ll-hk-85:       #b5e4d8;
+  --ll-hk-95:       #e4f5f0;
+
+  /* Singapore orange — warnings */
+  --ll-sg-55:       #ee8a2a;
+  --ll-sg-95:       #fdeee0;
+
+  /* Tokyo berry — risk / negative */
+  --ll-tk-40:       #b82d4a;
+  --ll-tk-95:       #fbe9ed;
+
+  /* Typography */
+  --ll-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --ll-sans:  'Source Sans 3', 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* ---- Base ---- */
+
+body {
+  font-family: var(--ll-sans);
+  color: var(--ll-text);
+  background-color: var(--ll-canvas);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+/* Quarto content area */
+main.content,
+#quarto-document-content {
+  max-width: 900px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: 48px 24px !important;
+  box-sizing: border-box !important;
+}
+
+/* ---- Typography ---- */
+
+h1, h2, h3, h4 {
+  font-family: var(--ll-serif);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ll-ink);
+}
+
+h1 {
+  font-size: 1.85rem;
+  border-bottom: 1px solid var(--ll-gridline);
+  padding-bottom: 0.3rem;
+  margin-top: 2rem;
+}
+
+h2 { font-size: 1.4rem;  margin-top: 2.5rem; }
+h3 { font-size: 1.15rem; color: var(--ll-text-sec); }
+
+p, li { max-width: 660px; }
+
+strong { color: var(--ll-ink); }
+
+a       { color: var(--ll-navy); text-decoration: underline; }
+a:hover { color: var(--ll-navy-hover); }
+
+/* ---- Callout / blockquote ---- */
+
+blockquote,
+.callout {
+  border-left: 3px solid var(--ll-gridline);
+  background: #f2f2f2;
+  padding: 0.6rem 1rem;
+  margin: 1rem 0;
+  border-radius: 0 2px 2px 0;
+}
+
+/* ---- Tables ---- */
+
+.table-wrapper,
+div.cell-output-display {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  font-family: var(--ll-sans);
+  font-size: 0.92rem;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  width: 100%;
+}
+
+th {
+  border-bottom: 2px solid var(--ll-text);
+  text-align: left;
+  padding: 0.4rem 0.8rem;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+td { border-bottom: 1px solid var(--ll-gridline); padding: 0.4rem 0.8rem; }
+
+tr:last-child td { border-bottom: none; }
+
+/* Semantic row states */
+.row-pass td { background: var(--ll-hk-95); color: #0e6e5a; }
+.row-warn td { background: var(--ll-sg-95); color: #7a3d10; }
+.row-fail td { background: var(--ll-tk-95); color: #7a0906; }
+
+/* ---- Figures ---- */
+
+figure { margin: 2rem 0; }
+
+figcaption {
+  font-size: 0.88rem;
+  color: var(--ll-text-sec);
+  font-style: italic;
+  margin-top: 0.4rem;
+}
+
+.quarto-figure img,
+figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* ---- Headline numbers (tearsheet) ---- */
+
+.headline-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin: 2.5rem 0;
+}
+
+.headline-card {
+  border-top: 3px solid var(--ll-navy);
+  padding-top: 1rem;
+}
+
+.headline-number {
+  font-family: var(--ll-serif);
+  font-size: 3.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ll-ink);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.headline-label {
+  font-family: var(--ll-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ll-text-sec);
+}
+
+/* ---- Disclaimer chip ---- */
+
+.disclaimer {
+  font-size: 0.82rem;
+  color: var(--ll-text-sec);
+  font-style: italic;
+  border-top: 1px solid var(--ll-gridline);
+  margin-top: 2rem;
+  padding-top: 0.75rem;
+}
+
+/* ---- Section flag (red rule) ---- */
+
+.section-flag {
+  display: inline-block;
+  font-family: var(--ll-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ll-red);
+  border-top: 2px solid var(--ll-red);
+  padding-top: 0.2rem;
+  margin-bottom: 0.75rem;
+}
+
+/* ---- Dividers ---- */
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--ll-gridline);
+  margin: 2.5rem 0;
+}
+
+/* ---- Print ---- */
+
+@media print {
+  body { background-color: #ffffff; }
+
+  .headline-number { font-size: 2.5rem; }
+
+  main.content,
+  #quarto-document-content {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .headline-grid { grid-template-columns: 1fr; }
+  .headline-number { font-size: 2.5rem; }
+
+  main.content,
+  #quarto-document-content {
+    padding: 32px 16px !important;
+  }
+}

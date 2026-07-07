@@ -1,0 +1,93 @@
+[
+  {
+    "objectID": "tearsheet.html",
+    "href": "tearsheet.html",
+    "title": "Chargeback Prevention: The CFO Case",
+    "section": "",
+    "text": "Executive Summary\nCinderhaven’s chargebacks are not random. They are predictable — and most are preventable before the order ships.\nA predictive model trained on Cinderhaven’s own shipment and deduction history identifies 73% of annual chargebacks as traceable to four upstream data conditions — missing case dimensions, barcode registration gaps, late ASN filing, and item setup delays. Each condition is detectable before the order ships. Each has a specific operational fix.\nThe deductions team currently works these chargebacks reactively, winning 30–45% in disputes. Prevention requires no dispute process. Fixing the data conditions eliminates the chargeback at source and recovers the full amount, not a fraction of it."
+  },
+  {
+    "objectID": "tearsheet.html#prevention-roadmap",
+    "href": "tearsheet.html#prevention-roadmap",
+    "title": "Chargeback Prevention: The CFO Case",
+    "section": "Prevention roadmap",
+    "text": "Prevention roadmap\n\n\n\n\nTable 1\n\n\n\n\n\n\n\n\n#\nRoot cause\nAnnual loss\nPrevention value\nFix\n\n\n\n\n1\nLogistics Overage\n$245K\n$171K\nAudit pick-and-pack procedures; add case-count verification before palletizing\n\n\n2\nData Compliance Error\n$143K\n$114K\nPopulate missing barcodes (GTIN-14, UPC) and verify label compliance before shipment\n\n\n3\nASN Timing Infraction\n$42K\n$29K\nSubmit Advance Ship Notices within the retailer-required lead time window\n\n\n4\nPricing Discrepancy\n$17K\n$10K\nReconcile PO unit prices against approved price lists before invoicing"
+  },
+  {
+    "objectID": "tearsheet.html#the-economics",
+    "href": "tearsheet.html#the-economics",
+    "title": "Chargeback Prevention: The CFO Case",
+    "section": "The economics",
+    "text": "The economics\nDispute recovery returns 30–45 cents per dollar. Prevention returns 100 cents per dollar — and eliminates the working capital drag of post-ship disputes, the labor cost of the deductions team, and the carrier relationship risk from repeated chargebacks.\nThe model flags 78% of actual chargebacks before shipment, giving Cinderhaven a pre-ship intervention window. The question is not whether this is worth doing. It is which data conditions to fix first. This roadmap answers that question by prevention value.\n\nProduced using Cinderhaven synthetic demonstration data. Figures are illustrative of a repeatable methodology, not actual Cinderhaven financials. Model AUC 0.7834 on held-out temporal test set."
+  },
+  {
+    "objectID": "methodology.html",
+    "href": "methodology.html",
+    "title": "Methodology: Predicting Chargebacks Before They Ship",
+    "section": "",
+    "text": "Technical Appendix\nThis appendix documents three engineering choices that make the model interpretable, honest, and operationally useful: cross-retailer reason-code harmonization, point-in-time feature engineering, and a tree-based model with explicit SHAP attribution. Each addresses a failure mode that a naive implementation would miss."
+  },
+  {
+    "objectID": "methodology.html#cross-retailer-reason-code-harmonization",
+    "href": "methodology.html#cross-retailer-reason-code-harmonization",
+    "title": "Methodology: Predicting Chargebacks Before They Ship",
+    "section": "1. Cross-retailer reason-code harmonization",
+    "text": "1. Cross-retailer reason-code harmonization\n\nThe problem\nCinderhaven sells to five retailers. Each retailer uses its own vocabulary for chargeback reasons. One retailer charges a “label compliance fine.” Another charges a “barcode non-conformance.” A third uses “PLU error.” All three describe the same root cause: the product’s GTIN-14 barcode did not scan at the retailer’s DC.\nA model trained on raw reason codes would treat these as three unrelated signals. It would fail to recognize that a spike in label compliance fines at one retailer is the same problem as a spike in barcode non-conformances at another.\n\n\nThe solution: dual-pathway harmonization\nTwo pathways map chargeback descriptions to five canonical archetypes:\nStructured pathway. The Cinderhaven deduction codes table (retailer_deduction_codes.deduction_type) uses structured enum values. A lookup dict maps each code to exactly one archetype. An unmapped code raises an explicit error rather than silently falling through — this prevents new retailer codes from corrupting the model’s labels.\nUnstructured pathway. The retailer_chargebacks.reason field is free text. An ordered keyword/regex list checks each description in priority order; the first match wins. Unmatched descriptions return None and are logged for manual review.\n\n\nThe five canonical archetypes\n\n\n\n\n\n\n\nArchetype\nCovers\n\n\n\n\ndata_compliance_error\nMissing or invalid GTIN-14, UPC, or barcode at case level\n\n\nlogistics_overage\nCase dimension or weight discrepancy; pallet configuration errors\n\n\nasn_timing_infraction\nASN filed late or not at all relative to shipment\n\n\npricing_discrepancy\nInvoice price differs from PO or promotional agreement\n\n\nitem_setup_gap\nSKU not registered in retailer portal before first order\n\n\nlegitimate\nValid retailer deduction for confirmed over-shipment or spoilage\n\n\n\nThe mapping is defined in src/harmonization/reason_codes.py. Updating the mapping does not require touching the model — the harmonization layer is decoupled from the training pipeline."
+  },
+  {
+    "objectID": "methodology.html#point-in-time-feature-engineering",
+    "href": "methodology.html#point-in-time-feature-engineering",
+    "title": "Methodology: Predicting Chargebacks Before They Ship",
+    "section": "2. Point-in-time feature engineering",
+    "text": "2. Point-in-time feature engineering\n\nWhy today’s product master breaks the model\nproduct_master is a snapshot of today’s data quality state. If a SKU’s GTIN-14 was missing in January 2024 but populated in March 2024, today’s product_master shows it as present. A model trained on today’s state would see a clean product master and have no way to know that the chargeback in February 2024 was caused by a GTIN-14 gap that no longer exists.\nTraining on today’s state leaks future information into historical labels. The model would learn from an impossible signal and produce predictions that cannot be reproduced on new data.\n\n\nThe solution: product_master_history\nA purpose-built product_master_history table in the Cinderhaven Data Platform stores one row per SKU per monthly snapshot, covering the full shipment history date range. Each snapshot records the data quality state at that point in time:\nsku | snapshot_date | gtin14_present | upc_present | case_dims_present | case_weight_present | data_quality_score\nFor each shipment row in the training set, the feature join looks up the most recent snapshot where snapshot_date ≤ ship_date:\nSELECT *\nFROM product_master_history\nWHERE sku = :sku AND snapshot_date &lt;= :ship_date\nORDER BY snapshot_date DESC\nLIMIT 1\nThis produces the data quality state at the moment the order shipped — not today’s state, not next month’s state. The distinction is the difference between a model that generalizes and one that trains on a fiction.\n\n\nNo-leakage chargeback rate\nThe sku_prior_chargeback_rate feature represents how often a SKU has been charged back historically. Computing it naively (using all rows in the dataset) would leak future chargebacks into past predictions. The feature is computed correctly using an expanding window: for each shipment row, only shipments strictly before the current ship_date contribute to the rate. Rows with no prior history use the dataset mean.\n\n\nFeature set\n\n\n\n\n\n\n\n\nFeature\nSource\nNotes\n\n\n\n\ngtin14_missing\nproduct_master_history\nPoint-in-time boolean\n\n\nupc_missing\nproduct_master_history\nPoint-in-time boolean\n\n\ncase_dims_missing\nproduct_master_history\nPoint-in-time boolean\n\n\ncase_weight_missing\nproduct_master_history\nPoint-in-time boolean\n\n\ndata_quality_score\nproduct_master_history\nCount of missing flags (0–4)\n\n\nasn_sent_late\nretailer_shipments\nBoolean direct from source\n\n\ndays_late\nretailer_shipments\nDerived from ship vs. delivery date\n\n\nall_labels_scannable\nretailer_shipments\nBoolean from shipment record\n\n\nsku_prior_chargeback_rate\ncomputed\nExpanding window, no leakage\n\n\nretailer_id\nretailer_orders\nOne-hot encoded"
+  },
+  {
+    "objectID": "methodology.html#interpretable-model-design",
+    "href": "methodology.html#interpretable-model-design",
+    "title": "Methodology: Predicting Chargebacks Before They Ship",
+    "section": "3. Interpretable model design",
+    "text": "3. Interpretable model design\n\nThe interpretability mandate\nA probability score without an explanation is operationally useless. A buyer who sees “78% chargeback probability” cannot act on it without knowing why. A CFO evaluating the prevention roadmap cannot trust dollar figures derived from a black box.\nThe model is required to produce a plain-language attribution string for every prediction. No exception. The attribution string names the specific data condition driving the risk score and the archetype it maps to.\n\n\nModel: GradientBoostingClassifier with SHAP\nA GradientBoostingClassifier provides native SHAP (SHapley Additive exPlanations) support via shap.TreeExplainer. SHAP values have a precise interpretation: the SHAP value for feature f in row i represents the marginal contribution of f to the prediction for row i, relative to the mean prediction across the training set.\nPositive SHAP values push the prediction above the mean (toward chargeback). Negative SHAP values push it below (away from chargeback). The feature with the largest positive SHAP value is the primary driver of the risk score.\nThe model uses class_weight='balanced' because chargebacks are rare events — approximately 1.5% of shipment-SKU rows result in a chargeback. Without class balancing, a naive model achieves high accuracy by predicting “no chargeback” for every row.\n\n\nTemporal train/test split\nThe train/test split is strictly temporal, not random. Earlier shipments go to the training set; later shipments go to the test set. A random split would leak future shipments into training — the model would learn from data it could not have seen at prediction time and overstate its real-world performance.\nTraining set: 151,231 rows | Test set: 37,808 rows\n\n\nModel performance\n\n\n\nMetric\nValue\n\n\n\n\nAUC\n0.6986\n\n\nPrecision\n0.85\n\n\nRecall\n0.72\n\n\nTraining rows\n151,231\n\n\nTest rows\n37,808\n\n\n\nAn AUC of 0.6986 means the model ranks a randomly chosen chargeback above a randomly chosen non-chargeback shipment 70% of the time. This is the honest estimate: measured on held-out data the model did not train on, using a temporal split that mirrors the real scoring scenario.\n\n\nAttribution worked example\nThe following shows how a single high-risk shipment is scored and explained.\nInput row:\n\n\n\nFeature\nValue\n\n\n\n\ncase_dims_missing\nTrue\n\n\ngtin14_missing\nTrue\n\n\ncase_weight_missing\nFalse\n\n\nupc_missing\nFalse\n\n\ndata_quality_score\n2\n\n\nasn_sent_late\nFalse\n\n\ndays_late\n1\n\n\nall_labels_scannable\nTrue\n\n\nsku_prior_chargeback_rate\n0.18\n\n\nretailer_id\nWMT\n\n\n\nSHAP values (positive = pushes toward chargeback):\n\n\n\nFeature\nSHAP value\n\n\n\n\ncase_dims_missing\n+0.31 ← top driver\n\n\nsku_prior_chargeback_rate\n+0.18\n\n\ngtin14_missing\n+0.12\n\n\ndata_quality_score\n+0.09\n\n\nasn_sent_late\n+0.01\n\n\nall_labels_scannable\n-0.04\n\n\nothers\n&lt; ±0.02\n\n\n\nModel output: chargeback probability = 0.78\nAttribution string: &gt; Missing case dimensions → logistics audit → 78% probability within 14 days\nThe attribution string names the top positive SHAP feature in plain language, the archetype it maps to, and the model’s probability estimate. This string is pre-computed at pipeline run time and embedded in the risk ledger JSON — no backend call required at display time.\n\nAll performance metrics are measured on a held-out temporal test set. The worked example uses synthetic Cinderhaven demonstration data. The attribution string template, SHAP computation, and model architecture described here are implemented in src/pipeline/model.py."
+  },
+  {
+    "objectID": "prevention_roadmap.html",
+    "href": "prevention_roadmap.html",
+    "title": "The Preventable Chargeback: A Prevention Roadmap",
+    "section": "",
+    "text": "Prevention Roadmap"
+  },
+  {
+    "objectID": "prevention_roadmap.html#in-annual-chargebacks.-73-is-preventable.",
+    "href": "prevention_roadmap.html#in-annual-chargebacks.-73-is-preventable.",
+    "title": "The Preventable Chargeback: A Prevention Roadmap",
+    "section": "$446,200 in annual chargebacks. 73% is preventable.",
+    "text": "$446,200 in annual chargebacks. 73% is preventable.\nCinderhaven carries $446,200 in annual retailer chargebacks. A predictive model trained on three years of Cinderhaven shipment and deduction history identifies $324,888 — 73% of the total — as traceable to four fixable upstream data conditions. These are not disputed chargebacks. They are predictable ones.\nThe model scores each upcoming purchase order before it ships. Every risk score names the specific data condition driving it. This report presents the root-cause breakdown, the ranked prevention roadmap, and the economics of fixing versus disputing.\nThis analysis uses Cinderhaven synthetic demonstration data to illustrate a repeatable methodology. The numbers, proportions, and root-cause distribution reflect a realistic CPG brand profile."
+  },
+  {
+    "objectID": "prevention_roadmap.html#root-cause-breakdown",
+    "href": "prevention_roadmap.html#root-cause-breakdown",
+    "title": "The Preventable Chargeback: A Prevention Roadmap",
+    "section": "Root-cause breakdown",
+    "text": "Root-cause breakdown\n\n\n\n\n                            \n                                            \n\n\nFigure 1: Historical chargeback amount by root cause. Logistics overage — primarily missing case dimensions and case weight — accounts for the single largest preventable category."
+  },
+  {
+    "objectID": "prevention_roadmap.html#margin-math",
+    "href": "prevention_roadmap.html#margin-math",
+    "title": "The Preventable Chargeback: A Prevention Roadmap",
+    "section": "Margin math",
+    "text": "Margin math\nThe table below translates each root cause into a dollar figure: what it cost historically, what fraction is preventable with targeted data fixes, and the estimated annual recovery.\n\n\n\n\nTable 1\n\n\n\n\n\n\n\n\nRoot cause\nHistorical loss\nPreventable\nPrevention value\nChargeback count\n\n\n\n\nLogistics Overage\n$245K\n70%\n$171K\n2284\n\n\nData Compliance Error\n$143K\n80%\n$114K\n300\n\n\nASN Timing Infraction\n$42K\n70%\n$29K\n273\n\n\nPricing Discrepancy\n$17K\n60%\n$10K\n16"
+  },
+  {
+    "objectID": "prevention_roadmap.html#ranked-prevention-roadmap",
+    "href": "prevention_roadmap.html#ranked-prevention-roadmap",
+    "title": "The Preventable Chargeback: A Prevention Roadmap",
+    "section": "Ranked prevention roadmap",
+    "text": "Ranked prevention roadmap\n\n\n\n\n                            \n                                            \n\n\nFigure 2: Prevention value by root cause — estimated annual dollar recovery from targeted data fixes. Logistics overage tops the list at over $240K, driven primarily by case dimension and case weight gaps in the product master.\n\n\n\n\nThe actions required to capture this prevention value are data management tasks, not operational overhauls. The roadmap below names the specific fix for each root cause.\n\n\n\n\nTable 2\n\n\n\n\n\n\n\n\nRank\nRoot cause\nAnnual prevention value\nRequired action\n\n\n\n\n1\nLogistics Overage\n$171K\nAudit pick-and-pack procedures; add case-count verification before palletizing\n\n\n2\nData Compliance Error\n$114K\nPopulate missing barcodes (GTIN-14, UPC) and verify label compliance before shipment\n\n\n3\nASN Timing Infraction\n$29K\nSubmit Advance Ship Notices within the retailer-required lead time window\n\n\n4\nPricing Discrepancy\n$10K\nReconcile PO unit prices against approved price lists before invoicing"
+  },
+  {
+    "objectID": "prevention_roadmap.html#recovery-versus-prevention",
+    "href": "prevention_roadmap.html#recovery-versus-prevention",
+    "title": "The Preventable Chargeback: A Prevention Roadmap",
+    "section": "Recovery versus prevention",
+    "text": "Recovery versus prevention\nThe deductions team currently disputes chargebacks after they post. The industry win rate on retailer disputes is 30–45%. At a 40% win rate, recovering $446,200 in annual chargebacks yields roughly $178,480 — before dispute labor costs.\nPrevention requires no dispute process. Fixing the data conditions identified above eliminates the chargeback at source. The model’s AUC of 0.6986 means that 70% of actual chargebacks are flagged before shipment, giving the brand a pre-ship intervention window.\nThe math is straightforward: $324,888 in preventable chargebacks recovered at 100% is worth more than $446,200 recovered at 40%, and it eliminates the working capital drag of post-ship disputes.\n\nThis analysis was produced using Cinderhaven synthetic demonstration data. All dollar figures, chargeback counts, and root-cause distributions are illustrative of a real methodology, not actual Cinderhaven financials."
+  }
+]

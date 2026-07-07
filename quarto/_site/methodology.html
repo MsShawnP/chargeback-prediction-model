@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Methodology: Predicting Chargebacks Before They Ship – Chargeback Prediction Model</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-a0f9fd0d421825b736dc1bbcbcba2219.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="assets/report.css">
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#cross-retailer-reason-code-harmonization" id="toc-cross-retailer-reason-code-harmonization" class="nav-link active" data-scroll-target="#cross-retailer-reason-code-harmonization">1. Cross-retailer reason-code harmonization</a>
+  <ul class="collapse">
+  <li><a href="#the-problem" id="toc-the-problem" class="nav-link" data-scroll-target="#the-problem">The problem</a></li>
+  <li><a href="#the-solution-dual-pathway-harmonization" id="toc-the-solution-dual-pathway-harmonization" class="nav-link" data-scroll-target="#the-solution-dual-pathway-harmonization">The solution: dual-pathway harmonization</a></li>
+  <li><a href="#the-five-canonical-archetypes" id="toc-the-five-canonical-archetypes" class="nav-link" data-scroll-target="#the-five-canonical-archetypes">The five canonical archetypes</a></li>
+  </ul></li>
+  <li><a href="#point-in-time-feature-engineering" id="toc-point-in-time-feature-engineering" class="nav-link" data-scroll-target="#point-in-time-feature-engineering">2. Point-in-time feature engineering</a>
+  <ul class="collapse">
+  <li><a href="#why-todays-product-master-breaks-the-model" id="toc-why-todays-product-master-breaks-the-model" class="nav-link" data-scroll-target="#why-todays-product-master-breaks-the-model">Why today’s product master breaks the model</a></li>
+  <li><a href="#the-solution-product_master_history" id="toc-the-solution-product_master_history" class="nav-link" data-scroll-target="#the-solution-product_master_history">The solution: product_master_history</a></li>
+  <li><a href="#no-leakage-chargeback-rate" id="toc-no-leakage-chargeback-rate" class="nav-link" data-scroll-target="#no-leakage-chargeback-rate">No-leakage chargeback rate</a></li>
+  <li><a href="#feature-set" id="toc-feature-set" class="nav-link" data-scroll-target="#feature-set">Feature set</a></li>
+  </ul></li>
+  <li><a href="#interpretable-model-design" id="toc-interpretable-model-design" class="nav-link" data-scroll-target="#interpretable-model-design">3. Interpretable model design</a>
+  <ul class="collapse">
+  <li><a href="#the-interpretability-mandate" id="toc-the-interpretability-mandate" class="nav-link" data-scroll-target="#the-interpretability-mandate">The interpretability mandate</a></li>
+  <li><a href="#model-gradientboostingclassifier-with-shap" id="toc-model-gradientboostingclassifier-with-shap" class="nav-link" data-scroll-target="#model-gradientboostingclassifier-with-shap">Model: GradientBoostingClassifier with SHAP</a></li>
+  <li><a href="#temporal-traintest-split" id="toc-temporal-traintest-split" class="nav-link" data-scroll-target="#temporal-traintest-split">Temporal train/test split</a></li>
+  <li><a href="#model-performance" id="toc-model-performance" class="nav-link" data-scroll-target="#model-performance">Model performance</a></li>
+  <li><a href="#attribution-worked-example" id="toc-attribution-worked-example" class="nav-link" data-scroll-target="#attribution-worked-example">Attribution worked example</a></li>
+  </ul></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="methodology.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Methodology: Predicting Chargebacks Before They Ship</h1>
+<p class="subtitle lead">Chargeback Prediction Model — Technical Appendix</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="section-flag">
+Technical Appendix
+</div>
+<p>This appendix documents three engineering choices that make the model interpretable, honest, and operationally useful: cross-retailer reason-code harmonization, point-in-time feature engineering, and a tree-based model with explicit SHAP attribution. Each addresses a failure mode that a naive implementation would miss.</p>
+<hr>
+<section id="cross-retailer-reason-code-harmonization" class="level2">
+<h2 class="anchored" data-anchor-id="cross-retailer-reason-code-harmonization">1. Cross-retailer reason-code harmonization</h2>
+<section id="the-problem" class="level3">
+<h3 class="anchored" data-anchor-id="the-problem">The problem</h3>
+<p>Cinderhaven sells to five retailers. Each retailer uses its own vocabulary for chargeback reasons. One retailer charges a “label compliance fine.” Another charges a “barcode non-conformance.” A third uses “PLU error.” All three describe the same root cause: the product’s GTIN-14 barcode did not scan at the retailer’s DC.</p>
+<p>A model trained on raw reason codes would treat these as three unrelated signals. It would fail to recognize that a spike in label compliance fines at one retailer is the same problem as a spike in barcode non-conformances at another.</p>
+</section>
+<section id="the-solution-dual-pathway-harmonization" class="level3">
+<h3 class="anchored" data-anchor-id="the-solution-dual-pathway-harmonization">The solution: dual-pathway harmonization</h3>
+<p>Two pathways map chargeback descriptions to five canonical archetypes:</p>
+<p><strong>Structured pathway.</strong> The Cinderhaven deduction codes table (<code>retailer_deduction_codes.deduction_type</code>) uses structured enum values. A lookup dict maps each code to exactly one archetype. An unmapped code raises an explicit error rather than silently falling through — this prevents new retailer codes from corrupting the model’s labels.</p>
+<p><strong>Unstructured pathway.</strong> The <code>retailer_chargebacks.reason</code> field is free text. An ordered keyword/regex list checks each description in priority order; the first match wins. Unmatched descriptions return <code>None</code> and are logged for manual review.</p>
+</section>
+<section id="the-five-canonical-archetypes" class="level3">
+<h3 class="anchored" data-anchor-id="the-five-canonical-archetypes">The five canonical archetypes</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Archetype</th>
+<th>Covers</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>data_compliance_error</code></td>
+<td>Missing or invalid GTIN-14, UPC, or barcode at case level</td>
+</tr>
+<tr class="even">
+<td><code>logistics_overage</code></td>
+<td>Case dimension or weight discrepancy; pallet configuration errors</td>
+</tr>
+<tr class="odd">
+<td><code>asn_timing_infraction</code></td>
+<td>ASN filed late or not at all relative to shipment</td>
+</tr>
+<tr class="even">
+<td><code>pricing_discrepancy</code></td>
+<td>Invoice price differs from PO or promotional agreement</td>
+</tr>
+<tr class="odd">
+<td><code>item_setup_gap</code></td>
+<td>SKU not registered in retailer portal before first order</td>
+</tr>
+<tr class="even">
+<td><code>legitimate</code></td>
+<td>Valid retailer deduction for confirmed over-shipment or spoilage</td>
+</tr>
+</tbody>
+</table>
+<p>The mapping is defined in <code>src/harmonization/reason_codes.py</code>. Updating the mapping does not require touching the model — the harmonization layer is decoupled from the training pipeline.</p>
+<hr>
+</section>
+</section>
+<section id="point-in-time-feature-engineering" class="level2">
+<h2 class="anchored" data-anchor-id="point-in-time-feature-engineering">2. Point-in-time feature engineering</h2>
+<section id="why-todays-product-master-breaks-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="why-todays-product-master-breaks-the-model">Why today’s product master breaks the model</h3>
+<p><code>product_master</code> is a snapshot of today’s data quality state. If a SKU’s GTIN-14 was missing in January 2024 but populated in March 2024, today’s <code>product_master</code> shows it as present. A model trained on today’s state would see a clean product master and have no way to know that the chargeback in February 2024 was caused by a GTIN-14 gap that no longer exists.</p>
+<p>Training on today’s state leaks future information into historical labels. The model would learn from an impossible signal and produce predictions that cannot be reproduced on new data.</p>
+</section>
+<section id="the-solution-product_master_history" class="level3">
+<h3 class="anchored" data-anchor-id="the-solution-product_master_history">The solution: product_master_history</h3>
+<p>A purpose-built <code>product_master_history</code> table in the Cinderhaven Data Platform stores one row per SKU per monthly snapshot, covering the full shipment history date range. Each snapshot records the data quality state at that point in time:</p>
+<pre><code>sku | snapshot_date | gtin14_present | upc_present | case_dims_present | case_weight_present | data_quality_score</code></pre>
+<p>For each shipment row in the training set, the feature join looks up the most recent snapshot where <code>snapshot_date ≤ ship_date</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> product_master_history</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> sku <span class="op">=</span> <span class="ch">:sku</span> <span class="kw">AND</span> snapshot_date <span class="op">&lt;=</span> <span class="ch">:ship_date</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> snapshot_date <span class="kw">DESC</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This produces the data quality state at the moment the order shipped — not today’s state, not next month’s state. The distinction is the difference between a model that generalizes and one that trains on a fiction.</p>
+</section>
+<section id="no-leakage-chargeback-rate" class="level3">
+<h3 class="anchored" data-anchor-id="no-leakage-chargeback-rate">No-leakage chargeback rate</h3>
+<p>The <code>sku_prior_chargeback_rate</code> feature represents how often a SKU has been charged back historically. Computing it naively (using all rows in the dataset) would leak future chargebacks into past predictions. The feature is computed correctly using an expanding window: for each shipment row, only shipments strictly before the current <code>ship_date</code> contribute to the rate. Rows with no prior history use the dataset mean.</p>
+</section>
+<section id="feature-set" class="level3">
+<h3 class="anchored" data-anchor-id="feature-set">Feature set</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>Source</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>gtin14_missing</code></td>
+<td>product_master_history</td>
+<td>Point-in-time boolean</td>
+</tr>
+<tr class="even">
+<td><code>upc_missing</code></td>
+<td>product_master_history</td>
+<td>Point-in-time boolean</td>
+</tr>
+<tr class="odd">
+<td><code>case_dims_missing</code></td>
+<td>product_master_history</td>
+<td>Point-in-time boolean</td>
+</tr>
+<tr class="even">
+<td><code>case_weight_missing</code></td>
+<td>product_master_history</td>
+<td>Point-in-time boolean</td>
+</tr>
+<tr class="odd">
+<td><code>data_quality_score</code></td>
+<td>product_master_history</td>
+<td>Count of missing flags (0–4)</td>
+</tr>
+<tr class="even">
+<td><code>asn_sent_late</code></td>
+<td>retailer_shipments</td>
+<td>Boolean direct from source</td>
+</tr>
+<tr class="odd">
+<td><code>days_late</code></td>
+<td>retailer_shipments</td>
+<td>Derived from ship vs.&nbsp;delivery date</td>
+</tr>
+<tr class="even">
+<td><code>all_labels_scannable</code></td>
+<td>retailer_shipments</td>
+<td>Boolean from shipment record</td>
+</tr>
+<tr class="odd">
+<td><code>sku_prior_chargeback_rate</code></td>
+<td>computed</td>
+<td>Expanding window, no leakage</td>
+</tr>
+<tr class="even">
+<td><code>retailer_id</code></td>
+<td>retailer_orders</td>
+<td>One-hot encoded</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+</section>
+<section id="interpretable-model-design" class="level2">
+<h2 class="anchored" data-anchor-id="interpretable-model-design">3. Interpretable model design</h2>
+<section id="the-interpretability-mandate" class="level3">
+<h3 class="anchored" data-anchor-id="the-interpretability-mandate">The interpretability mandate</h3>
+<p>A probability score without an explanation is operationally useless. A buyer who sees “78% chargeback probability” cannot act on it without knowing <em>why</em>. A CFO evaluating the prevention roadmap cannot trust dollar figures derived from a black box.</p>
+<p>The model is required to produce a plain-language attribution string for every prediction. No exception. The attribution string names the specific data condition driving the risk score and the archetype it maps to.</p>
+</section>
+<section id="model-gradientboostingclassifier-with-shap" class="level3">
+<h3 class="anchored" data-anchor-id="model-gradientboostingclassifier-with-shap">Model: GradientBoostingClassifier with SHAP</h3>
+<p>A GradientBoostingClassifier provides native SHAP (SHapley Additive exPlanations) support via <code>shap.TreeExplainer</code>. SHAP values have a precise interpretation: the SHAP value for feature <span class="math inline"><em>f</em></span> in row <span class="math inline"><em>i</em></span> represents the marginal contribution of <span class="math inline"><em>f</em></span> to the prediction for row <span class="math inline"><em>i</em></span>, relative to the mean prediction across the training set.</p>
+<p>Positive SHAP values push the prediction above the mean (toward chargeback). Negative SHAP values push it below (away from chargeback). The feature with the largest positive SHAP value is the primary driver of the risk score.</p>
+<p>The model uses <code>class_weight='balanced'</code> because chargebacks are rare events — approximately 1.5% of shipment-SKU rows result in a chargeback. Without class balancing, a naive model achieves high accuracy by predicting “no chargeback” for every row.</p>
+</section>
+<section id="temporal-traintest-split" class="level3">
+<h3 class="anchored" data-anchor-id="temporal-traintest-split">Temporal train/test split</h3>
+<p>The train/test split is strictly temporal, not random. Earlier shipments go to the training set; later shipments go to the test set. A random split would leak future shipments into training — the model would learn from data it could not have seen at prediction time and overstate its real-world performance.</p>
+<p>Training set: 151,231 rows | Test set: 37,808 rows</p>
+</section>
+<section id="model-performance" class="level3">
+<h3 class="anchored" data-anchor-id="model-performance">Model performance</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>AUC</td>
+<td>0.6986</td>
+</tr>
+<tr class="even">
+<td>Precision</td>
+<td>0.85</td>
+</tr>
+<tr class="odd">
+<td>Recall</td>
+<td>0.72</td>
+</tr>
+<tr class="even">
+<td>Training rows</td>
+<td>151,231</td>
+</tr>
+<tr class="odd">
+<td>Test rows</td>
+<td>37,808</td>
+</tr>
+</tbody>
+</table>
+<p>An AUC of <strong>0.6986</strong> means the model ranks a randomly chosen chargeback above a randomly chosen non-chargeback shipment 70% of the time. This is the honest estimate: measured on held-out data the model did not train on, using a temporal split that mirrors the real scoring scenario.</p>
+</section>
+<section id="attribution-worked-example" class="level3">
+<h3 class="anchored" data-anchor-id="attribution-worked-example">Attribution worked example</h3>
+<p>The following shows how a single high-risk shipment is scored and explained.</p>
+<p><strong>Input row:</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>case_dims_missing</code></td>
+<td>True</td>
+</tr>
+<tr class="even">
+<td><code>gtin14_missing</code></td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<td><code>case_weight_missing</code></td>
+<td>False</td>
+</tr>
+<tr class="even">
+<td><code>upc_missing</code></td>
+<td>False</td>
+</tr>
+<tr class="odd">
+<td><code>data_quality_score</code></td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td><code>asn_sent_late</code></td>
+<td>False</td>
+</tr>
+<tr class="odd">
+<td><code>days_late</code></td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td><code>all_labels_scannable</code></td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<td><code>sku_prior_chargeback_rate</code></td>
+<td>0.18</td>
+</tr>
+<tr class="even">
+<td><code>retailer_id</code></td>
+<td>WMT</td>
+</tr>
+</tbody>
+</table>
+<p><strong>SHAP values</strong> (positive = pushes toward chargeback):</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>SHAP value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>case_dims_missing</code></td>
+<td>+0.31 ← top driver</td>
+</tr>
+<tr class="even">
+<td><code>sku_prior_chargeback_rate</code></td>
+<td>+0.18</td>
+</tr>
+<tr class="odd">
+<td><code>gtin14_missing</code></td>
+<td>+0.12</td>
+</tr>
+<tr class="even">
+<td><code>data_quality_score</code></td>
+<td>+0.09</td>
+</tr>
+<tr class="odd">
+<td><code>asn_sent_late</code></td>
+<td>+0.01</td>
+</tr>
+<tr class="even">
+<td><code>all_labels_scannable</code></td>
+<td>-0.04</td>
+</tr>
+<tr class="odd">
+<td>others</td>
+<td>&lt; ±0.02</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Model output:</strong> chargeback probability = <strong>0.78</strong></p>
+<p><strong>Attribution string:</strong> &gt; <em>Missing case dimensions → logistics audit → 78% probability within 14 days</em></p>
+<p>The attribution string names the top positive SHAP feature in plain language, the archetype it maps to, and the model’s probability estimate. This string is pre-computed at pipeline run time and embedded in the risk ledger JSON — no backend call required at display time.</p>
+<div class="disclaimer">
+<p>All performance metrics are measured on a held-out temporal test set. The worked example uses synthetic Cinderhaven demonstration data. The attribution string template, SHAP computation, and model architecture described here are implemented in <code>src/pipeline/model.py</code>.</p>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
