@@ -34,7 +34,9 @@ preventable = preventable.sort_values("prevention_value", ascending=False).reset
 total_chargeback = roadmap["historical_loss"].sum()
 total_preventable = roadmap["prevention_value"].sum()
 preventable_pct = total_preventable / total_chargeback if total_chargeback else 0
+# Model metrics come from the single evaluate_model() run in model_performance.csv.
 model_auc = float(perf["auc"].iloc[0])
+model_recall = float(perf["recall"].iloc[0])
 
 ARCHETYPE_DISPLAY = {
     "logistics_overage": "Logistics Overage",
@@ -56,9 +58,9 @@ TEXT = "#333333"
 
 ## $`{python} f"{total_chargeback:,.0f}"` in annual chargebacks. `{python} f"{preventable_pct:.0%}"` is preventable.
 
-Cinderhaven carries **$`{python} f"{total_chargeback:,.0f}"`** in annual retailer chargebacks. A predictive model trained on three years of Cinderhaven shipment and deduction history identifies **$`{python} f"{total_preventable:,.0f}"`** — `{python} f"{preventable_pct:.0%}"` of the total — as traceable to four fixable upstream data conditions. These are not disputed chargebacks. They are predictable ones.
+Cinderhaven carries **$`{python} f"{total_chargeback:,.0f}"`** in annual retailer chargebacks. Grouping them by root cause and applying a fixed preventability fraction to each category identifies **$`{python} f"{total_preventable:,.0f}"`** — `{python} f"{preventable_pct:.0%}"` of the total — as addressable through four fixable upstream data conditions. This figure is an assumption-driven estimate (historical loss per archetype × its preventability fraction), not a model prediction.
 
-The model scores each upcoming purchase order before it ships. Every risk score names the specific data condition driving it. This report presents the root-cause breakdown, the ranked prevention roadmap, and the economics of fixing versus disputing.
+The scoring workflow names the specific data condition driving each purchase order's risk. This report presents the root-cause breakdown, the ranked prevention roadmap, and the economics of fixing versus disputing.
 
 *This analysis uses Cinderhaven synthetic demonstration data to illustrate a repeatable methodology. The numbers, proportions, and root-cause distribution reflect a realistic CPG brand profile.*
 
@@ -207,10 +209,12 @@ roadmap_display.style.hide(axis="index")
 
 The deductions team currently disputes chargebacks after they post. The industry win rate on retailer disputes is 30–45%. At a 40% win rate, recovering $`{python} f"{total_chargeback:,.0f}"` in annual chargebacks yields roughly **$`{python} f"{total_chargeback * 0.40:,.0f}"`** — before dispute labor costs.
 
-Prevention requires no dispute process. Fixing the data conditions identified above eliminates the chargeback at source. The model's AUC of **`{python} f"{model_auc:.4f}"`** means that `{python} f"{model_auc:.0%}"` of actual chargebacks are flagged before shipment, giving the brand a pre-ship intervention window.
+Prevention requires no dispute process. Fixing the data conditions identified above eliminates the chargeback at source.
+
+A companion model demonstrates pre-ship scoring, with one caveat stated plainly. On Cinderhaven's *real* chargebacks the features carry no predictive signal (AUC ≈ 0.50): real chargebacks are effectively random with respect to data quality. The model is therefore trained on **synthetic** labels drawn from a known risk formula (risk ∝ ASN lateness × data-quality gaps), and it recovers that formula. On held-out synthetic data its AUC is **`{python} f"{model_auc:.2f}"`** — a *ranking* measure: it ranks a charged-back shipment above a clean one `{python} f"{model_auc:.0%}"` of the time. At a 0.5 threshold it flags `{python} f"{model_recall:.0%}"` of chargebacks (recall). AUC is not the flag rate, and predictive skill on the real target is effectively zero — the durable value is the prevention roadmap, not the score.
 
 The math is straightforward: **$`{python} f"{total_preventable:,.0f}"`** in preventable chargebacks recovered at 100% is worth more than $`{python} f"{total_chargeback:,.0f}"` recovered at 40%, and it eliminates the working capital drag of post-ship disputes.
 
 <div class="disclaimer">
-This analysis was produced using Cinderhaven synthetic demonstration data. All dollar figures, chargeback counts, and root-cause distributions are illustrative of a real methodology, not actual Cinderhaven financials.
+This analysis was produced using Cinderhaven synthetic demonstration data. All dollar figures, chargeback counts, and root-cause distributions are illustrative of a real methodology, not actual Cinderhaven financials. Real chargebacks carry no predictive signal (AUC ≈ 0.50); the model is trained on synthetic labels and the reported AUC is measured on held-out synthetic data.
 </div>

@@ -28,6 +28,12 @@ FRAMES = ROOT / "output" / "frames"
 
 roadmap = pd.read_csv(FRAMES / "prevention_roadmap.csv")
 
+# All model metrics come from the single evaluate_model() run written to
+# model_performance.csv — never hardcoded here.
+perf = pd.read_csv(FRAMES / "model_performance.csv")
+model_auc = float(perf["auc"].iloc[0])
+model_recall = float(perf["recall"].iloc[0])
+
 total_chargeback = roadmap["historical_loss"].sum()
 total_preventable = roadmap["prevention_value"].sum()
 preventable_pct = total_preventable / total_chargeback if total_chargeback else 0
@@ -58,7 +64,7 @@ def fmt_dollar(n):
 
 <div class="section-flag">Executive Summary</div>
 
-Cinderhaven's chargebacks are not random. They are predictable — and most are preventable before the order ships.
+Cinderhaven's chargebacks are not inevitable. Most trace to a handful of upstream data conditions — and those conditions are fixable before the order ships.
 
 ---
 
@@ -77,7 +83,7 @@ Cinderhaven's chargebacks are not random. They are predictable — and most are 
   </div>
 </div>
 
-A predictive model trained on Cinderhaven's own shipment and deduction history identifies **`{python} f"{preventable_pct:.0%}"`** of annual chargebacks as traceable to four upstream data conditions — missing case dimensions, barcode registration gaps, late ASN filing, and item setup delays. Each condition is detectable before the order ships. Each has a specific operational fix.
+Grouping Cinderhaven's historical chargebacks by root cause and applying a fixed preventability fraction to each category flags **`{python} f"{preventable_pct:.0%}"`** of the annual total as traceable to four upstream data conditions — missing case dimensions, barcode registration gaps, late ASN filing, and pricing discrepancies. This share is an assumption-driven estimate from the roadmap below, not a model output. Each condition is detectable before the order ships. Each has a specific operational fix.
 
 The deductions team currently works these chargebacks reactively, winning 30–45% in disputes. Prevention requires no dispute process. Fixing the data conditions eliminates the chargeback at source and recovers the full amount, not a fraction of it.
 
@@ -108,8 +114,8 @@ tbl.style.hide(axis="index")
 
 Dispute recovery returns 30–45 cents per dollar. Prevention returns 100 cents per dollar — and eliminates the working capital drag of post-ship disputes, the labor cost of the deductions team, and the carrier relationship risk from repeated chargebacks.
 
-The model flags `{python} f"{0.7834:.0%}"` of actual chargebacks before shipment, giving Cinderhaven a pre-ship intervention window. The question is not whether this is worth doing. It is which data conditions to fix first. This roadmap answers that question by prevention value.
+A companion model demonstrates the pre-ship scoring workflow. One caveat is essential to state plainly: on Cinderhaven's *real* chargeback records the upstream features carry no predictive signal (AUC ≈ 0.50 — real chargebacks are effectively random with respect to data quality). The model is therefore trained on **synthetic** labels drawn from a known formula (risk ∝ ASN lateness × data-quality gaps), and it recovers that formula. On held-out synthetic data it flags `{python} f"{model_recall:.0%}"` of chargebacks at a 0.5 threshold (recall) and reaches an AUC of `{python} f"{model_auc:.2f}"`. Predictive skill on the real target is effectively zero; the durable value here is the prevention roadmap, not the score. The question is which data conditions to fix first. This roadmap answers that by prevention value.
 
 <div class="disclaimer">
-Produced using Cinderhaven synthetic demonstration data. Figures are illustrative of a repeatable methodology, not actual Cinderhaven financials. Model AUC 0.7834 on held-out temporal test set.
+Produced using Cinderhaven synthetic demonstration data. Figures are illustrative of a repeatable methodology, not actual Cinderhaven financials. Real chargebacks carry no predictive signal (AUC ≈ 0.50); the model is trained on synthetic labels and reaches AUC `{python} f"{model_auc:.2f}"` on held-out synthetic data.
 </div>
