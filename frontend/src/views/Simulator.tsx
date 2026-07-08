@@ -23,6 +23,13 @@ interface SavingsResult {
   prevented: number;
 }
 
+// ILLUSTRATIVE APPROXIMATION — not an exact probability recomputation.
+// shap_values here are TreeExplainer margins in LOG-ODDS space, while
+// row.probability is in probability space. Subtracting a log-odds margin
+// directly from a probability is dimensionally inexact, so the projected
+// impact below is a directional estimate, not a calibrated prediction. A
+// rigorous version would map logit(prob) - margin back through the sigmoid.
+// The panel is labelled "illustrative" to reflect this.
 function computeSavings(entries: SimulatorEntry[], active: Set<string>): SavingsResult {
   if (active.size === 0) return { savings: 0, prevented: 0 };
 
@@ -87,7 +94,9 @@ export default function Simulator({ entries, summary }: Props) {
           <h2>Intervention Controls</h2>
           <p className="section-description">
             Toggle upstream fixes to project their impact on chargeback exposure.
-            Savings are computed from pre-scored SHAP attribution values — no backend call required.
+            Projections are an <strong>illustrative</strong> approximation from pre-scored
+            SHAP attribution values (log-odds margins applied directly in probability
+            space) — directional, not a calibrated forecast, and no backend call required.
           </p>
           {FIXABLE_FEATURES.map(({ key, label }) => (
             <FixToggle
@@ -102,7 +111,7 @@ export default function Simulator({ entries, summary }: Props) {
         </div>
 
         <div className="simulator-results">
-          <h2>Projected Impact</h2>
+          <h2>Projected Impact (illustrative)</h2>
           {hasToggles ? (
             <>
               <ImpactMeter savings={savings} totalExposure={totalExposure} />
