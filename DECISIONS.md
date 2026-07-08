@@ -17,6 +17,17 @@ Each entry:
 
 ---
 
+## Audit findings
+
+### 2026-07-08 — WITHDRAWN: the portfolio audit's "impossible / mutually-impossible metrics" finding
+- **Decision:** Withdraw the audit finding that the model's headline metrics — AUC 0.6986, precision 0.847, recall 0.7215 — were mutually impossible. The metrics are internally consistent and genuine; treat the finding as closed, not actionable.
+- **Why:** The finding assumed a low positive base rate (~8%), at which that precision/recall pair would be arithmetically impossible. The realized synthetic `chargeback` label prevalence is ~72% (verified), and at that prevalence the three figures are consistent — all reproduced from a single `evaluate_model()` run. The defects that did exist (a hardcoded 0.7834, and AUC reported as recall) were real and are separately fixed. Nothing was fabricated.
+- **Scope:** Model evaluation metrics and every report that cites them (tearsheet, methodology, prevention_roadmap).
+- **Remaining action (distinct from the withdrawn finding):** The 72% synthetic base rate is itself unrealistic against a real-world chargeback rate of ~1.5%. The open item is to reseed the synthetic labels toward a ~1.5% base rate for a less-flattered demo; until then the reports disclose the synthetic-prevalence caveat.
+- **Do not:** Re-open the "impossible metrics" finding without first checking the realized label prevalence — at ~72% the numbers hold together.
+
+---
+
 ## Architecture & Pipeline
 
 ### 2026-05-31 — Use an interpretable tree-based model with SHAP-style attribution; black-box models barred
