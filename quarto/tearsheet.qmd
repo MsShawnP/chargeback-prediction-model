@@ -70,11 +70,11 @@ Cinderhaven's chargebacks are not inevitable. Most trace to a handful of upstrea
 
 <div class="headline-grid">
   <div class="headline-card">
-    <div class="headline-number">$`{python} fmt_dollar(total_chargeback)`</div>
+    <div class="headline-number">`{python} fmt_dollar(total_chargeback)`</div>
     <div class="headline-label">Annual chargebacks</div>
   </div>
   <div class="headline-card">
-    <div class="headline-number">$`{python} fmt_dollar(total_preventable)`</div>
+    <div class="headline-number">`{python} fmt_dollar(total_preventable)`</div>
     <div class="headline-label">Preventable at source</div>
   </div>
   <div class="headline-card">
