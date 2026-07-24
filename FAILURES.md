@@ -223,6 +223,34 @@ shouldn't re-attempt dead ends because the lesson got lost.
 
 ---
 
+### 2026-07-24 — Pipeline step 01 optional flag only skips on missing file, not on error
+
+**Attempted:** Ran `run_pipeline.py` expecting step 01 (extract) to skip gracefully since it's marked `optional=True`. The DB proxy wasn't running.
+
+**Why it didn't work:** The `optional` flag in the pipeline runner only triggers a skip when `script_path.exists()` is False. Since `01_extract.py` exists on disk, the runner loads and executes it — and it crashes on DB auth failure, taking down the whole pipeline.
+
+**What we tried instead:** Ran individual pipeline steps (02, 04, 06, 07) via a custom Python runner that skips DB-dependent steps.
+
+**Status:** Open — the pipeline runner should catch DB connection errors in optional steps and skip gracefully, not just check for file existence.
+
+**Tags:** pipeline, run_pipeline, optional, extract, db-connection, error-handling
+
+---
+
+### 2026-07-24 — Step 07 export clobbers sample JSON when scored_pos is empty
+
+**Attempted:** Ran pipeline steps 04/06/07 after harmonization fix. Expected `risk_ledger.json` and `simulator.json` to retain their sample data.
+
+**Why it didn't work:** Step 07 unconditionally writes `risk_ledger.json` and `simulator.json` from `scored_pos.parquet`. When step 05 finds no upcoming POs (all Cinderhaven orders are shipped), it writes an empty parquet. Step 07 then overwrites the sample JSON with empty arrays (`[]`).
+
+**What we tried instead:** Re-ran `generate_sample_json.py` after the pipeline to restore sample data. Required a second commit.
+
+**Status:** Open — step 07 could check if scored_pos is empty and skip writing risk_ledger/simulator JSON, preserving whatever sample data exists.
+
+**Tags:** pipeline, export, sample-data, risk-ledger, simulator, empty-overwrite, generate_sample_json
+
+---
+
 ### 2026-06-01 — First synthetic signal attempt (quality flags as primary) got AUC 0.62, not 0.65
 
 **Attempted:** Made `gtin14_missing` (5× multiplier) the dominant synthetic chargeback signal. Model achieved AUC 0.62.

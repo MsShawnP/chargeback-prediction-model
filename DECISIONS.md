@@ -17,6 +17,15 @@ Each entry:
 
 ---
 
+### 2026-07-24 — Map `receiving_discrepancy` to `data_compliance_error` archetype
+
+- **Decision:** `receiving_discrepancy` (dock receipt scan mismatch) maps to `data_compliance_error`, not `logistics_overage` or a new archetype.
+- **Why:** A receiving discrepancy occurs when the dock scan doesn't match expected product data — this is a compliance failure at the data/label layer, same root cause family as `label_fine`. It's not a logistics issue (damaged/short/spoiled goods) or a timing issue (late ASN/delivery). 1,222 chargebacks (20.8%) carry this code, making it the 2nd most common reason. Adding it shifted `data_compliance_error` from 141 → 1,363 chargebacks and $137K → $214K loss.
+- **Scope:** `REASON_TO_ARCHETYPE` in `src/harmonization/reason_codes.py`. Does not appear in `DEDUCTION_TYPE_TO_ARCHETYPE`.
+- **Do not:** Create a separate archetype for receiving discrepancies — they share the same prevention pathway (barcode/label/GTIN compliance) as other data compliance errors.
+
+---
+
 ## Audit findings
 
 ### 2026-07-08 — WITHDRAWN: the portfolio audit's "impossible / mutually-impossible metrics" finding

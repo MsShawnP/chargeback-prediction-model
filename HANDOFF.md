@@ -9,6 +9,18 @@ For things that didn't work, see FAILURES.md.
 
 ---
 
+## 2026-07-24 16:45 — SESSION WRAP: receiving_discrepancy harmonized, .env password fixed, JSONs restored
+
+**Started from:** Arc complete since 2026-06-11. `receiving_discrepancy` was an unmapped reason code.
+
+**Did:** Added `receiving_discrepancy` → `data_compliance_error` to harmonization (1,222 chargebacks, 0 unmatched). Updated EDA row ranges for current data scale. Re-ran pipeline (AUC=0.6986). Updated `.env` with current DB password. Confirmed via flyctl proxy that 0 upcoming POs exist (all orders shipped). Restored `risk_ledger.json`/`simulator.json` sample data via `generate_sample_json.py` (45 rows).
+
+**State:** Clean, pushed. All 6 reason codes + 9 deduction types mapped. `.env` password current. `summary.json` has AUC=0.6986, $693K total, $505K preventable (73%). Tearsheet qmd AUC NOT yet updated.
+
+**Next:** Tearsheet text sweep — update hardcoded AUC and figures in `quarto/tearsheet.qmd` to match current pipeline output (AUC 0.6986, data_compliance_error count/amounts shifted). Also consider the AUC drop from 0.7485→0.6986 (likely scikit-learn version drift, still above 0.65 gate).
+
+---
+
 ## 2026-06-01 17:45 — SESSION WRAP: arc closed — /qa + /ce:compound complete
 
 **Started from:** /qa interrupted from prior session. 3 unpushed commits. Arc otherwise complete.
