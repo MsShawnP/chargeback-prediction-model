@@ -54,7 +54,8 @@
   background: #fff;
   border-radius: 50%;
   transition: left 150ms;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  outline: 1px solid var(--rule);
+  outline-offset: -1px;
 }
 
 .fix-toggle-active .fix-toggle-thumb { left: 19px; }
