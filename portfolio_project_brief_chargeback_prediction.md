@@ -173,12 +173,12 @@ Deliberately deferred — this brief scopes the *what* and *why*; the *how* gets
 
 Cinderhaven's deduction history shows $446,200 in retailer chargebacks over 36 months (2023-2025). The root-cause attribution finds:
 
-- **60% of chargebacks trace to four data quality root causes** — incomplete case dimensions, GTIN mismatches at two retailers, an ASN timing pattern, and a labeling compliance gap on one product line.
+- **73% of chargeback dollars trace to four data quality root causes** — incomplete case dimensions, GTIN mismatches at two retailers, an ASN timing pattern, and a labeling compliance gap on one product line.
 - **SKUs with incomplete case dimensions carry 3.2x the compliance-chargeback rate** of clean SKUs.
 - **The model predicts next quarter's chargebacks** within a defensible accuracy band, flagging the highest-risk SKU/retailer combinations before they ship.
-- **Fixing the top four root causes would prevent an estimated $443K/year** — permanently.
+- **Fixing the top four root causes would prevent an estimated $325K over 36 months (~$108K/yr)** — permanently.
 
-Headline: **$443K of Cinderhaven's $693K chargeback bill wasn't random — it was four fixable data problems generating the same penalties every quarter.**
+Headline: **$325K of Cinderhaven's $446K chargeback bill wasn't random — it was four fixable data problems generating the same penalties every quarter.**
 
 Runs on the existing Cinderhaven Data Platform — joins `fct_deductions`, the product data marts, EDI history, and shipment data. Consistent with the chargeback figures in Retailer Deduction Recovery and the data quality findings in Product Data Health Audit (the model formalizes the causal link those two pieces imply).
 
