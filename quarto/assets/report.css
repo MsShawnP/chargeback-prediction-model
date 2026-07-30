@@ -84,7 +84,7 @@ h1 {
 h2 { font-size: 1.4rem;  margin-top: 2.5rem; }
 h3 { font-size: 1.15rem; color: var(--ll-text-sec); }
 
-p, li { max-width: 660px; }
+p, li { max-width: var(--ll-body-max-width, 720px); }
 
 strong { color: var(--ll-ink); }
 
