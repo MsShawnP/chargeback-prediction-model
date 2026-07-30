@@ -107,13 +107,13 @@ For a $25M brand with $693K/year in chargebacks, the preventable portion broken 
 
 - **Before:** Chargebacks arrive cryptically coded. The deductions person disputes what they can. The CFO sees "$693K" and shrugs — it's the cost of doing business. The same data problems generate the same chargebacks next quarter. The treadmill never stops.
 
-- **After:** The model flags that 60% of chargebacks trace to four data quality root causes. The brand fixes those four things once. Chargebacks drop by an estimated $443K/year — permanently, not via disputing. The risk score flags new chargeback-prone shipments before they ship, so the team intervenes upstream. The treadmill stops.
+- **After:** The model flags that 73% of chargeback dollars trace to four data quality root causes. The brand fixes those four things once. Chargebacks drop by an estimated ~$108K/yr — permanently, not via disputing. The risk score flags new chargeback-prone shipments before they ship, so the team intervenes upstream. The treadmill stops.
 
 #### Who Else Sees This?
 
 - **Primary:** CFO (owns the deduction line), COO/ops (owns the data quality that drives it), the deductions person (gets a prioritized, attributed view instead of a blind queue).
 - **Secondary:** CEO (sees a written-off cost become controllable), the data/IT lead (gets a quantified ROI for the data cleanup they've been asking budget for).
-- **How it gets shared:** The CFO sees "$443K of this $693K is preventable, here are the four causes" and immediately funds the data fix. The attribution turns a cost center into a project with a business case.
+- **How it gets shared:** The CFO sees "$325K of this $446K is preventable, here are the four causes" and immediately funds the data fix. The attribution turns a cost center into a project with a business case.
 
 ---
 
@@ -142,9 +142,9 @@ Deliberately deferred — this brief scopes the *what* and *why*; the *how* gets
   2. Root-cause attribution — which data quality issues drive which chargeback types, with dollar relationships
   3. Per-SKU/retailer risk scores
   4. Prevention roadmap — the root causes ranked by prevention value
-  5. The business case for the data fixes ("fix these four things, prevent $443K/year")
+  5. The business case for the data fixes ("fix these four things, prevent ~$108K/yr")
   6. A sharpened dispute strategy for the chargebacks that remain
-- **Why this piece sells it:** The reframe — "your chargebacks are predictable and 60% are preventable" — is a claim no other consultant makes, and the model proves it on the brand's own data. The pitch writes itself: *"Deduction recovery consultants charge a percentage to fight your battles after you've already lost the cash. We build a model that stops the battles from happening — by identifying the four data errors causing 60% of your fines."* The CFO funds it to turn a written-off cost into a controllable one.
+- **Why this piece sells it:** The reframe — "your chargebacks are predictable and 73% of the dollars are preventable" — is a claim no other consultant makes, and the model proves it on the brand's own data. The pitch writes itself: *"Deduction recovery consultants charge a percentage to fight your battles after you've already lost the cash. We build a model that stops the battles from happening — by identifying the four data errors causing 73% of your fines."* The CFO funds it to turn a written-off cost into a controllable one.
 
 #### Client Lift
 
@@ -171,7 +171,7 @@ Deliberately deferred — this brief scopes the *what* and *why*; the *how* gets
 
 ### 8. Cinderhaven Integration
 
-Cinderhaven's deduction history shows $693K/year in chargebacks across its retailers. The model finds:
+Cinderhaven's deduction history shows $446,200 in retailer chargebacks over 36 months (2023-2025). The root-cause attribution finds:
 
 - **60% of chargebacks trace to four data quality root causes** — incomplete case dimensions, GTIN mismatches at two retailers, an ASN timing pattern, and a labeling compliance gap on one product line.
 - **SKUs with incomplete case dimensions carry 3.2x the compliance-chargeback rate** of clean SKUs.
