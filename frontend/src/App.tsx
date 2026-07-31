@@ -43,7 +43,7 @@ export default function App() {
             <h1>Cinderhaven Provisions — Chargeback Risk</h1>
             <p className="subtitle">
               ${Math.round(summary.total_chargeback_amount / 1000)}K in retailer
-              chargebacks over 36 months (2023–2025) —{" "}
+              chargebacks over 37 months (Jan 2023 – Jan 2026) —{" "}
               ${Math.round(summary.total_preventable / 1000)}K of it (
               {Math.round(summary.preventable_pct * 100)}%) was preventable. The
               model scores which upcoming shipments to fix first.

@@ -4,8 +4,9 @@ Prevention roadmap computation for the chargeback prediction model (Move 5).
 Pure functions — testable without a live database.
 Called by 06_roadmap.py (the pipeline runner).
 
-Preventability fractions are informed by the project brief's $410K preventable
-estimate out of ~$691K total: data quality and logistics archetypes carry the
+Preventability fractions are informed by the project brief's estimate of
+$324,888 preventable out of the $446,200 chargeback total (37-month window,
+Jan 2023 - Jan 2026): data quality and logistics archetypes carry the
 highest prevention value.
 """
 

@@ -76,7 +76,7 @@ Train an interpretable supervised model targeting chargeback probability per shi
 Score upcoming, un-shipped purchase orders against the model before they leave the dock. Dollarize each: Risk Exposure = Invoice Value × Predicted Chargeback Probability. Isolate the high-exposure fulfillment runs so the team can intervene upstream — fix the data, correct the ASN, hold the shipment — before the penalty is triggered.
 
 **Move 5 — The capital-allocation prevention roadmap.**
-Roll per-SKU risk into an executive priority list ranked not by data volume but by *financial recovery value*. "These four root causes drive 73% of your chargeback dollars. Fixing them prevents an estimated $325K over 36 months (~$108K/yr). Here's the order, by prevention value." This is the output that turns the model into a board-ready business case for data governance.
+Roll per-SKU risk into an executive priority list ranked not by data volume but by *financial recovery value*. "These four root causes drive 73% of your chargeback dollars. Fixing them prevents an estimated $325K over 37 months ($105,369/yr). Here's the order, by prevention value." This is the output that turns the model into a board-ready business case for data governance.
 
 #### The Output
 
@@ -87,7 +87,7 @@ Delivered in whatever form planning settles on — the analytical substance is t
 
 #### The Margin Math
 
-For a $25M brand with $446,200 in chargebacks over 36 months (2023-2025, ~$149K/yr), the preventable portion broken into root-cause groups, each tied to a specific fix:
+For a $25M brand with $446,200 in chargebacks over 37 months (Jan 2023 - Jan 2026, $144,714/yr), the preventable portion broken into root-cause groups, each tied to a specific fix:
 
 | Root Cause Group | Historical Loss | Preventable | Actionable Data Resolution |
 |------------------|:---------------:|:-----------:|----------------------------|
@@ -95,19 +95,19 @@ For a $25M brand with $446,200 in chargebacks over 36 months (2023-2025, ~$149K/
 | Data compliance errors | $143K | $114K | Populate missing barcodes (GTIN-14, UPC); verify label compliance |
 | ASN timing infractions | $42K | $29K | Submit ASNs within the retailer-required lead-time window |
 | Pricing discrepancies | $17K | $10K | Reconcile PO unit prices against approved price lists |
-| **Total (36-month)** | **$446K** | **~$325K** | **~0.4 points of net margin a year** |
+| **Total (37-month)** | **$446K** | **~$325K** | **~0.4 points of net margin a year** |
 
 - **Preventable is permanent.** ~73% of chargeback dollars trace to a handful of fixable root causes. Fixing the upstream data stops the recurrence — unlike disputing, which recovers some of one quarter's loss and then resets.
 - **Recovery vs. prevention economics:** recovery is reactive, partial, and forever; prevention is one-time and eliminates the recurrence. The model shifts the brand off the dispute treadmill.
 - **The forecast cleanup:** fewer data-error chargebacks → fewer item suppressions → protected velocity → cleaner forecast. The doom-loop connection again.
 
-**Total estimated value: ~$325K over 36 months (~$108K/yr)** in preventable chargebacks at a $25M brand — most of it permanent rather than the partial, recurring recovery that disputing alone delivers.
+**Total estimated value: ~$325K over 37 months ($105,369/yr)** in preventable chargebacks at a $25M brand — most of it permanent rather than the partial, recurring recovery that disputing alone delivers.
 
 #### Before / After
 
 - **Before:** Chargebacks arrive cryptically coded. The deductions person disputes what they can. The CFO sees "$446K over three years" and shrugs — it's the cost of doing business. The same data problems generate the same chargebacks next quarter. The treadmill never stops.
 
-- **After:** The model flags that 73% of chargeback dollars trace to four data quality root causes. The brand fixes those four things once. Chargebacks drop by an estimated ~$108K/yr — permanently, not via disputing. The risk score flags new chargeback-prone shipments before they ship, so the team intervenes upstream. The treadmill stops.
+- **After:** The model flags that 73% of chargeback dollars trace to four data quality root causes. The brand fixes those four things once. Chargebacks drop by an estimated ~$105K/yr — permanently, not via disputing. The risk score flags new chargeback-prone shipments before they ship, so the team intervenes upstream. The treadmill stops.
 
 #### Who Else Sees This?
 
@@ -142,7 +142,7 @@ Deliberately deferred — this brief scopes the *what* and *why*; the *how* gets
   2. Root-cause attribution — which data quality issues drive which chargeback types, with dollar relationships
   3. Per-SKU/retailer risk scores
   4. Prevention roadmap — the root causes ranked by prevention value
-  5. The business case for the data fixes ("fix these four things, prevent ~$108K/yr")
+  5. The business case for the data fixes ("fix these four things, prevent ~$105K/yr")
   6. A sharpened dispute strategy for the chargebacks that remain
 - **Why this piece sells it:** The reframe — "your chargebacks are predictable and 73% of the dollars are preventable" — is a claim no other consultant makes, and the model proves it on the brand's own data. The pitch writes itself: *"Deduction recovery consultants charge a percentage to fight your battles after you've already lost the cash. We build a model that stops the battles from happening — by identifying the four data errors causing 73% of your fines."* The CFO funds it to turn a written-off cost into a controllable one.
 
@@ -171,12 +171,12 @@ Deliberately deferred — this brief scopes the *what* and *why*; the *how* gets
 
 ### 8. Cinderhaven Integration
 
-Cinderhaven's deduction history shows $446,200 in retailer chargebacks over 36 months (2023-2025). The root-cause attribution finds:
+Cinderhaven's deduction history shows $446,200 in retailer chargebacks over 37 months (Jan 2023 - Jan 2026). The root-cause attribution finds:
 
 - **73% of chargeback dollars trace to four data quality root causes** — incomplete case dimensions, GTIN mismatches at two retailers, an ASN timing pattern, and a labeling compliance gap on one product line.
 - **SKUs with incomplete case dimensions carry 3.2x the compliance-chargeback rate** of clean SKUs.
 - **The model predicts next quarter's chargebacks** within a defensible accuracy band, flagging the highest-risk SKU/retailer combinations before they ship.
-- **Fixing the top four root causes would prevent an estimated $325K over 36 months (~$108K/yr)** — permanently.
+- **Fixing the top four root causes would prevent an estimated $325K over 37 months ($105,369/yr)** — permanently.
 
 Headline: **$325K of Cinderhaven's $446K chargeback bill wasn't random — it was four fixable data problems generating the same penalties every quarter.**
 

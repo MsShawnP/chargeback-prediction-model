@@ -56,9 +56,9 @@ TEXT = "#333333"
 
 <div class="section-flag">Prevention Roadmap</div>
 
-## $`{python} f"{total_chargeback:,.0f}"` in annual chargebacks. `{python} f"{preventable_pct:.0%}"` is preventable.
+## $`{python} f"{total_chargeback:,.0f}"` in chargebacks over 37 months. `{python} f"{preventable_pct:.0%}"` is preventable.
 
-Cinderhaven carries **$`{python} f"{total_chargeback:,.0f}"`** in annual retailer chargebacks. Grouping them by root cause and applying a fixed preventability fraction to each category identifies **$`{python} f"{total_preventable:,.0f}"`** — `{python} f"{preventable_pct:.0%}"` of the total — as addressable through four fixable upstream data conditions. This figure is an assumption-driven estimate (historical loss per archetype × its preventability fraction), not a model prediction.
+Cinderhaven carries **$`{python} f"{total_chargeback:,.0f}"`** in retailer chargebacks over 37 months (Jan 2023 – Jan 2026) — an annualized $`{python} f"{total_chargeback * 12 / 37:,.0f}"` a year. Grouping the chargebacks by root cause and applying a fixed preventability fraction to each category identifies **$`{python} f"{total_preventable:,.0f}"`** — `{python} f"{preventable_pct:.0%}"` of the total — as addressable through four fixable upstream data conditions. This figure is an assumption-driven estimate (historical loss per archetype × its preventability fraction), not a model prediction.
 
 The scoring workflow names the specific data condition driving each purchase order's risk. This report presents the root-cause breakdown, the ranked prevention roadmap, and the economics of fixing versus disputing.
 
@@ -112,7 +112,7 @@ fig.show()
 
 ## Margin math
 
-The table below translates each root cause into a dollar figure: what it cost historically, what fraction is preventable with targeted data fixes, and the estimated annual recovery.
+The table below translates each root cause into a dollar figure: what it cost historically, what fraction is preventable with targeted data fixes, and the estimated recovery over the 37-month window.
 
 ```{python}
 #| label: tbl-margin-math
@@ -153,7 +153,7 @@ tbl.style.hide(axis="index")
 
 ```{python}
 #| label: fig-prevention-value
-#| fig-cap: "Prevention value by root cause — estimated annual dollar recovery from targeted data fixes. Logistics overage tops the list at over $240K, driven primarily by case dimension and case weight gaps in the product master."
+#| fig-cap: "Prevention value by root cause — estimated 37-month dollar recovery from targeted data fixes. Logistics overage tops the list at $171K in prevention value ($245K historical loss), driven primarily by case dimension and case weight gaps in the product master."
 
 colors_prev = HK_PALETTE[:len(preventable)]
 
@@ -195,9 +195,9 @@ roadmap_display = (
     .assign(
         Rank=range(1, len(roadmap[roadmap["preventability_fraction"] > 0]) + 1),
         **{"Root cause": lambda df: df["root_cause_archetype"].map(ARCHETYPE_DISPLAY)},
-        **{"Annual prevention value": lambda df: df["prevention_value"].apply(fmt_dollar)},
+        **{"Prevention value (37-mo)": lambda df: df["prevention_value"].apply(fmt_dollar)},
         **{"Required action": lambda df: df["fix_description"]},
-    )[["Rank", "Root cause", "Annual prevention value", "Required action"]]
+    )[["Rank", "Root cause", "Prevention value (37-mo)", "Required action"]]
     .reset_index(drop=True)
 )
 roadmap_display.style.hide(axis="index")
@@ -207,7 +207,7 @@ roadmap_display.style.hide(axis="index")
 
 ## Recovery versus prevention
 
-The deductions team currently disputes chargebacks after they post. The industry win rate on retailer disputes is 30–45%. At a 40% win rate, recovering $`{python} f"{total_chargeback:,.0f}"` in annual chargebacks yields roughly **$`{python} f"{total_chargeback * 0.40:,.0f}"`** — before dispute labor costs.
+The deductions team currently disputes chargebacks after they post. The industry win rate on retailer disputes is 30–45%. At a 40% win rate, recovering the $`{python} f"{total_chargeback:,.0f}"` in chargebacks accrued over the 37-month window yields roughly **$`{python} f"{total_chargeback * 0.40:,.0f}"`** — before dispute labor costs.
 
 Prevention requires no dispute process. Fixing the data conditions identified above eliminates the chargeback at source.
 

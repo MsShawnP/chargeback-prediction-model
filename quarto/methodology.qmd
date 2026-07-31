@@ -36,7 +36,7 @@ This appendix documents three engineering choices that make the model interpreta
 
 ### The problem
 
-Cinderhaven sells to five retailers. Each retailer uses its own vocabulary for chargeback reasons. One retailer charges a "label compliance fine." Another charges a "barcode non-conformance." A third uses "PLU error." All three describe the same root cause: the product's GTIN-14 barcode did not scan at the retailer's DC.
+Cinderhaven sells to six retailers. Each retailer uses its own vocabulary for chargeback reasons. One retailer charges a "label compliance fine." Another charges a "barcode non-conformance." A third uses "PLU error." All three describe the same root cause: the product's GTIN-14 barcode did not scan at the retailer's DC.
 
 A model trained on raw reason codes would treat these as three unrelated signals. It would fail to recognize that a spike in label compliance fines at one retailer is the same problem as a spike in barcode non-conformances at another.
 
