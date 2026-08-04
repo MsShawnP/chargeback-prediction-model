@@ -31,6 +31,8 @@ deployed deliverable is correct; the committed cache wants a mechanical
 from __future__ import annotations
 
 import hashlib
+import shutil
+import subprocess
 from pathlib import Path
 
 import pandas as pd
@@ -40,6 +42,7 @@ ROOT = Path(__file__).resolve().parent.parent
 FRAMES = ROOT / "output" / "frames"
 JSON_DIR = ROOT / "frontend" / "public" / "json"
 QUARTO = ROOT / "quarto"
+SITE = QUARTO / "_site"
 
 # Pinned 2026-08-04 against the committed demo dataset.
 GOLDEN_SHA256 = {
@@ -133,3 +136,53 @@ class TestSourceCorrectness:
         src = (QUARTO / "tearsheet.qmd").read_text(encoding="utf-8")
         assert "37 months" in src
         assert "annual chargebacks" not in src
+
+
+class TestCorrectedRender:
+    """Lock the committed render on the FIX. The committed quarto/_site was
+    stale (rendered "annual chargebacks" / "five retailers"); it was regenerated
+    from the fixed source (2026-08-04, freeze deleted → chunks re-executed).
+    These assert the corrected content is present and no mislabel survives — a
+    semantic lock, robust to Quarto-version byte differences (CI re-renders the
+    site fresh on main via render.yml)."""
+
+    def test_roadmap_html_corrected(self):
+        html = (SITE / "prevention_roadmap.html").read_text(encoding="utf-8")
+        assert "over 37 months" in html
+        assert "144,714 a year" in html
+        assert "$171K in prevention value ($245K historical loss)" in html
+        assert "annual chargebacks" not in html
+        assert "446,200 in annual" not in html
+
+    def test_methodology_html_corrected(self):
+        html = (SITE / "methodology.html").read_text(encoding="utf-8")
+        assert "six retailers" in html
+        assert "five retailers" not in html
+
+    def test_tearsheet_html_corrected(self):
+        html = (SITE / "tearsheet.html").read_text(encoding="utf-8")
+        assert "37 months" in html
+        assert "annual chargebacks" not in html
+
+    @pytest.mark.parametrize("stem,markers", [
+        ("prevention_roadmap", ("over 37 months", "144,714", "$171K", "$245K")),
+        ("methodology", ("six retailers",)),
+        ("tearsheet", ("37 months", "$171K")),
+    ])
+    def test_pdf_carries_corrected_figures(self, stem, markers):
+        """The committed PDFs (in the binary-drift scan) carry the corrected
+        figures too. Skips if poppler's pdftotext is unavailable."""
+        pdftotext = shutil.which("pdftotext")
+        if not pdftotext:
+            pytest.skip("pdftotext (poppler) not available")
+        pdf = SITE / f"{stem}.pdf"
+        if not pdf.exists():
+            pytest.skip(f"{pdf.name} not present")
+        text = subprocess.run(
+            [pdftotext, "-layout", str(pdf), "-"],
+            capture_output=True, text=True, encoding="utf-8", errors="replace",
+        ).stdout
+        for m in markers:
+            assert m in text, f"{pdf.name} missing corrected marker {m!r}"
+        for bad in ("annual chargebacks", "446,200 in annual", "five retailers"):
+            assert bad not in text, f"{pdf.name} still carries mislabel {bad!r}"
