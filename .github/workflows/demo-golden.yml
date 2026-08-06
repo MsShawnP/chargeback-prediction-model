@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  demo-golden:
+    name: Demo golden
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Server-side deploy guard (fresh clones have no local hook). No-op clean.
+      - name: Engagement guard
+        run: python3 scripts/engagement_guard.py
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deps
+        run: pip install -r requirements.txt pytest
+
+      - name: Demo golden
+        run: pytest tests/test_demo_golden.py -v
