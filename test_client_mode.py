@@ -96,6 +96,32 @@ def test_roadmap_annualized_from_config_window(cfg, tmp_path):
     assert t["annualized"] == pytest.approx(2900.0 * 12 / 37, abs=0.01)
 
 
+def test_roadmap_window_and_annualization_track_config_not_hardcoded(tmp_path):
+    """The rendered window ('N months (label)') and the ×12/N annualization
+    divisor must come from basis.window_months / window_label, not a hardcoded
+    default. The clean-file test asserts only the demo's own '37 months' /
+    '×12/37' — a positive-only check a hardcoded '37' would also pass, the exact
+    gap that let trade-spend quote 26 weeks of data as 'trailing 52 weeks'.
+
+    Both halves: feed a distinctive window and assert it tracks (label + divisor
+    + numeric annualization), AND assert the demo default is absent."""
+    cfg = tmp_path / "engagement.demo.yml"
+    cfg.write_text(_CONFIG.replace("window_months: 37", "window_months: 29")
+                          .replace("Jan 2023 - Jan 2026", "Feb 2024 - Jul 2026"), encoding="utf-8")
+    src = _write(tmp_path, "cb.csv", _CLEAN)
+    result = client_mode.run_roadmap(str(cfg), src, str(tmp_path / "out"))
+    assert result["status"] == "ok"
+    html = open(result["report"], encoding="utf-8").read()
+    assert "29 months" in html and "Feb 2024 - Jul 2026" in html
+    assert "×12/29" in html or "x12/29" in html
+    assert "37 months" not in html                       # demo default must not survive
+    assert "×12/37" not in html and "x12/37" not in html
+    assert "Jan 2023 - Jan 2026" not in html
+    import json
+    t = json.load(open(result["summary_json"], encoding="utf-8"))["totals"]
+    assert t["annualized"] == pytest.approx(2900.0 * 12 / 29, abs=0.01)
+
+
 def test_roadmap_missing_required_column_blocks(cfg, tmp_path):
     # no amount column
     src = _write(tmp_path, "bad.csv",
