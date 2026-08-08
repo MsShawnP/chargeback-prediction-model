@@ -179,7 +179,7 @@ Technical Appendix
 <h2 class="anchored" data-anchor-id="cross-retailer-reason-code-harmonization">1. Cross-retailer reason-code harmonization</h2>
 <section id="the-problem" class="level3">
 <h3 class="anchored" data-anchor-id="the-problem">The problem</h3>
-<p>Cinderhaven sells to five retailers. Each retailer uses its own vocabulary for chargeback reasons. One retailer charges a “label compliance fine.” Another charges a “barcode non-conformance.” A third uses “PLU error.” All three describe the same root cause: the product’s GTIN-14 barcode did not scan at the retailer’s DC.</p>
+<p>Cinderhaven sells to six retailers. Each retailer uses its own vocabulary for chargeback reasons. One retailer charges a “label compliance fine.” Another charges a “barcode non-conformance.” A third uses “PLU error.” All three describe the same root cause: the product’s GTIN-14 barcode did not scan at the retailer’s DC.</p>
 <p>A model trained on raw reason codes would treat these as three unrelated signals. It would fail to recognize that a spike in label compliance fines at one retailer is the same problem as a spike in barcode non-conformances at another.</p>
 </section>
 <section id="the-solution-dual-pathway-harmonization" class="level3">

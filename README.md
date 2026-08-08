@@ -47,6 +47,32 @@ npm run build    # production build
 
 Written deliverables (methodology, tearsheet, prevention roadmap) are Quarto documents in `quarto/`.
 
+## Client engagement use
+
+The deployed demo renders the committed Cinderhaven dataset. To analyze a
+**client's own chargeback history** in place — validated, never committed, never
+deployed — use client mode (see [INPUT-SPEC.md](INPUT-SPEC.md)):
+
+```bash
+pip install -e ../engagement-template/lib      # the shared lailara_engagement scaffold
+# prevention roadmap economics from a client chargeback ledger:
+python client_mode.py roadmap --config engagement.yml \
+    --input client-data/chargebacks.csv --out client-output [--final]
+# model metrics, every figure from ONE evaluate run, on a client feature table:
+python client_mode.py train-evaluate --config engagement.yml \
+    --features client-data/training_features.csv --out client-output
+```
+
+Each command preflights the input: a missing required column (or data that
+isn't ready) produces a branded **Data Readiness Report** instead of results. On
+a clean file it writes, to `client-output/` (gitignored), a branded,
+provenance-footed (input SHA-256, row counts, `as_of_date`, config hash,
+validation status), DRAFT-watermarked HTML deliverable + a `summary.json`. Every
+dollar figure prints its basis and window; the `train-evaluate` metrics all come
+from a single held-out temporal split. Client identity, window, preventability
+fractions, and reason-code mapping come from `engagement.yml` (copy
+[`engagement.demo.yml`](engagement.demo.yml)) — no client value is hardcoded.
+
 ## Tech stack
 
 - **Pipeline:** Python — pandas, scikit-learn, SHAP, pyarrow, joblib

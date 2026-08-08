@@ -1,0 +1,27 @@
+name: golden
+
+# Gates the demo golden lock: pins the demo INPUTS that determine the published
+# output (frontend JSON + output/frames/*.csv byte-locks and headline figures) so
+# they cannot drift during the client-mode conversion. Runs ONLY the golden
+# (tests/test_demo_golden.py) — base deps only (pandas + pytest); the pdftotext
+# marker checks self-skip when poppler/PDFs are absent. Never lailara_engagement.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  golden:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test deps
+        run: pip install pandas pytest
+      - name: Demo golden lock
+        run: python -m pytest tests/test_demo_golden.py -q

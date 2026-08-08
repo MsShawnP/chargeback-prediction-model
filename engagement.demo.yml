@@ -1,0 +1,57 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Lailara LLC — Engagement config (DEMO)
+#
+# Demo brand identity copied from the canonical source
+# (reference/canonical_values.json, vendored from cinderhaven-data-platform),
+# never typed from memory. `demo: true` → safe to deploy; the deploy guard
+# ignores it. A real client run uses `engagement.yml` (no demo flag) with the
+# client's own name, reason-code map, and column headers.
+#
+# NOTE: the deployed demo (frontend + quarto reports) renders committed
+# artifacts; this config exercises client_mode.py on a demo-shaped ledger.
+# ─────────────────────────────────────────────────────────────────────────────
+
+client:
+  name: "Cinderhaven Provisions (demo)"
+
+engagement:
+  id: "CINDERHAVEN-DEMO"
+
+# Analysis anchor = the demo data-window end (Jan 2023 – Jan 2026). Never today.
+as_of_date: "2026-01-02"
+
+prepared_by: "Lailara LLC"
+
+demo: true
+
+basis:
+  window_months: 37
+  window_label: "Jan 2023 – Jan 2026"
+  # Fraction of historical loss recoverable per archetype (model defaults;
+  # override per client). prevention_value = historical_loss × fraction.
+  preventability_fractions:
+    data_compliance_error: 0.80
+    item_setup_gap: 0.80
+    logistics_overage: 0.70
+    asn_timing_infraction: 0.70
+    pricing_discrepancy: 0.60
+    legitimate: 0.20
+
+# reason_code -> archetype. Empty for the demo (demo ledgers carry the archetype
+# directly); a real client maps their raw reason codes here.
+archetype_map: {}
+
+columns:
+  chargeback_id: "chargeback_id"
+  amount: "amount"
+  chargeback_date: "chargeback_date"
+  root_cause_archetype: "root_cause_archetype"
+  reason_code: "reason_code"
+  retailer: "retailer"
+
+thresholds:
+  max_blank_fraction_required: 0.02
+  max_type_violation_fraction: 0.0
+  fail_on_missing_required_column: true
+  fail_on_duplicate_keys: true
+  example_limit: 5
